@@ -1,7 +1,7 @@
 # Raytracer
 
  Raytracer strongly based on the series 
- [Raytracer in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
+ [Raytracing in One Weekend](https://raytracing.github.io/books/RayTracingInOneWeekend.html).
 
 ## Features 
 
