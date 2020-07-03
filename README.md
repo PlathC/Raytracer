@@ -13,6 +13,11 @@
 
 ## Results
 
-After the first book, the result look like this :
+After the first book, the result looked like this :
 
 ![](Outputs/w-e1stResult.png)
+
+
+Rendered triangles :
+
+![](Outputs/triangles.png)
