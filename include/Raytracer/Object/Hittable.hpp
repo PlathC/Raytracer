@@ -34,6 +34,7 @@ namespace rt
     {
     public:
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const = 0;
+        virtual ~Hittable() {};
     };
 }
 

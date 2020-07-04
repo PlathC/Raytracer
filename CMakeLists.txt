@@ -6,8 +6,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
-find_package(OpenMP REQUIRED)
-
 set(RT_HEADER
         include/Raytracer/Math/Core.hpp
         include/Raytracer/Math/Vec3.hpp
@@ -17,6 +15,8 @@ set(RT_HEADER
         include/Raytracer/Object/Hittable.hpp
         include/Raytracer/Object/Sphere.hpp
         include/Raytracer/Object/Triangle.hpp
+        include/Raytracer/Object/PolygonMesh.hpp
+        include/Raytracer/Object/TriangleMesh.hpp
         include/Raytracer/Object/Environment.hpp
         include/Raytracer/Material/Material.hpp
         include/Raytracer/Material/Lambertian.hpp
@@ -33,11 +33,11 @@ set(RT_SRC
         src/Raytracer/Material/Metal.cpp
         src/Raytracer/Material/Dielectric.cpp
         src/Raytracer/Utils/Scene.cpp
-        src/Raytracer/Object/Triangle.cpp)
+        src/Raytracer/Object/Triangle.cpp
+        src/Raytracer/Object/PolygonMesh.cpp
+        src/Raytracer/Object/TriangleMesh.cpp)
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 
 target_include_directories(Raytracer SYSTEM PRIVATE include)
 target_include_directories(Raytracer SYSTEM PRIVATE external)
-
-target_link_libraries(Raytracer ${OpenMP_CXX_FLAGS})

@@ -18,8 +18,8 @@ namespace rt
 
         Vec3 unitDirection = UnitVector(rIn.Direction());
 
-        double cosTheta = fmin(Dot(-unitDirection, record.normal), 1.0);
-        double sinTheta = sqrt(1.0 - cosTheta * cosTheta);
+        double cosTheta = std::fmin(Dot(-unitDirection, record.normal), 1.0);
+        double sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
         if (etaiOverEtat * sinTheta > 1.0 ) {
             Vec3 reflected = Reflect(unitDirection, record.normal);
             scattered = Ray(record.point, reflected);
@@ -34,7 +34,7 @@ namespace rt
             return true;
         }
 
-        Vec3 refracted = refract(unitDirection, record.normal, etaiOverEtat);
+        Vec3 refracted = Refract(unitDirection, record.normal, etaiOverEtat);
         scattered = Ray(record.point, refracted);
         return true;
     }

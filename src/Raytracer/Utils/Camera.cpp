@@ -11,17 +11,17 @@ namespace rt
         m_origin(lookFrom)
     {
         const double theta = DegreesToRadians(vfov);
-        const double h = std::tan(theta / 2);
+        const double h = std::tan(theta / 2.);
         const double viewportHeight = 2.0 * h;
         const double viewportWidth = aspectRatio * viewportHeight;
 
-        w = UnitVector(lookFrom - lookAt);
-        u = UnitVector(Cross(vUp, w));
-        v = Cross(w, u);
+        w = rt::UnitVector(lookFrom - lookAt);
+        u = rt::UnitVector(rt::Cross(vUp, w));
+        v = rt::Cross(w, u);
 
         m_horizontal = focusDist * viewportWidth * u;
         m_vertical = focusDist * viewportHeight * v;
-        m_lowerLeftCorner = m_origin - m_horizontal / 2 - m_vertical / 2. - focusDist * w;
+        m_lowerLeftCorner = m_origin - m_horizontal / 2. - m_vertical / 2. - focusDist * w;
 
         lensRadius = aperture / 2.;
     }
@@ -31,7 +31,7 @@ namespace rt
         Vec3 rd = lensRadius * RandomInUnitDisk();
         Vec3 offset = u * rd.X() + v * rd.Y();
 
-        return Ray(m_origin + offset,
+        return rt::Ray(m_origin + offset,
                 m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset
         );
     }

@@ -140,7 +140,7 @@ namespace rt
 
     inline Vec3 RandomUnitVector()
     {
-        auto a = RandomDouble(0, 2*Pi);
+        auto a = RandomDouble(0, 2 * rt::Pi);
         auto z = RandomDouble(-1, 1);
         auto r = std::sqrt(1 - z * z);
 
@@ -156,18 +156,6 @@ namespace rt
             return -inUnitSphere;
     }
 
-    inline Vec3 Reflect(const Vec3& v, const Vec3& n)
-    {
-        return v - 2 * Dot(v, n) * n;
-    }
-
-    inline Vec3 refract(const Vec3& uv, const Vec3& n, const double etaiOverEtat) {
-        auto cosTheta = Dot(-uv, n);
-        Vec3 rOutParallel =  etaiOverEtat * (uv + cosTheta * n);
-        Vec3 rOutPerp = -sqrt(1.0 - rOutParallel.SquaredLength()) * n;
-        return rOutParallel + rOutPerp;
-    }
-
     inline Vec3 RandomInUnitDisk()
     {
         while (true)
@@ -177,6 +165,18 @@ namespace rt
             if (p.SquaredLength() >= 1) continue;
             return p;
         }
+    }
+
+    inline Vec3 Reflect(const Vec3& v, const Vec3& n)
+    {
+        return v - 2 * Dot(v, n) * n;
+    }
+
+    inline Vec3 Refract(const Vec3& uv, const Vec3& n, const double etaiOverEtat) {
+        auto cosTheta = Dot(-uv, n);
+        Vec3 rOutParallel =  etaiOverEtat * (uv + cosTheta * n);
+        Vec3 rOutPerp = -sqrt(1.0 - rOutParallel.SquaredLength()) * n;
+        return rOutParallel + rOutPerp;
     }
 
 }

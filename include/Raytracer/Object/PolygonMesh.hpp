@@ -2,21 +2,22 @@
 // Created by Platholl on 03/07/2020.
 //
 
-#ifndef RAYTRACER_MESH_HPP
-#define RAYTRACER_MESH_HPP
+#ifndef RAYTRACER_POLYGONMESH_HPP
+#define RAYTRACER_POLYGONMESH_HPP
 
 #include "Raytracer/Math/Vec3.hpp"
 #include "Raytracer/Object/Hittable.hpp"
 
 namespace rt
 {
-    class Mesh : public Hittable
+    class PolygonMesh : public Hittable
     {
     public:
-        Mesh(uint32_t faceNumber, const std::vector<rt::Vec3>& vertices, const std::vector<uint32_t>& faceIndexes,
-                const std::vector<uint32_t>& vertexIndexes);
+        PolygonMesh(const uint32_t facesNumber, const std::vector<rt::Vec3>& vertices,
+                    const std::vector<uint32_t>& faceIndexes, const std::vector<uint32_t>& vertexIndexes);
 
         bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+
 
     private:
         uint32_t m_facesNumber;
@@ -27,4 +28,4 @@ namespace rt
     };
 }
 
-#endif //RAYTRACER_MESH_HPP
+#endif //RAYTRACER_POLYGONMESH_HPP

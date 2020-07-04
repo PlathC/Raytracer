@@ -59,7 +59,6 @@ namespace rt
         world.Add(std::make_unique<rt::Sphere>(rt::Point3(4, 1, 0), 1.0, std::move(material3)));
 
         return world;
-
     }
 
     void Environment::Clear()
@@ -78,8 +77,10 @@ namespace rt
         bool hitAnything = false;
         auto closestSoFar = tMax;
 
-        for (const auto& object : m_objects) {
-            if (object->Hit(ray, tMin, closestSoFar, tempRecord)) {
+        for (const auto& object : m_objects)
+        {
+            if (object->Hit(ray, tMin, closestSoFar, tempRecord))
+            {
                 hitAnything = true;
                 closestSoFar = tempRecord.t;
                 record = tempRecord;
