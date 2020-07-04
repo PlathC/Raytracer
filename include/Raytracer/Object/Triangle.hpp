@@ -12,7 +12,9 @@ namespace rt
     class Triangle : public Hittable
     {
     public:
-        Triangle(const rt::Vec3& v0, const rt::Vec3& v1, const rt::Vec3& v2, std::unique_ptr<Material>&& material);
+        Triangle(const rt::Vec3& v0, const rt::Vec3& v1, const rt::Vec3& v2, std::unique_ptr<Material>&& material = {});
+        Triangle(const rt::Vec3& v0, const rt::Vec3& v1, const rt::Vec3& v2, const rt::Vec3& normal,
+                 std::unique_ptr<Material>&& material = {});
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
     private:
