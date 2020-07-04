@@ -28,8 +28,8 @@ namespace rt
 
                 for(uint16_t s = 0; s < m_settings.samplesPerPixel; ++s)
                 {
-                    auto u = (i + rt::RandomDouble()) / (width-1);
-                    auto v = (j + rt::RandomDouble()) / (height-1);
+                    auto u = (i + rt::RandomDouble()) / (width - 1);
+                    auto v = (j + rt::RandomDouble()) / (height - 1);
 
                     rt::Ray ray = m_settings.camera.GetRay(u, v);
                     pixel += RayColor(ray, m_environment, m_settings.maxDepth);
@@ -60,18 +60,28 @@ namespace rt
         if (depth <= 0)
             return rt::Color(0., 0, 0.);
 
-        if (world.Hit(ray, 0.001, rt::Infinity, record))
+        if (world.Hit(ray, 1e-08, rt::Infinity, record))
         {
             rt::Ray scattered;
             rt::Color attenuation;
-            if (record.material->Scatter(ray, record, attenuation, scattered))
-                return attenuation * RayColor(scattered, world, depth-1);
+            if(record.material)
+            {
+                if (record.material->Scatter(ray, record, attenuation, scattered))
+                    return attenuation * RayColor(scattered, world, depth-1);
+            }
+            else
+            {
+                return rt::Color(1.,0,1.);
+            }
+
             return rt::Color(0,0,0);
         }
 
         rt::Vec3 unitDirection = rt::UnitVector(ray.Direction());
-        auto t = 0.5*(unitDirection.Y() + 1.0);
-        return (1.0-t) * rt::Color(1.0, 1.0, 1.0) + t* rt::Color(0.5, 0.7, 1.0);
+        double t = 0.5*(unitDirection.Z() + 1.0);
+
+        // Linear interpolation to create skybox
+        return (1.0-t) * rt::Color(1., 1., 1.) + t * rt::Color(.2, 0., 1.0);
     }
 
 }
