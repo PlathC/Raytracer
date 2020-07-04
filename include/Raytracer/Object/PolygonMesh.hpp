@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_POLYGONMESH_HPP
 #define RAYTRACER_POLYGONMESH_HPP
 
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 #include "Raytracer/Object/Hittable.hpp"
 
 namespace rt

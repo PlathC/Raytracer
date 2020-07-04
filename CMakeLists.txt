@@ -8,7 +8,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
 set(RT_HEADER
         include/Raytracer/Math/Core.hpp
-        include/Raytracer/Math/Vec3.hpp
+        include/Raytracer/Math/Vec.hpp
         include/Raytracer/Math/Ray.hpp
         include/Raytracer/Math/Math.hpp
         include/Raytracer/Utils/Camera.hpp

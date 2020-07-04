@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_TRIANGLEMESH_HPP
 #define RAYTRACER_TRIANGLEMESH_HPP
 
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 #include "Raytracer/Object/Hittable.hpp"
 #include "Raytracer/Object/Triangle.hpp"
 

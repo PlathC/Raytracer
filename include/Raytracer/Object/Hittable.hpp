@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 #include "Raytracer/Math/Ray.hpp"
 
 

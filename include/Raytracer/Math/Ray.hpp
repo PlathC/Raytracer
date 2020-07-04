@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_RAY_HPP
 #define RAYTRACER_RAY_HPP
 
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 
 namespace rt
 {

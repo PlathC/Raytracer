@@ -7,6 +7,6 @@
 
 #include "Raytracer/Math/Core.hpp"
 #include "Raytracer/Math/Ray.hpp"
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 
 #endif //RAYTRACER_MATH_HPP

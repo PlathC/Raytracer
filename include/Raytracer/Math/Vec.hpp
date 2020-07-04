@@ -2,8 +2,8 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#ifndef RAYTRACER_VEC3_HPP
-#define RAYTRACER_VEC3_HPP
+#ifndef RAYTRACER_VEC_HPP
+#define RAYTRACER_VEC_HPP
 
 #include <cmath>
 #include <iostream>
@@ -82,6 +82,71 @@ namespace rt
 
     private:
         T e[3];
+    };
+
+    template<class T>
+    class Vec2
+    {
+    public:
+        Vec2() : e{0, 0} {}
+        Vec2(T e0, T e1) : e{e0, e1} {}
+
+        T X() const { return e[0]; }
+        T Y() const { return e[1]; }
+
+        Vec2 operator-() const { return Vec2(-e[0], -e[1]); }
+        T operator[](int i) const { return e[i]; }
+        T& operator[](int i) { return e[i]; }
+
+        Vec2<T>& operator+=(const Vec2<T>& v)
+        {
+            e[0] += v.e[0];
+            e[1] += v.e[1];
+            return *this;
+        }
+
+        Vec3<T>& operator*=(const T t)
+        {
+            e[0] *= t;
+            e[1] *= t;
+            return *this;
+        }
+
+        Vec3<T>& operator/=(const T t)
+        {
+            return *this *= 1/t;
+        }
+
+        double Length() const
+        {
+            return std::sqrt(SquaredLength());
+        }
+
+        T SquaredLength() const
+        {
+            return e[0]*e[0] + e[1]*e[1];
+        }
+
+        T Dot(const Vec2<T>& v) const
+        {
+            return e[0] * v.X()
+                   + e[1] * v.Y();
+        }
+
+        Vec3<T> Cross(const Vec3<T>& v) const
+        {
+            return Vec2(e[0] * v.Y(), e[1] * v.X());
+        }
+
+        Vec3<T> Normalize() const
+        {
+            double length = Length();
+            return Vec3<T>(static_cast<T>(e[0] / length),
+                           static_cast<T>(e[1] / length));
+        }
+
+    private:
+        T e[2];
     };
 
     using Vec3f = Vec3<float>;
@@ -201,4 +266,4 @@ namespace rt
 
 }
 
-#endif //RAYTRACER_VEC3_HPP
+#endif //RAYTRACER_VEC_HPP

@@ -6,7 +6,7 @@
 #define RAYTRACER_MATERIAL_HPP
 
 #include "Raytracer/Math/Ray.hpp"
-#include "Raytracer/Math/Vec3.hpp"
+#include "Raytracer/Math/Vec.hpp"
 #include "Raytracer/Object/Hittable.hpp"
 
 namespace rt
