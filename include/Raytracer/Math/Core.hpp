@@ -19,16 +19,18 @@ namespace rt
         return degrees * Pi / 180.;
     }
 
-    inline double RandomDouble(const double min, const double max)
+    template<class T>
+    inline T Random(const T min, const T max)
     {
-        static std::uniform_real_distribution<double> distribution(min, max);
+        static std::uniform_real_distribution<T> distribution(min, max);
         static std::mt19937 generator;
         return distribution(generator);
     }
 
-    inline double RandomDouble()
+    template<class T>
+    inline T Random()
     {
-        return RandomDouble(0., 1.);
+        return Random<T>(0, 1);
     }
 
     inline double Clamp(const double x, const double min, const double max)

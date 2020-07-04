@@ -6,16 +6,16 @@
 
 namespace rt
 {
-    Metal::Metal(const Color &albedo, const double fuzziness) :
+    Metal::Metal(const Vec3f &albedo, const float fuzziness) :
         m_albedo(albedo),
         m_fuzziness(fuzziness)
     {}
 
-    bool Metal::Scatter(const Ray &rIn, const HitRecord &record, Color &attenuation, Ray &scattered) const
+    bool Metal::Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const
     {
-        Vec3 reflected = Reflect(UnitVector(rIn.Direction()), record.normal);
-        scattered = Ray(record.point, reflected + m_fuzziness * RandomInUnitSphere());
+        Vec3 reflected = Reflect(rIn.Direction().Normalize(), record.normal);
+        scattered = Ray(record.point, reflected + m_fuzziness * RandomInUnitSphere<float>());
         attenuation = m_albedo;
-        return (Dot(scattered.Direction(), record.normal) > 0);
+        return (scattered.Direction().Dot(record.normal) > 0);
     }
 }

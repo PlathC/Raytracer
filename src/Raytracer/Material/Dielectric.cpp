@@ -11,30 +11,31 @@ namespace rt
     {
     }
 
-    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, Color &attenuation, Ray &scattered) const
+    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const
     {
-        attenuation = Color(1.0, 1.0, 1.0);
+        attenuation = Vec3f(1.0, 1.0, 1.0);
         const double etaiOverEtat = record.frontFace ? 1.0 / m_refraction : m_refraction;
 
-        Vec3 unitDirection = UnitVector(rIn.Direction());
+        Vec3 unitDirection = rIn.Direction().Normalize();
 
-        double cosTheta = std::fmin(Dot(-unitDirection, record.normal), 1.0);
+        double cosTheta = std::fmin((-unitDirection).Dot(record.normal), 1.0);
         double sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
-        if (etaiOverEtat * sinTheta > 1.0 ) {
-            Vec3 reflected = Reflect(unitDirection, record.normal);
-            scattered = Ray(record.point, reflected);
-            return true;
-        }
-
-        double reflectProb = Schlick(cosTheta, etaiOverEtat);
-        if (RandomDouble() < reflectProb)
+        if (etaiOverEtat * sinTheta > 1.0 )
         {
             Vec3 reflected = Reflect(unitDirection, record.normal);
             scattered = Ray(record.point, reflected);
             return true;
         }
 
-        Vec3 refracted = Refract(unitDirection, record.normal, etaiOverEtat);
+        double reflectProb = Schlick(cosTheta, etaiOverEtat);
+        if (Random<double>() < reflectProb)
+        {
+            Vec3 reflected = Reflect(unitDirection, record.normal);
+            scattered = Ray(record.point, reflected);
+            return true;
+        }
+
+        Vec3f refracted = Refract<float>(unitDirection, record.normal, etaiOverEtat);
         scattered = Ray(record.point, refracted);
         return true;
     }

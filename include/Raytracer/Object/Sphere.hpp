@@ -15,13 +15,13 @@ namespace rt
     {
     public:
         Sphere() = default;
-        Sphere(const Point3& center, const double radius, std::unique_ptr<Material>&& material);
+        Sphere(const Vec3f& center, const float radius, std::unique_ptr<Material>&& material);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
 
     private:
-        Point3 m_center;
-        double m_radius;
+        Vec3f m_center;
+        float m_radius;
 
         std::unique_ptr<Material> m_material;
     };

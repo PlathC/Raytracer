@@ -8,7 +8,7 @@
 
 namespace rt
 {
-    Triangle::Triangle(const rt::Vec3& v0, const rt::Vec3& v1, const rt::Vec3& v2, std::unique_ptr<Material>&& material):
+    Triangle::Triangle(const rt::Vec3f& v0, const rt::Vec3f& v1, const rt::Vec3f& v2, std::unique_ptr<Material>&& material):
             m_v0(v0),
             m_v1(v1),
             m_v2(v2),
@@ -16,16 +16,16 @@ namespace rt
     {
         rt::Vec3 A = m_v1 - m_v0;
         rt::Vec3 B = m_v2 - m_v0;
-        m_normal = Cross(A, B);
+        m_normal = A.Cross(B);
 
         // Prefer normalized normals
         if(m_normal.Length() > 0.0)
         {
-            m_normal = UnitVector(m_normal);
+            m_normal = m_normal.Normalize();
         }
     }
 
-    Triangle::Triangle(const rt::Vec3& v0, const rt::Vec3& v1, const rt::Vec3& v2, const rt::Vec3& normal,
+    Triangle::Triangle(const rt::Vec3f& v0, const rt::Vec3f& v1, const rt::Vec3f& v2, const rt::Vec3f& normal,
                        std::unique_ptr<Material>&& material):
             m_v0(v0),
             m_v1(v1),
@@ -39,10 +39,10 @@ namespace rt
     {
         // Based on https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
 
-        const Vec3 v0v1 = m_v1 - m_v0;
-        const Vec3 v0v2 = m_v2 - m_v0;
-        const Vec3 pVec = Cross(ray.Direction(), v0v2);
-        const double det = Dot(v0v1, pVec);
+        const Vec3f v0v1 = m_v1 - m_v0;
+        const Vec3f v0v2 = m_v2 - m_v0;
+        const Vec3f pVec = ray.Direction().Cross(v0v2);
+        const double det = v0v1.Dot(pVec);
 
     #ifdef CULLING
         // if the determinant is negative the triangle is backfacing
@@ -56,14 +56,14 @@ namespace rt
         const double invDet = 1. / det;
 
         const Vec3 tVec = ray.Origin() - m_v0;
-        const double u = Dot(tVec, pVec) * invDet;
+        const double u = tVec.Dot(pVec) * invDet;
         if (u < 0.0 || u > 1.0) return false;
 
-        const Vec3 qVec = Cross(tVec, v0v1);
-        const double v = Dot(ray.Direction(), qVec) * invDet;
+        const Vec3 qVec = tVec.Cross(v0v1);
+        const double v = ray.Direction().Dot(qVec) * invDet;
         if (v < 0.0 || u + v > 1.0) return false;
 
-        const double t = Dot(v0v2, qVec) * invDet;
+        const double t = v0v2.Dot(qVec) * invDet;
 
         record.t = t;
         record.material = m_material.get();

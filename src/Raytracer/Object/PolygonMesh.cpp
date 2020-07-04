@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    PolygonMesh::PolygonMesh(const uint32_t facesNumber, const std::vector<rt::Vec3>& vertices,
+    PolygonMesh::PolygonMesh(const uint32_t facesNumber, const std::vector<rt::Vec3f>& vertices,
             const std::vector<uint32_t>& facesIndexes, const std::vector<uint32_t>& vertexIndexes) :
         m_facesNumber(facesNumber),
         m_vertices(vertices),

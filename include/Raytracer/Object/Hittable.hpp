@@ -17,15 +17,15 @@ namespace rt
 
     struct HitRecord
     {
-        Point3 point;
-        Vec3 normal;
-        double t;
+        Vec3f point;
+        Vec3f normal;
+        float t;
         bool frontFace;
         Material* material;
 
-        inline void SetFaceNormal(const Ray& ray, const Vec3& outwardNormal)
+        inline void SetFaceNormal(const Ray& ray, const Vec3f& outwardNormal)
         {
-            frontFace = Dot(ray.Direction(), outwardNormal) < 0;
+            frontFace = ray.Direction().Dot(outwardNormal) < 0;
             normal = frontFace ? outwardNormal : -outwardNormal;
         }
     };

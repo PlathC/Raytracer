@@ -22,11 +22,11 @@ int main(int argc, char** argv)
     constexpr uint16_t samplesPerPixel = 50;
     const uint8_t maxDepth             = 50;
 
-    rt::Point3 lookFrom = rt::Point3{0., 15.0, 0.1};
-    rt::Point3 lookAt   = rt::Point3{0., 0., 0.};
-    rt::Vec3 vup        = rt::Vec3{0, 0., 1.};
-    double distToFocus  = 9.0;
-    double aperture     = 0.01;
+    rt::Vec3f lookFrom = rt::Vec3f{0., 15.0, 0.1};
+    rt::Vec3f lookAt   = rt::Vec3f{0., 0., 0.};
+    rt::Vec3 vup       = rt::Vec3f{0, 0., 1.};
+    float distToFocus = 9.0f;
+    float aperture    = 0.01f;
 
     rt::SceneSettings settings = rt::SceneSettings {
         rt::Camera{lookFrom, lookAt, vup, 50, aspectRatio, aperture, distToFocus},
@@ -38,9 +38,9 @@ int main(int argc, char** argv)
     uint32_t numFaces = 1;
     std::vector<uint32_t> faceIndex   = {4};
     std::vector<uint32_t> vertexIndex = {0, 1, 2, 3};
-    std::vector<rt::Vec3> P = {
-            rt::Vec3 (-5, -5,  5), rt::Vec3 ( 5, -5,  5),
-            rt::Vec3 ( 5, -5, -5), rt::Vec3 (-5, -5, -5)
+    std::vector<rt::Vec3f> P = {
+            rt::Vec3f(-5, -5,  5), rt::Vec3f( 5, -5,  5),
+            rt::Vec3f( 5, -5, -5), rt::Vec3f(-5, -5, -5)
     };
 
     //environment.Add(std::make_unique<rt::TriangleMesh>(numFaces,
@@ -49,17 +49,17 @@ int main(int argc, char** argv)
     //        );
 
     environment.Add(std::make_unique<rt::Triangle>(
-            rt::Vec3 ( 5, -5,  5),
-            rt::Vec3 (-5, -5,  5),
-            rt::Vec3 ( 5, -5, -5),
-            std::make_unique<rt::Lambertian>(rt::Color{1, 0., 0.}))
+            rt::Vec3f( 5, -5,  5),
+            rt::Vec3f(-5, -5,  5),
+            rt::Vec3f( 5, -5, -5),
+            std::make_unique<rt::Lambertian>(rt::Vec3f{1, 0., 0.}))
          );
 
     environment.Add(std::make_unique<rt::Triangle>(
-            rt::Vec3 ( -5,  -5,  -5),
-            rt::Vec3 ( -5, -5,  5),
-            rt::Vec3 (  5,  -5,  -5),
-            std::make_unique<rt::Lambertian>(rt::Color{0.0, 0.0, 1.}))
+            rt::Vec3f( -5,  -5,  -5),
+            rt::Vec3f( -5, -5,  5),
+            rt::Vec3f(  5,  -5,  -5),
+            std::make_unique<rt::Lambertian>(rt::Vec3f{0.0, 0.0, 1.}))
     );
 
     //environment.Clear();

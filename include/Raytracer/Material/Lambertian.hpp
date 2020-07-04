@@ -12,12 +12,12 @@ namespace rt
     class Lambertian : public Material
     {
     public:
-        Lambertian(const Color& albedo);
+        Lambertian(const Vec3f& albedo);
 
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, Color& attenuation, Ray& scattered) const override;
+        virtual bool Scatter(const Ray& rIn, const HitRecord& record, Vec3f& attenuation, Ray& scattered) const override;
 
     private:
-        Color m_albedo;
+        Vec3f m_albedo;
     };
 }
 

@@ -14,7 +14,7 @@ namespace rt
     class Material
     {
     public:
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, Color& attenuation, Ray& scattered) const = 0;
+        virtual bool Scatter(const Ray& rIn, const HitRecord& record, Vec3f& attenuation, Ray& scattered) const = 0;
         virtual ~Material() { };
     };
 }

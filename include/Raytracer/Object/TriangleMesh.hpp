@@ -15,8 +15,8 @@ namespace rt
     {
     public:
         TriangleMesh(const uint32_t facesNumber, const std::vector<uint32_t>& facesIndexes,
-                     const std::vector<uint32_t>& verticesIndexes, const std::vector<Vec3>& vertices,
-                     const std::vector<Vec3>& normals, std::unique_ptr<Material>&& material);
+                     const std::vector<uint32_t>& verticesIndexes, const std::vector<Vec3f>& vertices,
+                     const std::vector<Vec3f>& normals, std::unique_ptr<Material>&& material);
 
         bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
 
@@ -26,8 +26,8 @@ namespace rt
         uint32_t m_trianglesNumber;
 
         std::vector<uint32_t> m_trianglesIndexes;
-        std::vector<Vec3> m_vertices;
-        std::vector<Vec3> m_normals;
+        std::vector<Vec3f> m_vertices;
+        std::vector<Vec3f> m_normals;
         std::vector<rt::Triangle> m_triangles;
 
         // TODO: Add support of st coordinates

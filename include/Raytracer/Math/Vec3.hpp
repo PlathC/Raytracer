@@ -12,21 +12,22 @@
 
 namespace rt
 {
+    template<class T>
     class Vec3
     {
     public:
         Vec3() : e{0, 0, 0} {}
-        Vec3(double e0, double e1, double e2) : e{e0, e1, e2} {}
+        Vec3(T e0, T e1, T e2) : e{e0, e1, e2} {}
 
-        double X() const { return e[0]; }
-        double Y() const { return e[1]; }
-        double Z() const { return e[2]; }
+        T X() const { return e[0]; }
+        T Y() const { return e[1]; }
+        T Z() const { return e[2]; }
 
         Vec3 operator-() const { return Vec3(-e[0], -e[1], -e[2]); }
-        double operator[](int i) const { return e[i]; }
-        double& operator[](int i) { return e[i]; }
+        T operator[](int i) const { return e[i]; }
+        T& operator[](int i) { return e[i]; }
 
-        Vec3& operator+=(const Vec3& v)
+        Vec3<T>& operator+=(const Vec3<T>& v)
         {
             e[0] += v.e[0];
             e[1] += v.e[1];
@@ -34,7 +35,7 @@ namespace rt
             return *this;
         }
 
-        Vec3& operator*=(const double t)
+        Vec3<T>& operator*=(const T t)
         {
             e[0] *= t;
             e[1] *= t;
@@ -42,7 +43,7 @@ namespace rt
             return *this;
         }
 
-        Vec3& operator/=(const double t)
+        Vec3<T>& operator/=(const T t)
         {
             return *this *= 1/t;
         }
@@ -52,102 +53,117 @@ namespace rt
             return std::sqrt(SquaredLength());
         }
 
-        double SquaredLength() const
+        T SquaredLength() const
         {
             return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
         }
 
+        T Dot(const Vec3<T>& v) const
+        {
+            return e[0] * v.X()
+                   + e[1] * v.Y()
+                   + e[2] * v.Z();
+        }
+
+        Vec3<T> Cross(const Vec3<T>& v) const
+        {
+            return Vec3(e[1] * v.Z() - e[2] * v.Z(),
+                        e[2] * v.X() - e[0] * v.Z(),
+                        e[0] * v.Y() - e[1] * v.X());
+        }
+
+        Vec3<T> Normalize() const
+        {
+            double length = Length();
+            return Vec3<T>(static_cast<T>(e[0] / length),
+                           static_cast<T>(e[1] / length),
+                           static_cast<T>(e[2] / length));
+        }
+
     private:
-        double e[3];
+        T e[3];
     };
 
-    using Point3 = Vec3;
-    using Color  = Vec3;
+    using Vec3f = Vec3<float>;
+    using Vec3d = Vec3<double>;
 
-    inline std::ostream& operator<<(std::ostream& out, const Vec3& v)
+    template<class T>
+    inline std::ostream& operator<<(std::ostream& out, const Vec3<T>& v)
     {
         return out << v.X() << ' ' << v.Y() << ' ' << v.Z();
     }
 
-    inline Vec3 operator+(const Vec3& u, const Vec3& v)
+    template<class T>
+    inline Vec3<T> operator+(const Vec3<T>& u, const Vec3<T>& v)
     {
         return Vec3(u.X() + v.X(), u.Y() + v.Y(), u.Z() + v.Z());
     }
 
-    inline Vec3 operator-(const Vec3& u, const Vec3& v)
+    template<class T>
+    inline Vec3<T> operator-(const Vec3<T>& u, const Vec3<T>& v)
     {
         return Vec3(u.X() - v.X(), u.Y() - v.Y(), u.Z() - v.Z());
     }
 
-    inline Vec3 operator*(const Vec3 &u, const Vec3 &v)
+    template<class T>
+    inline Vec3<T> operator*(const Vec3<T> &u, const Vec3<T> &v)
     {
         return Vec3(u.X() * v.X(), u.Y() * v.Y(), u.Z() * v.Z());
     }
 
-    inline Vec3 operator*(double t, const Vec3& v)
+    template<class T>
+    inline Vec3<T> operator*(T t, const Vec3<T>& v)
     {
         return Vec3(t * v.X(), t * v.Y(), t * v.Z());
     }
 
-    inline Vec3 operator*(const Vec3& v, double t)
+    template<class T>
+    inline Vec3<T> operator*(const Vec3<T>& v, T t)
     {
         return t * v;
     }
 
-    inline Vec3 operator/(Vec3 v, double t)
+    template<class T>
+    inline Vec3<T> operator/(Vec3<T> v, T t)
     {
         return (1/t) * v;
     }
 
-    inline double Dot(const Vec3& u, const Vec3& v)
+    template<class T>
+    inline Vec3<T> VRandom()
     {
-        return u.X() * v.X()
-               + u.Y() * v.Y()
-               + u.Z() * v.Z();
+        return Vec3(Random<T>(), Random<T>(), Random<T>());
     }
 
-    inline Vec3 Cross(const Vec3& u, const Vec3& v)
+    template<class T>
+    inline Vec3<T> VRandom(const T min, const T max)
     {
-        return Vec3(u.Y() * v.Z() - u.Z() * v.Z(),
-                    u.Z() * v.X() - u.X() * v.Z(),
-                    u.X() * v.Y() - u.Y() * v.X());
+        return Vec3<T>(Random<T>(min, max), Random<T>(min, max), Random<T>(min, max));
     }
 
-    inline Vec3 UnitVector(Vec3 v)
-    {
-        return v / v.Length();
-    }
-
-    inline Vec3 Random()
-    {
-        return Vec3(RandomDouble(), RandomDouble(), RandomDouble());
-    }
-
-    inline Vec3 Random(const double min, const double max)
-    {
-        return Vec3(RandomDouble(min, max), RandomDouble(min, max), RandomDouble(min, max));
-    }
-
-    inline Vec3 RandomInUnitSphere()
+    template<class T>
+    inline Vec3<T> RandomInUnitSphere()
     {
         while(true)
         {
-            Vec3 point = Random(-1., 1.);
+            Vec3<T> point = VRandom<T>(-1, 1);
             if(point.SquaredLength() >= 1) continue;
             return point;
         }
     }
 
-    inline Vec3 RandomUnitVector()
+    template<class T>
+    inline Vec3<T> RandomUnitVector()
     {
-        auto a = RandomDouble(0, 2 * rt::Pi);
-        auto z = RandomDouble(-1, 1);
+        auto a = Random<T>(0, 2 * rt::Pi);
+        auto z = Random<T>(-1, 1);
         auto r = std::sqrt(1 - z * z);
 
-        return Vec3(r * std::cos(a), r * std::sin(a), z);
+        return Vec3<T>(r * std::cos(a), r * std::sin(a), z);
     }
 
-    inline Vec3 RandomInHemisphere(const Vec3& normal)
+    template<class T>
+    inline Vec3<T> RandomInHemisphere(const Vec3<T>& normal)
     {
         Vec3 inUnitSphere = RandomInUnitSphere();
         if (Dot(inUnitSphere, normal) > 0.0) // In the same hemisphere as the normal
@@ -156,26 +172,30 @@ namespace rt
             return -inUnitSphere;
     }
 
-    inline Vec3 RandomInUnitDisk()
+    template<class T>
+    inline Vec3<T> RandomInUnitDisk()
     {
         while (true)
         {
-            auto p = Vec3(RandomDouble(-1,1), RandomDouble(-1,1), 0);
+            auto p = Vec3<T>(Random<T>(-1, 1), Random<T>(-1, 1), 0);
 
             if (p.SquaredLength() >= 1) continue;
             return p;
         }
     }
 
-    inline Vec3 Reflect(const Vec3& v, const Vec3& n)
+    template<class T>
+    inline Vec3<T> Reflect(const Vec3<T>& v, const Vec3<T>& n)
     {
-        return v - 2 * Dot(v, n) * n;
+        return v - 2 * v.Dot(n) * n;
     }
 
-    inline Vec3 Refract(const Vec3& uv, const Vec3& n, const double etaiOverEtat) {
-        auto cosTheta = Dot(-uv, n);
+    template<class T>
+    inline Vec3<T> Refract(const Vec3<T>& uv, const Vec3<T>& n, const T etaiOverEtat)
+    {
+        auto cosTheta = (-uv).Dot(n);
         Vec3 rOutParallel =  etaiOverEtat * (uv + cosTheta * n);
-        Vec3 rOutPerp = -sqrt(1.0 - rOutParallel.SquaredLength()) * n;
+        Vec3 rOutPerp = -sqrt(1.f - rOutParallel.SquaredLength()) * n;
         return rOutParallel + rOutPerp;
     }
 

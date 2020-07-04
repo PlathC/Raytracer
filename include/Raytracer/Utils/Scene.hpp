@@ -35,7 +35,7 @@ namespace rt
         std::vector<uint8_t> GenerateImage();
 
     private:
-        rt::Color RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const;
+        rt::Vec3f RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const;
 
     private:
         Environment m_environment;

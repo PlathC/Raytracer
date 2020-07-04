@@ -24,12 +24,12 @@ namespace rt
         {
             for (int i = 0; i < width; ++i)
             {
-                rt::Color pixel = rt::Color(0., 0. , 0.);
+                rt::Vec3f pixel = rt::Vec3f(0., 0. , 0.);
 
                 for(uint16_t s = 0; s < m_settings.samplesPerPixel; ++s)
                 {
-                    auto u = (i + rt::RandomDouble()) / (width - 1);
-                    auto v = (j + rt::RandomDouble()) / (height - 1);
+                    auto u = (i + rt::Random<double>()) / (width - 1);
+                    auto v = (j + rt::Random<double>()) / (height - 1);
 
                     rt::Ray ray = m_settings.camera.GetRay(u, v);
                     pixel += RayColor(ray, m_environment, m_settings.maxDepth);
@@ -52,18 +52,18 @@ namespace rt
         return img;
     }
 
-    rt::Color Scene::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
+    rt::Vec3f Scene::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
     {
         rt::HitRecord record;
 
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
-            return rt::Color(0., 0, 0.);
+            return rt::Vec3f(0., 0, 0.);
 
         if (world.Hit(ray, 1e-08, rt::Infinity, record))
         {
             rt::Ray scattered;
-            rt::Color attenuation;
+            rt::Vec3f attenuation;
             if(record.material)
             {
                 if (record.material->Scatter(ray, record, attenuation, scattered))
@@ -71,17 +71,17 @@ namespace rt
             }
             else
             {
-                return rt::Color(1.,0,1.);
+                return rt::Vec3f(1.,0,1.);
             }
 
-            return rt::Color(0,0,0);
+            return rt::Vec3f(0,0,0);
         }
 
-        rt::Vec3 unitDirection = rt::UnitVector(ray.Direction());
-        double t = 0.5*(unitDirection.Z() + 1.0);
+        rt::Vec3 unitDirection = ray.Direction().Normalize();
+        float t = 0.5*(unitDirection.Z() + 1.0);
 
         // Linear interpolation to create skybox
-        return (1.0-t) * rt::Color(1., 1., 1.) + t * rt::Color(.2, 0., 1.0);
+        return (1.f-t) * rt::Vec3f(1., 1., 1.) + t * rt::Vec3f(.2, 0., 1.0);
     }
 
 }

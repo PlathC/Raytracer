@@ -13,21 +13,21 @@ namespace rt
     {
     public:
         Ray() {}
-        Ray(const Point3& origin, const Vec3 direction):
+        Ray(const Vec3f& origin, const Vec3f direction):
                 m_origin(origin), m_direction(direction)
         {}
 
-        Point3 Origin() const { return m_origin; }
-        Vec3 Direction() const { return m_direction; }
+        Vec3f Origin() const { return m_origin; }
+        Vec3f Direction() const { return m_direction; }
 
-        Point3 At(double t) const
+        Vec3f At(float t) const
         {
             return m_origin + t * m_direction;
         }
 
     private:
-        Point3 m_origin;
-        Vec3 m_direction;
+        Vec3f m_origin;
+        Vec3f m_direction;
     };
 
 }

@@ -10,8 +10,8 @@
 namespace rt
 {
     TriangleMesh::TriangleMesh(const uint32_t facesNumber, const std::vector<uint32_t>& facesIndexes,
-                               const std::vector<uint32_t>& verticesIndexes, const std::vector<Vec3>& vertices,
-                               const std::vector<Vec3>& normals, std::unique_ptr<Material>&& material):
+                               const std::vector<uint32_t>& verticesIndexes, const std::vector<Vec3f>& vertices,
+                               const std::vector<Vec3f>& normals, std::unique_ptr<Material>&& material):
         m_trianglesNumber(0),
         m_vertices(vertices),
         m_normals(normals),
@@ -46,9 +46,9 @@ namespace rt
                             m_vertices[i1],
                             m_vertices[i2],
                             m_vertices[i3],
-                            std::make_unique<rt::Lambertian>(rt::Color{rt::RandomDouble(),
-                                                         rt::RandomDouble(),
-                                                         rt::RandomDouble()})
+                            std::make_unique<rt::Lambertian>(rt::Vec3f{rt::Random<float>(),
+                                                         rt::Random<float>(),
+                                                         rt::Random<float>()})
                     });
                 }
                 else
@@ -58,10 +58,10 @@ namespace rt
                             m_vertices[i2],
                             m_vertices[i3],
                             m_normals[triangleIndex++],
-                            std::make_unique<rt::Lambertian>(rt::Color{
-                                rt::RandomDouble(),
-                                rt::RandomDouble(),
-                                rt::RandomDouble()})
+                            std::make_unique<rt::Lambertian>(rt::Vec3f{
+                                    rt::Random<float>(),
+                                    rt::Random<float>(),
+                                    rt::Random<float>()})
                     });
                 }
 
@@ -95,8 +95,8 @@ namespace rt
         // Based on https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-polygon-mesh/Ray-Tracing%20a%20Polygon%20Mesh-part-1
 
         const uint32_t verticesNumber = (divs - 1) * divs + 2;
-        auto points  = std::vector<Vec3>(verticesNumber);
-        auto normals = std::vector<Vec3>(verticesNumber);
+        auto points  = std::vector<Vec3f>(verticesNumber);
+        auto normals = std::vector<Vec3f>(verticesNumber);
         //auto st    = std::vector<Vec2>(verticesNumber);
 
         float u = -rt::Pi / 2.f;
@@ -104,7 +104,7 @@ namespace rt
         const float du = rt::Pi / divs;
         const float dv = 2 * rt::Pi / divs;
 
-        points[0] = normals[0] = Vec3(0, -rad, 0);
+        points[0] = normals[0] = Vec3f(0, -rad, 0);
         uint32_t k = 1;
         for(uint32_t i = 0; i < divs - 1; ++i)
         {
@@ -124,7 +124,7 @@ namespace rt
             }
         }
 
-        points[k] = normals[k] = Vec3(0, rad, 0);
+        points[k] = normals[k] = Vec3f(0, rad, 0);
 
         uint32_t polyNumber = divs * divs;
         auto faceIndexes   = std::vector<uint32_t>(polyNumber);
@@ -171,6 +171,6 @@ namespace rt
         }
 
         return std::make_unique<TriangleMesh>(polyNumber, faceIndexes, verticesIndex, points,
-                normals, std::make_unique<rt::Lambertian>(rt::Color{0.8, 0.1, 1.}));
+                normals, std::make_unique<rt::Lambertian>(rt::Vec3f{0.8, 0.1, 1.}));
     }
 }

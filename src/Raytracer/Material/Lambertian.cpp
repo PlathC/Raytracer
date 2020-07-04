@@ -6,13 +6,13 @@
 
 namespace rt
 {
-    Lambertian::Lambertian(const Color &albedo) :
+    Lambertian::Lambertian(const Vec3f &albedo) :
         m_albedo(albedo)
     {}
 
-    bool Lambertian::Scatter(const Ray &rIn, const HitRecord &record, Color &attenuation, Ray &scattered) const
+    bool Lambertian::Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const
     {
-        Vec3 scatterDirection = record.normal + RandomUnitVector();
+        Vec3f scatterDirection = record.normal + RandomUnitVector<float>();
         scattered = Ray(record.point, scatterDirection);
         attenuation = m_albedo;
         return true;

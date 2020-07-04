@@ -12,18 +12,18 @@ namespace rt
     class Camera
     {
     public:
-        Camera(const Point3& lookFrom, const Point3& lookAt, const Vec3& vUp, const double vfov,
-                const double aspectRatio, const double aperture, const double focusDist);
+        Camera(const Vec3f& lookFrom, const Vec3f& lookAt, const Vec3f& vUp, const float vfov,
+                const float aspectRatio, const float aperture, const float focusDist);
 
-        Ray GetRay(const double s, const double t) const;
+        Ray GetRay(const float s, const float t) const;
 
     private:
-        Point3 m_origin;
-        Point3 m_lowerLeftCorner;
-        Vec3 m_horizontal;
-        Vec3 m_vertical;
-        Vec3 u, v, w;
-        double lensRadius;
+        Vec3f m_origin;
+        Vec3f m_lowerLeftCorner;
+        Vec3f m_horizontal;
+        Vec3f m_vertical;
+        Vec3f u, v, w;
+        float lensRadius;
 
     };
 }

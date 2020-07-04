@@ -14,7 +14,7 @@ namespace rt
     public:
         Dielectric(const double refraction);
 
-        bool Scatter(const Ray &rIn, const HitRecord &record, Color &attenuation, Ray &scattered) const override;
+        bool Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const override;
 
     private:
         double m_refraction;

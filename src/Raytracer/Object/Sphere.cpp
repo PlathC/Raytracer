@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    Sphere::Sphere(const Point3& center, const double radius, std::unique_ptr<Material>&& material):
+    Sphere::Sphere(const Vec3f& center, const float radius, std::unique_ptr<Material>&& material):
         m_center(center),
         m_radius(radius),
         m_material(std::move(material))
@@ -17,7 +17,7 @@ namespace rt
     {
         Vec3 oc = ray.Origin() - m_center;
         auto a = ray.Direction().SquaredLength();
-        auto halfB = Dot(oc, ray.Direction());
+        auto halfB = oc.Dot(ray.Direction());
         auto c = oc.SquaredLength() - m_radius * m_radius;
         auto discriminant = halfB * halfB - a * c;
 
