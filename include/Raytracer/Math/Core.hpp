@@ -11,6 +11,7 @@
 namespace rt
 {
     constexpr double Infinity = std::numeric_limits<double>::infinity();
+    constexpr double Epsilon = std::numeric_limits<double>::epsilon();
     constexpr double Pi = 3.1415926535897932385;
 
     inline double DegreesToRadians(const double degrees)
