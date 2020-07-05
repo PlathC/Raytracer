@@ -24,8 +24,7 @@ namespace rt
         {
             for (int i = 0; i < width; ++i)
             {
-                rt::Vec3f pixel = rt::Vec3f(0., 0. , 0.);
-
+                glm::vec3 pixel = glm::vec3 {};
                 for(uint16_t s = 0; s < m_settings.samplesPerPixel; ++s)
                 {
                     auto u = (i + rt::Random<double>()) / (width - 1);
@@ -34,9 +33,10 @@ namespace rt
                     rt::Ray ray = m_settings.camera.GetRay(u, v);
                     pixel += RayColor(ray, m_environment, m_settings.maxDepth);
                 }
-                auto r = pixel.X();
-                auto g = pixel.Y();
-                auto b = pixel.Z();
+
+                auto r = pixel.x;
+                auto g = pixel.y;
+                auto b = pixel.z;
 
                 // Divide the color total by the number of samples and gamma-correct for gamma=2.0.
                 auto scale = 1.0 / m_settings.samplesPerPixel;
@@ -51,19 +51,18 @@ namespace rt
         }
         return img;
     }
-
-    rt::Vec3f Scene::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
+    glm::vec3 Scene::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
     {
         rt::HitRecord record;
 
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
-            return rt::Vec3f(0., 0, 0.);
+            return glm::vec3(0., 0, 0.);
 
         if (world.Hit(ray, 1e-08, rt::Infinity, record))
         {
             rt::Ray scattered;
-            rt::Vec3f attenuation;
+            glm::vec3 attenuation;
             if(record.material)
             {
                 if (record.material->Scatter(ray, record, attenuation, scattered))
@@ -71,17 +70,17 @@ namespace rt
             }
             else
             {
-                return rt::Vec3f(1.,0,1.);
+                return glm::vec3(1.,0,1.);
             }
 
-            return rt::Vec3f(0,0,0);
+            return glm::vec3(0,0,0);
         }
 
-        rt::Vec3 unitDirection = ray.Direction().Normalize();
-        float t = 0.5*(unitDirection.Z() + 1.0);
+        glm::vec3 unitDirection = glm::normalize(ray.Direction());
+        float t = 0.5*(unitDirection.z + 1.0);
 
         // Linear interpolation to create skybox
-        return (1.f-t) * rt::Vec3f(1., 1., 1.) + t * rt::Vec3f(.2, 0., 1.0);
+        return (1.f - t) * glm::vec3(1., 1., 1.) + t * glm::vec3(.2, 0., 1.0);
     }
 
 }

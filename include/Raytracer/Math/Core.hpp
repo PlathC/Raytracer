@@ -40,7 +40,8 @@ namespace rt
         return x;
     }
 
-    inline double Schlick(double cosine, double refraction) {
+    inline double Schlick(double cosine, double refraction)
+    {
         auto r0 = (1. - refraction) / (1.0 + refraction);
         r0 = r0*r0;
         return r0 + (1 - r0) * pow((1. - cosine), 5);

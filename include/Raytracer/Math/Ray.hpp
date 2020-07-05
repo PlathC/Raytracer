@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_RAY_HPP
 #define RAYTRACER_RAY_HPP
 
-#include "Raytracer/Math/Vec.hpp"
+#include <glm/vec3.hpp>
 
 namespace rt
 {
@@ -13,21 +13,21 @@ namespace rt
     {
     public:
         Ray() {}
-        Ray(const Vec3f& origin, const Vec3f direction):
+        Ray(const glm::vec3& origin, const glm::vec3 direction):
                 m_origin(origin), m_direction(direction)
         {}
 
-        Vec3f Origin() const { return m_origin; }
-        Vec3f Direction() const { return m_direction; }
+        glm::vec3 Origin() const { return m_origin; }
+        glm::vec3 Direction() const { return m_direction; }
 
-        Vec3f At(float t) const
+        glm::vec3 At(float t) const
         {
             return m_origin + t * m_direction;
         }
 
     private:
-        Vec3f m_origin;
-        Vec3f m_direction;
+        glm::vec3 m_origin;
+        glm::vec3 m_direction;
     };
 
 }

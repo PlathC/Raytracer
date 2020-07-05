@@ -5,6 +5,8 @@
 #ifndef RAYTRACER_CAMERA_HPP
 #define RAYTRACER_CAMERA_HPP
 
+#include <glm/glm.hpp>
+
 #include "Raytracer/Math/Math.hpp"
 
 namespace rt
@@ -12,17 +14,17 @@ namespace rt
     class Camera
     {
     public:
-        Camera(const Vec3f& lookFrom, const Vec3f& lookAt, const Vec3f& vUp, const float vfov,
+        Camera(const glm::vec3& lookFrom, const glm::vec3& lookAt, const glm::vec3& vUp, const float vFov,
                 const float aspectRatio, const float aperture, const float focusDist);
 
         Ray GetRay(const float s, const float t) const;
 
     private:
-        Vec3f m_origin;
-        Vec3f m_lowerLeftCorner;
-        Vec3f m_horizontal;
-        Vec3f m_vertical;
-        Vec3f u, v, w;
+        glm::vec3 m_origin;
+        glm::vec3 m_lowerLeftCorner;
+        glm::vec3 m_horizontal;
+        glm::vec3 m_vertical;
+        glm::vec3 u, v, w;
         float lensRadius;
 
     };

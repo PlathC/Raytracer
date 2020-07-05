@@ -5,8 +5,9 @@
 #ifndef RAYTRACER_MATERIAL_HPP
 #define RAYTRACER_MATERIAL_HPP
 
+#include <glm/glm.hpp>
+
 #include "Raytracer/Math/Ray.hpp"
-#include "Raytracer/Math/Vec.hpp"
 #include "Raytracer/Object/Hittable.hpp"
 
 namespace rt
@@ -14,7 +15,7 @@ namespace rt
     class Material
     {
     public:
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, Vec3f& attenuation, Ray& scattered) const = 0;
+        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const = 0;
         virtual ~Material() { };
     };
 }

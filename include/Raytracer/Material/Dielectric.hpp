@@ -5,6 +5,7 @@
 #ifndef RAYTRACER_DIELECTRIC_HPP
 #define RAYTRACER_DIELECTRIC_HPP
 
+#include "Raytracer/Math/Core.hpp"
 #include "Raytracer/Material/Material.hpp"
 
 namespace rt
@@ -14,7 +15,7 @@ namespace rt
     public:
         Dielectric(const double refraction);
 
-        bool Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const override;
+        bool Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &attenuation, Ray &scattered) const override;
 
     private:
         double m_refraction;

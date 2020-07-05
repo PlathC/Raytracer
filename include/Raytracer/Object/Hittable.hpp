@@ -7,9 +7,9 @@
 
 #include <memory>
 
-#include "Raytracer/Math/Vec.hpp"
-#include "Raytracer/Math/Ray.hpp"
+#include <glm/glm.hpp>
 
+#include "Raytracer/Math/Ray.hpp"
 
 namespace rt
 {
@@ -17,15 +17,15 @@ namespace rt
 
     struct HitRecord
     {
-        Vec3f point;
-        Vec3f normal;
+        glm::vec3 point;
+        glm::vec3 normal;
         float t;
         bool frontFace;
         Material* material;
 
-        inline void SetFaceNormal(const Ray& ray, const Vec3f& outwardNormal)
+        inline void SetFaceNormal(const Ray& ray, const glm::vec3& outwardNormal)
         {
-            frontFace = ray.Direction().Dot(outwardNormal) < 0;
+            frontFace = glm::dot(ray.Direction(), outwardNormal) < 0;
             normal = frontFace ? outwardNormal : -outwardNormal;
         }
     };

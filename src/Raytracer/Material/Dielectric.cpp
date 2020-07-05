@@ -4,6 +4,8 @@
 
 #include "Raytracer/Material/Dielectric.hpp"
 
+#include "Raytracer/Math/Math.hpp"
+
 namespace rt
 {
     Dielectric::Dielectric(const double refraction):
@@ -11,18 +13,18 @@ namespace rt
     {
     }
 
-    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, Vec3f &attenuation, Ray &scattered) const
+    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &attenuation, Ray &scattered) const
     {
-        attenuation = Vec3f(1.0, 1.0, 1.0);
+        attenuation = glm::vec3(1.0, 1.0, 1.0);
         const double etaiOverEtat = record.frontFace ? 1.0 / m_refraction : m_refraction;
 
-        Vec3 unitDirection = rIn.Direction().Normalize();
+        glm::vec3 unitDirection = glm::normalize(rIn.Direction());
 
-        double cosTheta = std::fmin((-unitDirection).Dot(record.normal), 1.0);
+        double cosTheta = std::fmin(glm::dot((-unitDirection), record.normal), 1.0);
         double sinTheta = std::sqrt(1.0 - cosTheta * cosTheta);
         if (etaiOverEtat * sinTheta > 1.0 )
         {
-            Vec3 reflected = Reflect(unitDirection, record.normal);
+            glm::vec3 reflected = Reflect(unitDirection, record.normal);
             scattered = Ray(record.point, reflected);
             return true;
         }
@@ -30,12 +32,12 @@ namespace rt
         double reflectProb = Schlick(cosTheta, etaiOverEtat);
         if (Random<double>() < reflectProb)
         {
-            Vec3 reflected = Reflect(unitDirection, record.normal);
+            glm::vec3 reflected = Reflect(unitDirection, record.normal);
             scattered = Ray(record.point, reflected);
             return true;
         }
 
-        Vec3f refracted = Refract<float>(unitDirection, record.normal, etaiOverEtat);
+        glm::vec3 refracted = Refract(unitDirection, record.normal, etaiOverEtat);
         scattered = Ray(record.point, refracted);
         return true;
     }
