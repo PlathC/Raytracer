@@ -5,6 +5,7 @@
 #ifndef RAYTRACER_SCENE_HPP
 #define RAYTRACER_SCENE_HPP
 
+#include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/Environment.hpp"
 #include "Raytracer/Object/Sphere.hpp"
 
@@ -40,6 +41,7 @@ namespace rt
     private:
         SceneSettings m_settings;
         Environment m_environment;
+        BVHNode m_bvh;
     };
 }
 

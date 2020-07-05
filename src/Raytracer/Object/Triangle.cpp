@@ -81,4 +81,9 @@ namespace rt
 
         return true;
     }
+
+    bool Triangle::BoundingBox(const double t0, const double t1, AABB& box) const
+    {
+        return false;
+    }
 }

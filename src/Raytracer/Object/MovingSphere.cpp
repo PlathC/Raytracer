@@ -57,6 +57,19 @@ namespace rt
         return false;
     }
 
+    bool MovingSphere::BoundingBox(const double t0, const double t1, AABB& box) const
+    {
+        AABB box0 = AABB{m_center0 - glm::vec3(m_radius, m_radius, m_radius),
+                         m_center0 + glm::vec3(m_radius, m_radius, m_radius)};
+
+        AABB box1 = AABB{m_center1 - glm::vec3(m_radius, m_radius, m_radius),
+                         m_center1 + glm::vec3(m_radius, m_radius, m_radius)};
+
+        box = AABB(box0, box1);
+
+        return true;
+    }
+
     glm::vec3 MovingSphere::Center(const float time) const
     {
         // Simple linear center interpolation

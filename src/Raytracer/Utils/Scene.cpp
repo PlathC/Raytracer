@@ -8,8 +8,10 @@ namespace rt
 {
     Scene::Scene(const SceneSettings &settings, Environment&& environment):
             m_settings(settings),
-            m_environment(std::move(environment))
-    {}
+            m_environment(std::move(environment)),
+            m_bvh(m_environment, m_settings.camera.Time0(), m_settings.camera.Time1())
+    {
+    }
 
     std::vector<uint8_t> Scene::GenerateImage()
     {
@@ -59,14 +61,14 @@ namespace rt
         if (depth <= 0)
             return glm::vec3(0., 0, 0.);
 
-        if (world.Hit(ray, 0.001, rt::Infinity, record))
+        if (m_bvh.Hit(ray, 0.001, rt::Infinity, record))
         {
             rt::Ray scattered;
             glm::vec3 attenuation;
             if(record.material)
             {
                 if (record.material->Scatter(ray, record, attenuation, scattered))
-                    return attenuation * RayColor(scattered, world, depth-1);
+                    return attenuation * RayColor(scattered, m_bvh, depth-1);
             }
             else
             {

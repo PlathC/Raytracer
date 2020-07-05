@@ -20,6 +20,9 @@ namespace rt
 
         Ray GetRay(const float s, const float t) const;
 
+        double Time0() const { return m_time0; }
+        double Time1() const { return m_time1; }
+
     private:
         glm::vec3 m_origin;
         glm::vec3 m_lowerLeftCorner;

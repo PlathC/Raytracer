@@ -22,9 +22,18 @@ namespace rt
     template<class T>
     inline T Random(const T min, const T max)
     {
-        static std::uniform_real_distribution<T> distribution(min, max);
-        static std::mt19937 generator;
-        return distribution(generator);
+        if constexpr (std::is_integral_v<T>)
+        {
+            static std::uniform_int_distribution<T> distribution(min, max);
+            static std::mt19937 generator;
+            return distribution(generator);
+        }
+        else if (std::is_floating_point_v<T>)
+        {
+            static std::uniform_real_distribution<T> distribution(min, max);
+            static std::mt19937 generator;
+            return distribution(generator);
+        }
     }
 
     template<class T>

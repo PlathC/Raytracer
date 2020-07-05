@@ -9,6 +9,7 @@
 
 #include <glm/glm.hpp>
 
+#include "Raytracer/Math/Aabb.hpp"
 #include "Raytracer/Math/Ray.hpp"
 
 namespace rt
@@ -35,6 +36,7 @@ namespace rt
     {
     public:
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const = 0;
+        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const = 0;
         virtual ~Hittable() {};
     };
 }

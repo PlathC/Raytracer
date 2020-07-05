@@ -26,3 +26,7 @@ Rendered triangles :
 Rendered meshes (OBJ) :
 
 ![](outputs/meshLoader.png)
+
+BVH result (9s) :
+
+![](outputs/BVHResult.png)

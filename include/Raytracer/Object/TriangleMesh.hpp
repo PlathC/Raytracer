@@ -31,9 +31,10 @@ namespace rt
     public:
         TriangleMesh(MeshSettings&& settings);
 
-        bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
-        static std::unique_ptr<TriangleMesh> CreateSphere(float rad, uint32_t divs);
+        static std::shared_ptr<TriangleMesh> CreateSphere(float rad, uint32_t divs);
 
     private:
         uint32_t m_trianglesNumber;

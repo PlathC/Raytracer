@@ -18,6 +18,8 @@ namespace rt
         void ComputeNormal();
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+
     private:
         rt::Vertex m_v0, m_v1, m_v2;
 

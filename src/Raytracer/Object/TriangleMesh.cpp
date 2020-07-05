@@ -98,7 +98,12 @@ namespace rt
         return hit;
     }
 
-    std::unique_ptr<TriangleMesh> TriangleMesh::CreateSphere(float rad, uint32_t divs)
+    bool TriangleMesh::BoundingBox(const double t0, const double t1, AABB& box) const
+    {
+        return false;
+    }
+
+    std::shared_ptr<TriangleMesh> TriangleMesh::CreateSphere(float rad, uint32_t divs)
     {
         // Based on https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-polygon-mesh/Ray-Tracing%20a%20Polygon%20Mesh-part-1
 
@@ -188,7 +193,7 @@ namespace rt
             vid = numV;
         }
 
-        return std::make_unique<TriangleMesh>(MeshSettings{polyNumber, faceIndexes, verticesIndex, points,
+        return std::make_shared<TriangleMesh>(MeshSettings{polyNumber, faceIndexes, verticesIndex, points,
                                               normalsIndex, normals, materialIndexes, std::move(materials)});
     }
 }

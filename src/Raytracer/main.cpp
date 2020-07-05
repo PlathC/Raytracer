@@ -17,7 +17,7 @@ int main(int argc, char** argv)
 {
     constexpr double aspectRatio = 16. / 9.;
 
-    constexpr uint16_t width           = 300;
+    constexpr uint16_t width           = 720;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
     constexpr uint16_t channel         = 3;
     constexpr uint16_t samplesPerPixel = 20;

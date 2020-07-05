@@ -21,11 +21,16 @@ namespace rt
         static Environment RandomEnvironment();
 
         void Clear();
-        void Add(std::unique_ptr<Hittable>&& object);
+        void Add(std::shared_ptr<Hittable>&& object);
+
+        size_t Size() const;
+        std::vector<std::shared_ptr<Hittable>>& Objects();
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+
     private:
-        std::vector<std::unique_ptr<Hittable>> m_objects;
+        std::vector<std::shared_ptr<Hittable>> m_objects;
     };
 }
 
