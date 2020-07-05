@@ -39,7 +39,6 @@ int main(int argc, char** argv)
     //environment.Clear();
     //environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
 
-    //auto mesh = std::make_unique<rt::TriangleMesh>();
     rt::ObjLoader loader{"./samples/uvsphere.obj"};
     environment.Add(loader.Parse());
 
