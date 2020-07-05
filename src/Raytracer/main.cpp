@@ -15,15 +15,15 @@
 
 int main(int argc, char** argv)
 {
-    constexpr double aspectRatio = 16. / 9.;
+    constexpr double aspectRatio = 1. / 1.;
 
     constexpr uint16_t width           = 720;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
     constexpr uint16_t channel         = 3;
-    constexpr uint16_t samplesPerPixel = 20;
+    constexpr uint16_t samplesPerPixel = 50;
     const uint8_t maxDepth             = 50;
 
-    glm::vec3 lookFrom = glm::vec3{13, 2, 3};
+    glm::vec3 lookFrom = glm::vec3{0, 0, 10};
     glm::vec3 lookAt   = glm::vec3{0., 0., 0.};
     glm::vec3 vup      = glm::vec3{0., 1., 0.};
     float distToFocus = 10.f;
@@ -34,13 +34,13 @@ int main(int argc, char** argv)
         rt::SceneSettings::ImageSettings{width, height, channel},
         samplesPerPixel, maxDepth};
 
-    rt::Environment environment = rt::Environment::RandomEnvironment();
+    rt::Environment environment;// = rt::Environment::RandomEnvironment();
 
     //environment.Clear();
     //environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
 
-    //rt::ObjLoader loader{"./samples/uvsphere.obj"};
-    //environment.Add(loader.Parse());
+    rt::ObjLoader loader{"./samples/suzanne.obj"};
+    environment.Add(loader.Parse());
 
     rt::Scene scene = rt::Scene { settings, std::move(environment) };
 
