@@ -15,7 +15,7 @@
 
 int main(int argc, char** argv)
 {
-    constexpr double aspectRatio = 1. / 1.;
+    constexpr double aspectRatio = 16. / 9.;
 
     constexpr uint16_t width           = 720;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
