@@ -100,7 +100,21 @@ namespace rt
 
     bool TriangleMesh::BoundingBox(const double t0, const double t1, AABB& box) const
     {
-        return false;
+        glm::vec3 min{std::numeric_limits<float>::infinity(),
+                      std::numeric_limits<float>::infinity(),
+                      std::numeric_limits<float>::infinity()};
+        glm::vec3 max{0,0,0};
+
+        for(const auto& vertex : m_vertices)
+        {
+            for(uint8_t c = 0; c < 3; c++)
+            {
+                min[c] = std::fmin(min[c], vertex[c]);
+                max[c] = std::fmax(max[c], vertex[c]);
+            }
+        }
+        box = AABB(min, max);
+        return true;
     }
 
     std::shared_ptr<TriangleMesh> TriangleMesh::CreateSphere(float rad, uint32_t divs)
