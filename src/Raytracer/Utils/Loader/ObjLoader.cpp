@@ -79,12 +79,12 @@ namespace rt
         // Create Materials
         std::vector<uint32_t> materialIndexes = std::vector<uint32_t>(numFaces, 0);
         auto materials = std::vector<std::unique_ptr<Material>>(numFaces);
-
         for(size_t i = 0; i < numFaces; i++)
         {
             materialIndexes[i] = i;
             materials[i] = std::make_unique<rt::Lambertian>(
                     glm::vec3{rt::Random<float>(), Random<float>(), Random<float>()});
+
         }
 
         return std::make_unique<rt::TriangleMesh>(numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,

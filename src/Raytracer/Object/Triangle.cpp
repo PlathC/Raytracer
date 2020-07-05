@@ -68,6 +68,8 @@ namespace rt
 
         const float w = 1 - (u - v);
 
+        //if(t < 0) return false;
+
         glm::vec3 normal = glm::normalize(w * m_v0.normal
                                         + u * m_v1.normal
                                         + v * m_v2.normal);

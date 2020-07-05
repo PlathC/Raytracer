@@ -87,7 +87,7 @@ namespace rt
         uint32_t faceCounter = 0;
         for(const auto& triangle : m_triangles)
         {
-            if(triangle.Hit(ray, tMin, closestT, tempRecord))
+            if(triangle.Hit(ray, tMin, tMax, tempRecord) && tempRecord.t < closestT)
             {
                 record = tempRecord;
                 closestT = record.t;
