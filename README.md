@@ -8,7 +8,7 @@
 | Feature                          | Progress                  |
 |----------------------------------|---------------------------|
 | Raytraced primitive              | Done (Spheres, Triangles) |
-| Meshes                           | Todo                      |
+| Meshes                           | Done (Obj)                |
 | Multi-threading                  | Todo                      |
 
 ## Results
