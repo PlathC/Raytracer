@@ -23,7 +23,7 @@ int main(int argc, char** argv)
     constexpr uint16_t samplesPerPixel = 50;
     const uint8_t maxDepth             = 50;
 
-    glm::vec3 lookFrom = glm::vec3{0., 5.0, -2.};
+    glm::vec3 lookFrom = glm::vec3{3., -3.0, -3};
     glm::vec3 lookAt   = glm::vec3{0., 0., 0.};
     glm::vec3 vup      = glm::vec3{0, 0., 1.};
     float distToFocus = 9.0f;
@@ -36,39 +36,12 @@ int main(int argc, char** argv)
 
     rt::Environment environment;
 
-    uint32_t numFaces = 1;
-    std::vector<uint32_t> faceIndex   = {4};
-    std::vector<uint32_t> vertexIndex = {0, 1, 2, 3};
-    std::vector<glm::vec3> P = {
-            glm::vec3(-5, -5,  5), glm::vec3( 5, -5,  5),
-            glm::vec3( 5, -5, -5), glm::vec3(-5, -5, -5)
-    };
-
-    //environment.Add(std::make_unique<rt::TriangleMesh>(numFaces,
-    //        faceIndex, vertexIndex, P, std::vector<rt::Vec3>{},
-    //        std::make_unique<rt::Lambertian>(rt::Color{0.5, 0.5, 1.}))
-    //        );
-
-    //environment.Add(std::make_unique<rt::Triangle>(
-    //        glm::vec3( 5, -5,  5),
-    //        glm::vec3(-5, -5,  5),
-    //        glm::vec3( 5, -5, -5),
-    //        std::make_unique<rt::Lambertian>(glm::vec3{1, 0., 0.}))
-    //     );
-//
-    //environment.Add(std::make_unique<rt::Triangle>(
-    //        glm::vec3( -5,  -5,  -5),
-    //        glm::vec3( -5, -5,  5),
-    //        glm::vec3(  5,  -5,  -5),
-    //        std::make_unique<rt::Lambertian>(glm::vec3{0.0, 0.0, 1.}))
-    //);
-
     //environment.Clear();
-    environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
+    //environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
 
     //auto mesh = std::make_unique<rt::TriangleMesh>();
-    rt::ObjLoader loader{"./samples/cube.obj"};
-    //environment.Add(loader.Parse());
+    rt::ObjLoader loader{"./samples/uvsphere.obj"};
+    environment.Add(loader.Parse());
 
     rt::Scene scene = rt::Scene { settings, std::move(environment) };
 
