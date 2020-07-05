@@ -15,9 +15,14 @@
 
 After the first book, the result looked like this :
 
-![](Outputs/w-e1stResult.png)
+![](outputs/w-e1stResult.png)
 
 
 Rendered triangles :
 
-![](Outputs/triangles.png)
+![](outputs/triangles.png)
+
+
+Rendered meshes (OBJ) :
+
+![](outputs/meshLoader.png)
