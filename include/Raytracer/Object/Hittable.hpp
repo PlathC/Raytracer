@@ -22,6 +22,7 @@ namespace rt
         float t;
         bool frontFace;
         Material* material;
+        glm::vec2 uv;
 
         inline void SetFaceNormal(const Ray& ray, const glm::vec3& outwardNormal)
         {

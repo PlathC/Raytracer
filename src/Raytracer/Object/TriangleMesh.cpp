@@ -10,21 +10,18 @@
 
 namespace rt
 {
-    TriangleMesh::TriangleMesh(const uint32_t facesNumber, const std::vector<uint32_t>& facesIndexes,
-                               const std::vector<uint32_t>& verticesIndexes, const std::vector<glm::vec3>& vertices,
-                               const std::vector<uint32_t>& normalsIndexes, const std::vector<glm::vec3>& normals,
-                               const std::vector<uint32_t>& materialIndexes, std::vector<std::unique_ptr<Material>>&& materials):
+    TriangleMesh::TriangleMesh(MeshSettings&& settings):
         m_trianglesNumber(0),
-        m_vertices(vertices),
-        m_normals(normals),
+        m_vertices(settings.vertices),
+        m_normals(settings.normals),
         m_materialIndexes(),
-        m_materials(std::move(materials))
+        m_materials(std::move(settings.materials))
     {
         // Compute triangles number
-        for(uint32_t i = 0; i < facesNumber; ++i)
+        for(uint32_t i = 0; i < settings.facesNumber; ++i)
         {
             // We use GL_TRIANGLE_FAN type of triangulation
-            m_trianglesNumber += facesIndexes[i] - 2;
+            m_trianglesNumber += settings.facesIndexes[i] - 2;
         }
 
         m_trianglesIndexes.resize(m_trianglesNumber * 3);
@@ -33,19 +30,19 @@ namespace rt
         uint32_t l = 0;
         uint32_t triangleIndex = 0;
         m_materialIndexes.reserve(m_trianglesNumber);
-        for(uint32_t i = 0, k = 0; i < facesNumber; ++i)
+        for(uint32_t i = 0, k = 0; i < settings.facesNumber; ++i)
         {
-            for(uint32_t j = 0; j < facesIndexes[i] - 2; ++j)
+            for(uint32_t j = 0; j < settings.facesIndexes[i] - 2; ++j)
             {
-                uint32_t i1 = verticesIndexes[k];
-                uint32_t i2 = verticesIndexes[k + j + 1];
-                uint32_t i3 = verticesIndexes[k + j + 2];
+                uint32_t i1 = settings.verticesIndexes[k];
+                uint32_t i2 = settings.verticesIndexes[k + j + 1];
+                uint32_t i3 = settings.verticesIndexes[k + j + 2];
 
                 m_trianglesIndexes[l]     = i1;
                 m_trianglesIndexes[l + 1] = i2;
                 m_trianglesIndexes[l + 2] = i3;
 
-                if(normals.empty())
+                if(m_normals.empty())
                 {
                     auto nTriangle = Triangle{rt::Vertex(m_vertices[i1], glm::vec3(0, 0, 0)),
                                               rt::Vertex(m_vertices[i2], glm::vec3(0, 0, 0)),
@@ -56,9 +53,9 @@ namespace rt
                 else
                 {
                     // TODO: replace triangle ctor
-                    uint32_t in1 = normalsIndexes[k];
-                    uint32_t in2 = normalsIndexes[k + j + 1];
-                    uint32_t in3 = normalsIndexes[k + j + 2];
+                    uint32_t in1 = settings.normalsIndexes[k];
+                    uint32_t in2 = settings.normalsIndexes[k + j + 1];
+                    uint32_t in3 = settings.normalsIndexes[k + j + 2];
 
                     glm::vec3 n0 = m_normals[in1];
                     glm::vec3 n1 = m_normals[in2];
@@ -70,11 +67,11 @@ namespace rt
                     });
                 }
 
-                m_materialIndexes.push_back(materialIndexes[i]);
+                m_materialIndexes.push_back(settings.materialIndexes[i]);
 
                 l += 3;
             }
-            k += facesIndexes[i];
+            k += settings.facesIndexes[i];
         }
     }
 
@@ -191,7 +188,7 @@ namespace rt
             vid = numV;
         }
 
-        return std::make_unique<TriangleMesh>(polyNumber, faceIndexes, verticesIndex, points,
-                                              normalsIndex, normals, materialIndexes, std::move(materials));
+        return std::make_unique<TriangleMesh>(MeshSettings{polyNumber, faceIndexes, verticesIndex, points,
+                                              normalsIndex, normals, materialIndexes, std::move(materials)});
     }
 }

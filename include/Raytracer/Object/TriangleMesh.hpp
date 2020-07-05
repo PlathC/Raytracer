@@ -14,13 +14,22 @@
 
 namespace rt
 {
+    struct MeshSettings
+    {
+        uint32_t facesNumber;
+        std::vector<uint32_t> facesIndexes;
+        std::vector<uint32_t> verticesIndexes;
+        std::vector<glm::vec3> vertices;
+        std::vector<uint32_t> normalsIndexes;
+        std::vector<glm::vec3> normals;
+        std::vector<uint32_t> materialIndexes;
+        std::vector<std::unique_ptr<Material>> materials;
+    };
+
     class TriangleMesh : public Hittable
     {
     public:
-        TriangleMesh(const uint32_t facesNumber, const std::vector<uint32_t>& facesIndexes,
-                     const std::vector<uint32_t>& verticesIndexes, const std::vector<glm::vec3>& vertices,
-                     const std::vector<uint32_t>& normalsIndexes, const std::vector<glm::vec3>& normals,
-                     const std::vector<uint32_t>& materialIndexes, std::vector<std::unique_ptr<Material>>&& materials);
+        TriangleMesh(MeshSettings&& settings);
 
         bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
 

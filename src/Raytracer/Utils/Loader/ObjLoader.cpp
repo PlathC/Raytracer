@@ -87,7 +87,7 @@ namespace rt
 
         }
 
-        return std::make_unique<rt::TriangleMesh>(numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
-                materialIndexes, std::move(materials));
+        return std::make_unique<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
+                materialIndexes, std::move(materials)});
     }
 }
