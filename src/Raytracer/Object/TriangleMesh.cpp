@@ -4,18 +4,21 @@
 
 #include "Raytracer/Object/TriangleMesh.hpp"
 
+#include "Raytracer/Math/Core.hpp"
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 
 namespace rt
 {
     TriangleMesh::TriangleMesh(const uint32_t facesNumber, const std::vector<uint32_t>& facesIndexes,
-                               const std::vector<uint32_t>& verticesIndexes, const std::vector<Vec3f>& vertices,
-                               const std::vector<Vec3f>& normals, std::unique_ptr<Material>&& material):
+                               const std::vector<uint32_t>& verticesIndexes, const std::vector<glm::vec3>& vertices,
+                               const std::vector<uint32_t>& normalsIndexes, const std::vector<glm::vec3>& normals,
+                               const std::vector<uint32_t>& materialIndexes, std::vector<std::unique_ptr<Material>>&& materials):
         m_trianglesNumber(0),
         m_vertices(vertices),
         m_normals(normals),
-        m_material(std::move(material))
+        m_materialIndexes(),
+        m_materials(std::move(materials))
     {
         // Compute triangles number
         for(uint32_t i = 0; i < facesNumber; ++i)
@@ -29,6 +32,7 @@ namespace rt
 
         uint32_t l = 0;
         uint32_t triangleIndex = 0;
+        m_materialIndexes.reserve(m_trianglesNumber);
         for(uint32_t i = 0, k = 0; i < facesNumber; ++i)
         {
             for(uint32_t j = 0; j < facesIndexes[i] - 2; ++j)
@@ -36,34 +40,37 @@ namespace rt
                 uint32_t i1 = verticesIndexes[k];
                 uint32_t i2 = verticesIndexes[k + j + 1];
                 uint32_t i3 = verticesIndexes[k + j + 2];
+
                 m_trianglesIndexes[l]     = i1;
                 m_trianglesIndexes[l + 1] = i2;
                 m_trianglesIndexes[l + 2] = i3;
 
                 if(normals.empty())
                 {
-                    m_triangles.emplace_back(Triangle{
-                            m_vertices[i1],
-                            m_vertices[i2],
-                            m_vertices[i3],
-                            std::make_unique<rt::Lambertian>(rt::Vec3f{rt::Random<float>(),
-                                                         rt::Random<float>(),
-                                                         rt::Random<float>()})
-                    });
+                    auto nTriangle = Triangle{rt::Vertex(m_vertices[i1], glm::vec3(0, 0, 0)),
+                                              rt::Vertex(m_vertices[i2], glm::vec3(0, 0, 0)),
+                                              rt::Vertex(m_vertices[i3], glm::vec3(0, 0, 0))};
+                    nTriangle.ComputeNormal();
+                    m_triangles.emplace_back(std::move(nTriangle));
                 }
                 else
                 {
+                    // TODO: replace triangle ctor
+                    uint32_t in1 = normalsIndexes[k];
+                    uint32_t in2 = normalsIndexes[k + j + 1];
+                    uint32_t in3 = normalsIndexes[k + j + 2];
+
+                    glm::vec3 n0 = m_normals[in1];
+                    glm::vec3 n1 = m_normals[in2];
+                    glm::vec3 n2 = m_normals[in3];
                     m_triangles.emplace_back(Triangle{
-                            m_vertices[i1],
-                            m_vertices[i2],
-                            m_vertices[i3],
-                            m_normals[triangleIndex++],
-                            std::make_unique<rt::Lambertian>(rt::Vec3f{
-                                    rt::Random<float>(),
-                                    rt::Random<float>(),
-                                    rt::Random<float>()})
+                            rt::Vertex(m_vertices[i1], n0),
+                            rt::Vertex(m_vertices[i2], n1),
+                            rt::Vertex(m_vertices[i3], n2)
                     });
                 }
+
+                m_materialIndexes.push_back(materialIndexes[i]);
 
                 l += 3;
             }
@@ -77,6 +84,7 @@ namespace rt
         bool hit = false;
         HitRecord tempRecord;
 
+        uint32_t faceCounter = 0;
         for(const auto& triangle : m_triangles)
         {
             if(triangle.Hit(ray, tMin, closestT, tempRecord))
@@ -84,7 +92,10 @@ namespace rt
                 record = tempRecord;
                 closestT = record.t;
                 hit = true;
+
+                record.material = m_materials[m_materialIndexes[faceCounter]].get();
             }
+            faceCounter++;
         }
 
         return hit;
@@ -95,8 +106,8 @@ namespace rt
         // Based on https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-polygon-mesh/Ray-Tracing%20a%20Polygon%20Mesh-part-1
 
         const uint32_t verticesNumber = (divs - 1) * divs + 2;
-        auto points  = std::vector<Vec3f>(verticesNumber);
-        auto normals = std::vector<Vec3f>(verticesNumber);
+        auto points  = std::vector<glm::vec3>(verticesNumber);
+        auto normals = std::vector<glm::vec3>(verticesNumber);
         //auto st    = std::vector<Vec2>(verticesNumber);
 
         float u = -rt::Pi / 2.f;
@@ -104,7 +115,7 @@ namespace rt
         const float du = rt::Pi / divs;
         const float dv = 2 * rt::Pi / divs;
 
-        points[0] = normals[0] = Vec3f(0, -rad, 0);
+        points[0] = normals[0] = glm::vec3(0, -rad, 0);
         uint32_t k = 1;
         for(uint32_t i = 0; i < divs - 1; ++i)
         {
@@ -116,7 +127,7 @@ namespace rt
                 float y = rad * std::sin(u);
                 float z = rad * std::cos(u) * std::sin(v);
 
-                points[k] = normals[k] = Vec3(x, y, z);
+                points[k] = normals[k] = glm::vec3(x, y, z);
                 // st[k].x = u / M_PI + 0.5;
                 // st[k].y = v * 0.5 / M_PI + 0.5;
                 v += dv;
@@ -124,11 +135,21 @@ namespace rt
             }
         }
 
-        points[k] = normals[k] = Vec3f(0, rad, 0);
+        points[k] = normals[k] = glm::vec3{0, rad, 0};
 
         uint32_t polyNumber = divs * divs;
         auto faceIndexes   = std::vector<uint32_t>(polyNumber);
         auto verticesIndex = std::vector<uint32_t>((6 + (divs - 1) * 4) * divs);
+        auto normalsIndex  = std::vector<uint32_t>((6 + (divs - 1) * 4) * divs);
+        std::vector<std::unique_ptr<Material>> materials { polyNumber};
+        auto materialIndexes = std::vector<uint32_t>(polyNumber, 0);
+
+        for(size_t i = 0; i < materials.size(); i++)
+        {
+            materials[i] = std::make_unique<rt::Lambertian>(
+                    glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() });
+            materialIndexes[i] = i;
+        }
 
         uint32_t vid = 1, numV = 0, l = 0;
         k = 0;
@@ -140,18 +161,18 @@ namespace rt
                 {
                     faceIndexes[k++] = 3;
 
-                    verticesIndex[l]     = 0;
-                    verticesIndex[l + 1] = j + vid;
-                    verticesIndex[l + 2] = (j == (divs - 1)) ? vid : j + vid + 1;
+                    verticesIndex[l]     = normalsIndex[l]     = 0;
+                    verticesIndex[l + 1] = normalsIndex[l + 1] = j + vid;
+                    verticesIndex[l + 2] = normalsIndex[l + 2] = (j == (divs - 1)) ? vid : j + vid + 1;
                     l += 3;
                 }
                 else if(i == divs - 1)
                 {
                     faceIndexes[k++] = 3;
 
-                    verticesIndex[l]     = j + vid + 1 - divs;
-                    verticesIndex[l + 1] = vid + 1;
-                    verticesIndex[l + 2] = (j == (divs - 1)) ? vid + 1 - divs : j + vid + 2 - divs;
+                    verticesIndex[l]     = normalsIndex[l]     = j + vid + 1 - divs;
+                    verticesIndex[l + 1] = normalsIndex[l + 1] = vid + 1;
+                    verticesIndex[l + 2] = normalsIndex[l + 2] = (j == (divs - 1)) ? vid + 1 - divs : j + vid + 2 - divs;
 
                     l += 3;
                 }
@@ -159,10 +180,10 @@ namespace rt
                 {
                     faceIndexes[k++] = 4;
 
-                    verticesIndex[l]     = j + vid + 1 - divs;
-                    verticesIndex[l + 1] = j + vid + 1;
-                    verticesIndex[l + 2] = (j == (divs - 1)) ? vid + 1 : j + vid + 2;
-                    verticesIndex[l + 3] = (j == (divs - 1)) ? vid + 1 - divs : j + vid + 2 - divs;
+                    verticesIndex[l]     = normalsIndex[l]     = j + vid + 1 - divs;
+                    verticesIndex[l + 1] = normalsIndex[l + 1] = j + vid + 1;
+                    verticesIndex[l + 2] = normalsIndex[l + 2] = (j == (divs - 1)) ? vid + 1 : j + vid + 2;
+                    verticesIndex[l + 3] = normalsIndex[l + 3] = (j == (divs - 1)) ? vid + 1 - divs : j + vid + 2 - divs;
                     l += 4;
                 }
                 numV++;
@@ -171,6 +192,6 @@ namespace rt
         }
 
         return std::make_unique<TriangleMesh>(polyNumber, faceIndexes, verticesIndex, points,
-                normals, std::make_unique<rt::Lambertian>(rt::Vec3f{0.8, 0.1, 1.}));
+                                              normalsIndex, normals, materialIndexes, std::move(materials));
     }
 }
