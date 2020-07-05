@@ -53,7 +53,7 @@ namespace rt
     inline glm::vec3 RandomInHemisphere(const glm::vec3& normal)
     {
         glm::vec3 inUnitSphere = RandomInUnitSphere();
-        if (Dot(inUnitSphere, normal) > 0.0) // In the same hemisphere as the normal
+        if (glm::dot(inUnitSphere, normal) > 0.0) // In the same hemisphere as the normal
             return inUnitSphere;
         else
             return -inUnitSphere;
@@ -64,7 +64,7 @@ namespace rt
     {
         while (true)
         {
-            auto p = glm::vec3(Random<T>(-1, 1), Random<T>(-1, 1), 0);
+            auto p = glm::vec3(Random<T>(-1., 1.), Random<T>(-1., 1.), 0.);
 
             if (glm::length2(p) >= 1) continue;
             return p;
@@ -73,14 +73,14 @@ namespace rt
 
     inline glm::vec3 Reflect(const glm::vec3& v, const glm::vec3& n)
     {
-        return v - 2 * glm::dot(v, n) * n;
+        return v - 2.f * glm::dot(v, n) * n;
     }
 
     inline glm::vec3 Refract(const glm::vec3& uv, const glm::vec3& n, const float etaiOverEtat)
     {
-        auto cosTheta = glm::dot(-uv, n);
+        float cosTheta = std::fmin(glm::dot(-uv, n), 1.);
         glm::vec3 rOutParallel =  etaiOverEtat * (uv + cosTheta * n);
-        glm::vec3 rOutPerp = -sqrt(1.f - glm::length2(rOutParallel)) * n;
+        glm::vec3 rOutPerp = -std::sqrt(1.f - glm::length2(rOutParallel)) * n;
         return rOutParallel + rOutPerp;
     }
 
