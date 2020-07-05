@@ -111,7 +111,6 @@ set(RT_HEADER
         include/Raytracer/Object/Hittable.hpp
         include/Raytracer/Object/Sphere.hpp
         include/Raytracer/Object/Triangle.hpp
-        include/Raytracer/Object/PolygonMesh.hpp
         include/Raytracer/Object/TriangleMesh.hpp
         include/Raytracer/Object/Environment.hpp
         include/Raytracer/Material/Material.hpp
@@ -132,7 +131,6 @@ set(RT_SRC
         src/Raytracer/Material/Dielectric.cpp
         src/Raytracer/Utils/Scene.cpp
         src/Raytracer/Object/Triangle.cpp
-        src/Raytracer/Object/PolygonMesh.cpp
         src/Raytracer/Object/TriangleMesh.cpp
         src/Raytracer/Utils/Loader/ObjLoader.cpp include/Raytracer/Object/Vertex.hpp)
 
