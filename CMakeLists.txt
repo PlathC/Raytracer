@@ -119,7 +119,10 @@ set(RT_HEADER
         include/Raytracer/Material/Dielectric.hpp
         include/Raytracer/Utils/Scene.hpp
         include/Raytracer/Utils/MeshLoader.hpp
-        include/Raytracer/Utils/Loader/ObjLoader.hpp)
+        include/Raytracer/Utils/Loader/ObjLoader.hpp
+        include/Raytracer/Object/Vertex.hpp
+        include/Raytracer/Object/MovingSphere.hpp
+        include/Raytracer/Math/Aabb.hpp)
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -132,7 +135,9 @@ set(RT_SRC
         src/Raytracer/Utils/Scene.cpp
         src/Raytracer/Object/Triangle.cpp
         src/Raytracer/Object/TriangleMesh.cpp
-        src/Raytracer/Utils/Loader/ObjLoader.cpp include/Raytracer/Object/Vertex.hpp)
+        src/Raytracer/Utils/Loader/ObjLoader.cpp
+        src/Raytracer/Object/MovingSphere.cpp
+         src/Raytracer/Math/Aabb.cpp )
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 

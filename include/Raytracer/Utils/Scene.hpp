@@ -38,8 +38,8 @@ namespace rt
         glm::vec3 RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const;
 
     private:
-        Environment m_environment;
         SceneSettings m_settings;
+        Environment m_environment;
     };
 }
 

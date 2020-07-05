@@ -7,8 +7,11 @@
 namespace rt
 {
     Camera::Camera(const glm::vec3& lookFrom, const glm::vec3& lookAt, const glm::vec3& vUp, const float vFov,
-                   const float aspectRatio, const float aperture, const float focusDist):
-        m_origin(lookFrom)
+                   const float aspectRatio, const float aperture, const float focusDist, const double t0,
+                   const double t1):
+        m_origin(lookFrom),
+        m_time0(t0),
+        m_time1(t1)
     {
         const float theta = DegreesToRadians(vFov);
         const float h = std::tan(theta / 2.);
@@ -29,9 +32,8 @@ namespace rt
     Ray Camera::GetRay(const float s, const float t) const
     {
         glm::vec3 rd = lensRadius * RandomInUnitDisk<float>();
-        glm::vec3 offset = u * rd.x + v * rd.y + w * rd.z;
-        glm::vec3 direction = (m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset);
-        direction = glm::normalize(direction);
-        return rt::Ray(m_origin + offset, direction);
+        glm::vec3 offset = u * rd.x + v * rd.y;
+        glm::vec3 direction = m_lowerLeftCorner + s * m_horizontal + t * m_vertical - m_origin - offset;
+        return rt::Ray(m_origin + offset, direction, rt::Random<double>(m_time0, m_time1));
     }
 }

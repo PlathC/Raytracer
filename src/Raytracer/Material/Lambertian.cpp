@@ -13,7 +13,7 @@ namespace rt
     bool Lambertian::Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const
     {
         glm::vec3 scatterDirection = record.normal + RandomUnitVector<float>();
-        scattered = Ray(record.point, scatterDirection);
+        scattered = Ray(record.point, scatterDirection, rIn.Time());
         attenuation = m_albedo;
         return true;
     }

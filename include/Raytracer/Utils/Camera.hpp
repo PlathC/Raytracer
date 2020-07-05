@@ -15,7 +15,8 @@ namespace rt
     {
     public:
         Camera(const glm::vec3& lookFrom, const glm::vec3& lookAt, const glm::vec3& vUp, const float vFov,
-                const float aspectRatio, const float aperture, const float focusDist);
+                const float aspectRatio, const float aperture, const float focusDist, const double t0 = 0.,
+                const double t1 = 0.);
 
         Ray GetRay(const float s, const float t) const;
 
@@ -27,6 +28,8 @@ namespace rt
         glm::vec3 u, v, w;
         float lensRadius;
 
+        double m_time0;
+        double m_time1;
     };
 }
 

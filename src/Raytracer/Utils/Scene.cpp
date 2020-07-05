@@ -59,7 +59,7 @@ namespace rt
         if (depth <= 0)
             return glm::vec3(0., 0, 0.);
 
-        if (world.Hit(ray, 1e-08, rt::Infinity, record))
+        if (world.Hit(ray, 0.001, rt::Infinity, record))
         {
             rt::Ray scattered;
             glm::vec3 attenuation;
@@ -77,10 +77,10 @@ namespace rt
         }
 
         glm::vec3 unitDirection = glm::normalize(ray.Direction());
-        float t = 0.5*(unitDirection.z + 1.0);
+        float t = 0.5*(unitDirection.y + 1.0);
 
         // Linear interpolation to create skybox
-        return (1.f - t) * glm::vec3(1., 1., 1.) + t * glm::vec3(.2, 0., 1.0);
+        return (1.f - t) * glm::vec3(1., 1., 1.0) + t * glm::vec3(0.5, 0.7, 1.0);
     }
 
 }

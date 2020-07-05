@@ -3,11 +3,13 @@
 //
 
 #include "Raytracer/Object/Environment.hpp"
-#include "Raytracer/Object/Sphere.hpp"
 
 #include "Raytracer/Material/Dielectric.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/Metal.hpp"
+
+#include "Raytracer/Object/MovingSphere.hpp"
+#include "Raytracer/Object/Sphere.hpp"
 
 namespace rt
 {
@@ -38,7 +40,8 @@ namespace rt
                         // diffuse
                         glm::vec3 albedo = rt::VRandom<float>() * rt::VRandom<float>();
                         sphereMaterial = std::make_unique<rt::Lambertian>(albedo);
-                        world.Add(std::make_unique<rt::Sphere>(center, 0.2, std::move(sphereMaterial)));
+                        glm::vec3 center2 = center + glm::vec3(0, rt::Random<double>(0., .5), 0.f);
+                        world.Add(std::make_unique<rt::MovingSphere>(center, center2, 0., 1., 0.2, std::move(sphereMaterial)));
                     }
                     else if (chooseMat < 0.95)
                     {
