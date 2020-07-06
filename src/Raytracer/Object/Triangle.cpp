@@ -9,7 +9,7 @@
 
 namespace rt
 {
-    Triangle::Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::unique_ptr<Material>&& material):
+    Triangle::Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::unique_ptr<Material> material):
         m_v0(v0),
         m_v1(v1),
         m_v2(v2),
@@ -78,6 +78,7 @@ namespace rt
         record.material = m_material.get();
         record.point = ray.At(t);
         record.SetFaceNormal(ray, normal);
+        record.uv = glm::vec2(u, v);
 
         return true;
     }

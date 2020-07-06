@@ -7,6 +7,7 @@
 #include "Raytracer/Math/Core.hpp"
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
+#include "Raytracer/Material/SolidColor.hpp"
 
 namespace rt
 {
@@ -28,7 +29,6 @@ namespace rt
         m_triangles.reserve(m_trianglesNumber);
 
         uint32_t l = 0;
-        uint32_t triangleIndex = 0;
         m_materialIndexes.reserve(m_trianglesNumber);
         for(uint32_t i = 0, k = 0; i < settings.facesNumber; ++i)
         {
@@ -163,7 +163,7 @@ namespace rt
         for(size_t i = 0; i < materials.size(); i++)
         {
             materials[i] = std::make_unique<rt::Lambertian>(
-                    glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() });
+                    std::make_unique<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() }));
             materialIndexes[i] = i;
         }
 

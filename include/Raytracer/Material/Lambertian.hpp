@@ -7,18 +7,19 @@
 
 #include "Raytracer/Math/Math.hpp"
 #include "Raytracer/Material/Material.hpp"
+#include "Raytracer/Material/Texture.hpp"
 
 namespace rt
 {
     class Lambertian : public Material
     {
     public:
-        Lambertian(const glm::vec3& albedo);
+        Lambertian(std::unique_ptr<Texture> albedo);
 
         virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
 
     private:
-        glm::vec3 m_albedo;
+        std::unique_ptr<Texture> m_albedo;
     };
 }
 

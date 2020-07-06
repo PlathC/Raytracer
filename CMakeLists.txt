@@ -123,7 +123,13 @@ set(RT_HEADER
         include/Raytracer/Object/Vertex.hpp
         include/Raytracer/Object/MovingSphere.hpp
         include/Raytracer/Math/Aabb.hpp
-        include/Raytracer/Object/BvhNode.hpp)
+        include/Raytracer/Object/BvhNode.hpp
+        include/Raytracer/Material/Texture.hpp
+        include/Raytracer/Material/SolidColor.hpp
+        include/Raytracer/Material/CheckerTexture.hpp
+        include/Raytracer/Math/Perlin.hpp
+        include/Raytracer/Material/PerlinTexture.hpp
+        include/Raytracer/Material/ImageTexture.hpp)
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -139,7 +145,12 @@ set(RT_SRC
         src/Raytracer/Utils/Loader/ObjLoader.cpp
         src/Raytracer/Object/MovingSphere.cpp
         src/Raytracer/Math/Aabb.cpp
-        src/Raytracer/Object/BvhNode.cpp)
+        src/Raytracer/Object/BvhNode.cpp
+        src/Raytracer/Material/SolidColor.cpp
+        src/Raytracer/Material/CheckerTexture.cpp
+        src/Raytracer/Math/Perlin.cpp
+        src/Raytracer/Material/PerlinTexture.cpp
+        src/Raytracer/Material/ImageTexture.cpp include/Raytracer/Material/DiffuseLight.cpp include/Raytracer/Material/DiffuseLight.hpp)
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 

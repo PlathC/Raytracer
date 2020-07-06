@@ -10,6 +10,7 @@
 #include <tiny_obj_loader.h>
 
 #include "Raytracer/Material/Lambertian.hpp"
+#include "Raytracer/Material/SolidColor.hpp"
 
 namespace rt
 {
@@ -83,7 +84,7 @@ namespace rt
         {
             materialIndexes[i] = i;
             materials[i] = std::make_unique<rt::Lambertian>(
-                    glm::vec3{rt::Random<float>(), Random<float>(), Random<float>()});
+                    std::make_unique<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>()}));
 
         }
 

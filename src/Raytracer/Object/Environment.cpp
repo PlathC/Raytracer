@@ -6,6 +6,10 @@
 
 #include "Raytracer/Material/Dielectric.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
+#include "Raytracer/Material/SolidColor.hpp"
+#include "Raytracer/Material/CheckerTexture.hpp"
+#include "Raytracer/Material/ImageTexture.hpp"
+#include "Raytracer/Material/PerlinTexture.hpp"
 #include "Raytracer/Material/Metal.hpp"
 
 #include "Raytracer/Object/MovingSphere.hpp"
@@ -21,7 +25,12 @@ namespace rt
     Environment Environment::RandomEnvironment() {
         rt::Environment world;
 
-        auto groundMaterial = std::make_unique<rt::Lambertian>(glm::vec3(0.5, 0.5, 0.5));
+        auto groundMaterial = std::make_unique<rt::Lambertian>(
+                std::make_unique<rt::CheckerTexture>(
+                        std::make_unique<rt::SolidColor>(glm::vec3(0.2, 0.3, 0.1)),
+                        std::make_unique<rt::SolidColor>(glm::vec3(0.9, 0.9, 0.9))
+                        )
+                );
         world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, -1000, 0), 1000, std::move(groundMaterial)));
 
         for (int a = -11; a < 11; a++)
@@ -39,7 +48,7 @@ namespace rt
                     {
                         // diffuse
                         glm::vec3 albedo = rt::VRandom<float>() * rt::VRandom<float>();
-                        sphereMaterial = std::make_unique<rt::Lambertian>(albedo);
+                        sphereMaterial = std::make_unique<rt::Lambertian>(std::make_unique<SolidColor>(albedo));
                         glm::vec3 center2 = center + glm::vec3(0, rt::Random<double>(0., .5), 0.f);
                         world.Add(std::make_shared<rt::MovingSphere>(center, center2, 0., 1., 0.2, std::move(sphereMaterial)));
                     }
@@ -63,7 +72,7 @@ namespace rt
         auto material1 = std::make_unique<rt::Dielectric>(1.5);
         world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 1, 0), 1.0, std::move(material1)));
 
-        auto material2 = std::make_unique<rt::Lambertian>(glm::vec3(0.4, 0.2, 0.1));
+        auto material2 = std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(0.4, 0.2, 0.1)));
         world.Add(std::make_shared<rt::Sphere>(glm::vec3(-4, 1, 0), 1.0, std::move(material2)));
 
         auto material3 = std::make_unique<rt::Metal>(glm::vec3(0.7, 0.6, 0.5), 0.0);
@@ -72,12 +81,68 @@ namespace rt
         return world;
     }
 
+    Environment Environment::TwoSpheres()
+    {
+        Environment result;
+
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, -10, 0),
+                                            10,
+                                            std::make_unique<rt::Lambertian>(
+                                                    std::make_unique<rt::CheckerTexture>(
+                                                            std::make_unique<rt::SolidColor>(glm::vec3(0.2, 0.3, 0.1)),
+                                                            std::make_unique<rt::SolidColor>(glm::vec3(0.9, 0.9, 0.9))
+                                                    )
+                                            ))
+        );
+
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, 10, 0),
+                                            10,
+                                            std::make_unique<rt::Lambertian>(
+                                                    std::make_unique<rt::CheckerTexture>(
+                                                            std::make_unique<rt::SolidColor>(glm::vec3(0.2, 0.3, 0.1)),
+                                                            std::make_unique<rt::SolidColor>(glm::vec3(0.9, 0.9, 0.9))
+                                                    )
+                                            ))
+        );
+        return result;
+    }
+
+    Environment Environment::TwoPerlinSpheres()
+    {
+        Environment result;
+
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, -1000, 0),
+                                            1000,
+                                            std::make_unique<rt::Lambertian>(std::make_unique<rt::PerlinTexture>(4.))
+                                            )
+        );
+
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, 2, 0),
+                                            2,
+                                            std::make_unique<rt::Lambertian>(std::make_unique<rt::PerlinTexture>(4.))
+                                            )
+        );
+        return result;
+    }
+
+    Environment Environment::Earth()
+    {
+        auto earthTexture = std::make_unique<rt::ImageTexture>("./samples/earthmap.jpg");
+        auto earthSurface = std::make_unique<rt::Lambertian>(std::move(earthTexture));
+        auto globe = std::make_shared<rt::Sphere>(glm::vec3(0, 0, 0), 2, std::move(earthSurface));
+
+        Environment result;
+        result.Add(globe);
+
+        return result;
+    }
+
     void Environment::Clear()
     {
         m_objects.clear();
     }
 
-    void Environment::Add(std::shared_ptr<Hittable>&& object)
+    void Environment::Add(std::shared_ptr<Hittable> object)
     {
         m_objects.emplace_back(std::move(object));
     }

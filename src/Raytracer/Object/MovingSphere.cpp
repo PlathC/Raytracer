@@ -11,7 +11,7 @@
 namespace rt
 {
     MovingSphere::MovingSphere(const glm::vec3& center0, const glm::vec3& center1, const float t0, const float t1,
-            const float radius, std::unique_ptr<Material>&& material):
+            const float radius, std::unique_ptr<Material> material):
             m_center0(center0),
             m_center1(center1),
             m_time0(t0),

@@ -14,7 +14,7 @@ namespace rt
     public:
         MovingSphere() = default;
         MovingSphere(const glm::vec3& center0, const glm::vec3& center1, const float t0, const float t1,
-                const float radius, std::unique_ptr<Material>&& material);
+                const float radius, std::unique_ptr<Material> material);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;

@@ -15,16 +15,16 @@ namespace rt
 
     std::vector<uint8_t> Scene::GenerateImage()
     {
-        const uint32_t width  = m_settings.imageSettings.width;
-        const uint32_t height = m_settings.imageSettings.height;
+        const int32_t width  = m_settings.imageSettings.width;
+        const int32_t height = m_settings.imageSettings.height;
         const uint8_t channel = m_settings.imageSettings.channels;
 
         auto img = std::vector<uint8_t>(width * height * channel);
         size_t imageIterator = 0;
 
-        for (int j = height-1; j >= 0; --j)
+        for (int32_t j = height-1; j >= 0; --j)
         {
-            for (int i = 0; i < width; ++i)
+            for (int32_t i = 0; i < width; ++i)
             {
                 glm::vec3 pixel = glm::vec3 {};
                 for(uint16_t s = 0; s < m_settings.samplesPerPixel; ++s)

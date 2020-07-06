@@ -8,7 +8,7 @@
 
 namespace rt
 {
-    Sphere::Sphere(const glm::vec3& center, const float radius, std::unique_ptr<Material>&& material):
+    Sphere::Sphere(const glm::vec3& center, const float radius, std::unique_ptr<Material> material):
         m_center(center),
         m_radius(radius),
         m_material(std::move(material))
@@ -23,6 +23,16 @@ namespace rt
         auto c = glm::length2(oc) - m_radius * m_radius;
         auto discriminant = halfB * halfB - a * c;
 
+        auto ComputeUV = [](const glm::vec3& point) -> glm::vec2
+        {
+            double phi = std::atan2(point.z, point.x);
+            double theta = std::asin(point.y);
+            return glm::vec2{
+                1 - (phi + rt::Pi) / (2 * rt::Pi),
+                (theta + rt::Pi / 2.f) / rt::Pi
+            };
+        };
+
         if (discriminant > 0)
         {
             auto root = std::sqrt(discriminant);
@@ -34,6 +44,7 @@ namespace rt
                 glm::vec3 outwardNormal = (record.point - m_center) / m_radius;
                 record.SetFaceNormal(ray, outwardNormal);
                 record.material = m_material.get();
+                record.uv = ComputeUV(outwardNormal);
                 return true;
             }
 
@@ -45,6 +56,7 @@ namespace rt
                 glm::vec3 outwardNormal = (record.point - m_center) / m_radius;
                 record.SetFaceNormal(ray, outwardNormal);
                 record.material = m_material.get();
+                record.uv = ComputeUV(outwardNormal);
                 return true;
             }
         }

@@ -5,8 +5,11 @@
 #ifndef RAYTRACER_CORE_HPP
 #define RAYTRACER_CORE_HPP
 
+#include <array>
 #include <limits>
 #include <random>
+
+#include <glm/glm.hpp>
 
 namespace rt
 {
@@ -47,6 +50,53 @@ namespace rt
         if (x < min) return min;
         if (x > max) return max;
         return x;
+    }
+
+    inline double PerlinInterpolation(const std::array<std::array<std::array<glm::vec3, 2>, 2>, 2> c,
+                                         const double u, const double v, const double w)
+    {
+        // Hermitian smoothing
+        double uu = u * u * (3 - 2 * u);
+        double vv = v * v * (3 - 2 * v);
+        double ww = w * w * (3 - 2 * w);
+
+        double accumulation = 0.;
+        for(uint8_t i = 0; i < 2; i++)
+        {
+            for(uint8_t j = 0; j < 2; j++)
+            {
+                for(uint8_t k = 0; k < 2; k++)
+                {
+                    glm::vec3 weightV(u - i, v - j, w - k);
+                    accumulation += (i * uu + (1 - i) * (1 - uu)) *
+                                    (j * vv + (1 - j) * (1 - vv)) *
+                                    (k * ww + (1 - k) * (1 - ww)) *
+                                    glm::dot(c[i][j][k], weightV);
+                }
+            }
+        }
+
+        return accumulation;
+    }
+
+    inline double TrilinearInterpolation(const std::array<std::array<std::array<double, 2>, 2>, 2> c,
+                                      const double u, const double v, const double w)
+    {
+        double accumulation = 0.;
+        for(uint8_t i = 0; i < 2; i++)
+        {
+            for(uint8_t j = 0; j < 2; j++)
+            {
+                for(uint8_t k = 0; k < 2; k++)
+                {
+                    accumulation += (i * u + (1 - i) * (1 - u)) *
+                                    (j * v + (1 - j) * (1 - v)) *
+                                    (k * w + (1 - k) * (1 - w)) * c[i][j][k];
+                }
+            }
+        }
+
+        return accumulation;
     }
 
     inline double Schlick(double cosine, double refraction)

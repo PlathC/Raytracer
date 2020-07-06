@@ -19,9 +19,12 @@ namespace rt
         Environment(std::size_t size);
 
         static Environment RandomEnvironment();
+        static Environment TwoSpheres();
+        static Environment TwoPerlinSpheres();
+        static Environment Earth();
 
         void Clear();
-        void Add(std::shared_ptr<Hittable>&& object);
+        void Add(std::shared_ptr<Hittable> object);
 
         size_t Size() const;
         std::vector<std::shared_ptr<Hittable>>& Objects();

@@ -13,7 +13,7 @@ namespace rt
     class Triangle : public Hittable
     {
     public:
-        Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::unique_ptr<Material>&& material = {});
+        Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::unique_ptr<Material> material = {});
 
         void ComputeNormal();
 
