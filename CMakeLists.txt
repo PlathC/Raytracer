@@ -129,7 +129,11 @@ set(RT_HEADER
         include/Raytracer/Material/CheckerTexture.hpp
         include/Raytracer/Math/Perlin.hpp
         include/Raytracer/Material/PerlinTexture.hpp
-        include/Raytracer/Material/ImageTexture.hpp)
+        include/Raytracer/Material/ImageTexture.hpp
+        include/Raytracer/Material/DiffuseLight.hpp
+        include/Raytracer/Object/Plane.hpp
+        include/Raytracer/Object/Plane.inl
+        include/Raytracer/Object/FlipFace.hpp)
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -150,7 +154,10 @@ set(RT_SRC
         src/Raytracer/Material/CheckerTexture.cpp
         src/Raytracer/Math/Perlin.cpp
         src/Raytracer/Material/PerlinTexture.cpp
-        src/Raytracer/Material/ImageTexture.cpp include/Raytracer/Material/DiffuseLight.cpp include/Raytracer/Material/DiffuseLight.hpp)
+        src/Raytracer/Material/ImageTexture.cpp
+        src/Raytracer/Material/DiffuseLight.cpp
+        src/Raytracer/Material/Material.cpp
+        src/Raytracer/Object/FlipFace.cpp)
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 

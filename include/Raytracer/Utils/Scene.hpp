@@ -26,12 +26,14 @@ namespace rt
 
         uint16_t samplesPerPixel;
         uint8_t maxDepth;
+
+        glm::vec3 backgroundColor;
     };
 
     class Scene
     {
     public:
-        Scene(const SceneSettings& settings, Environment&& environment);
+        Scene(const SceneSettings& settings, Environment environment);
 
         std::vector<uint8_t> GenerateImage();
 

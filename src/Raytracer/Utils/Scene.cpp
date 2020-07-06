@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    Scene::Scene(const SceneSettings &settings, Environment&& environment):
+    Scene::Scene(const SceneSettings &settings, Environment environment):
             m_settings(settings),
             m_environment(std::move(environment)),
             m_bvh(m_environment, m_settings.camera.Time0(), m_settings.camera.Time1())
@@ -33,7 +33,7 @@ namespace rt
                     auto v = (j + rt::Random<double>()) / (height - 1);
 
                     rt::Ray ray = m_settings.camera.GetRay(u, v);
-                    pixel += RayColor(ray, m_environment, m_settings.maxDepth);
+                    pixel += RayColor(ray, m_bvh, m_settings.maxDepth);
                 }
 
                 auto r = pixel.x;
@@ -59,30 +59,19 @@ namespace rt
 
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)
-            return glm::vec3(0., 0, 0.);
+            return glm::vec3(0., 0., 0.);
 
-        if (m_bvh.Hit(ray, 0.001, rt::Infinity, record))
-        {
-            rt::Ray scattered;
-            glm::vec3 attenuation;
-            if(record.material)
-            {
-                if (record.material->Scatter(ray, record, attenuation, scattered))
-                    return attenuation * RayColor(scattered, m_bvh, depth-1);
-            }
-            else
-            {
-                return glm::vec3(1.,0,1.);
-            }
+        if(!world.Hit(ray, 0.001, rt::Infinity, record))
+            return m_settings.backgroundColor;
 
-            return glm::vec3(0,0,0);
-        }
+        rt::Ray scattered;
+        glm::vec3 attenuation;
+        glm::vec3 emitted = record.material->Emitted(record.uv, record.point);
 
-        glm::vec3 unitDirection = glm::normalize(ray.Direction());
-        float t = 0.5*(unitDirection.y + 1.0);
+        if (!record.material->Scatter(ray, record, attenuation, scattered))
+            return emitted;
 
-        // Linear interpolation to create skybox
-        return (1.f - t) * glm::vec3(1., 1., 1.0) + t * glm::vec3(0.5, 0.7, 1.0);
+        return emitted + attenuation * RayColor(scattered, world, depth-1);
     }
 
 }

@@ -15,34 +15,30 @@
 
 int main(int argc, char** argv)
 {
-    constexpr double aspectRatio = 16. / 9.;
+    constexpr double aspectRatio = 16. / 16.;
 
-    constexpr uint16_t width           = 720;
+    constexpr uint16_t width           = 500;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
     constexpr uint16_t channel         = 3;
     constexpr uint16_t samplesPerPixel = 50;
     const uint8_t maxDepth             = 50;
 
-    glm::vec3 lookFrom = glm::vec3{13, 2, 3};
-    glm::vec3 lookAt   = glm::vec3{0., 0., 0.};
+    glm::vec3 lookFrom = glm::vec3{278, 278, -800};
+    glm::vec3 lookAt   = glm::vec3{278, 278, 0.};
     glm::vec3 vup      = glm::vec3{0., 1., 0.};
-    float distToFocus = 10.f;
-    float aperture    = 0.0f;
+    float distToFocus  = 10.f;
+    float aperture     = 0.0f;
 
     rt::SceneSettings settings = rt::SceneSettings {
-        rt::Camera{lookFrom, lookAt, vup, 20, aspectRatio, aperture, distToFocus},
+        rt::Camera{lookFrom, lookAt, vup, 40, aspectRatio, aperture, distToFocus},
         rt::SceneSettings::ImageSettings{width, height, channel},
-        samplesPerPixel, maxDepth};
+        samplesPerPixel, maxDepth, glm::vec3(0, 0, 0)};
 
-    rt::Environment environment = rt::Environment::Earth();
-
+    rt::Environment environment = rt::Environment::CornellBox();
     //environment.Clear();
     //environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
 
-    //rt::ObjLoader loader{"./samples/suzanne.obj"};
-    //environment.Add(loader.Parse());
-
-    rt::Scene scene = rt::Scene { settings, std::move(environment) };
+    rt::Scene scene = rt::Scene { settings, environment };
 
     auto timeStart = std::chrono::high_resolution_clock::now();
     auto img = scene.GenerateImage();

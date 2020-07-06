@@ -11,6 +11,7 @@
 
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
+#include "Raytracer/Material/PerlinTexture.hpp"
 
 namespace rt
 {
@@ -79,14 +80,8 @@ namespace rt
 
         // Create Materials
         std::vector<uint32_t> materialIndexes = std::vector<uint32_t>(numFaces, 0);
-        auto materials = std::vector<std::unique_ptr<Material>>(numFaces);
-        for(size_t i = 0; i < numFaces; i++)
-        {
-            materialIndexes[i] = i;
-            materials[i] = std::make_unique<rt::Lambertian>(
-                    std::make_unique<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>()}));
-
-        }
+        auto materials = std::vector<std::unique_ptr<Material>>(1);
+        materials[0] = std::make_unique<rt::Lambertian>(std::make_unique<PerlinTexture>(4));
 
         return std::make_unique<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
                 materialIndexes, std::move(materials)});

@@ -22,6 +22,8 @@ namespace rt
         static Environment TwoSpheres();
         static Environment TwoPerlinSpheres();
         static Environment Earth();
+        static Environment SimpleLight();
+        static Environment CornellBox();
 
         void Clear();
         void Add(std::shared_ptr<Hittable> object);
