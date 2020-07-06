@@ -53,6 +53,7 @@ namespace rt
         }
         return img;
     }
+
     glm::vec3 Scene::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
     {
         rt::HitRecord record;
