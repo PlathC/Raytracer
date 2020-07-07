@@ -67,12 +67,21 @@ namespace rt
 
         rt::Ray scattered;
         glm::vec3 attenuation;
-        glm::vec3 emitted = record.material->Emitted(record.uv, record.point);
 
-        if (!record.material->Scatter(ray, record, attenuation, scattered))
-            return emitted;
+        if(!record.material)
+        {
+            // TODO: Store default color
+            return glm::vec3(1., 0, 1.);
+        }
+        else
+        {
+            glm::vec3 emitted = record.material->Emitted(record.uv, record.point);
 
-        return emitted + attenuation * RayColor(scattered, world, depth-1);
+            if (!record.material->Scatter(ray, record, attenuation, scattered))
+                return emitted;
+
+            return emitted + attenuation * RayColor(scattered, world, depth-1);
+        }
     }
 
 }

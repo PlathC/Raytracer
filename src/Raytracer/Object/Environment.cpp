@@ -13,10 +13,11 @@
 #include "Raytracer/Material/DiffuseLight.hpp"
 #include "Raytracer/Material/Metal.hpp"
 
+#include "Raytracer/Object/Box.hpp"
 #include "Raytracer/Object/MovingSphere.hpp"
+#include "Raytracer/Object/FlipFace.hpp"
 #include "Raytracer/Object/Plane.hpp"
 #include "Raytracer/Object/Sphere.hpp"
-#include "Raytracer/Object/FlipFace.hpp"
 
 namespace rt
 {
@@ -186,10 +187,15 @@ namespace rt
                         glm::vec2{555, 555},
                         555, std::move(green)))
                 );
-        environment.Add(std::make_shared<rt::Plane<0>>(glm::vec2{0, 0}, glm::vec2{555, 555}, 0, std::move(red)));
+
+        environment.Add(std::make_shared<rt::Plane<0>>(
+                glm::vec2{0, 0}, glm::vec2{555, 555},
+                0, std::move(red)));
 
         // Light
-        environment.Add(std::make_shared<rt::Plane<1>>(glm::vec2{213, 227}, glm::vec2{343, 332}, 554, std::move(light)));
+        environment.Add(std::make_shared<rt::Plane<1>>(
+                glm::vec2{213, 227}, glm::vec2{343, 332},
+                554, std::move(light)));
 
         // Bottom + Up
         environment.Add(std::make_shared<rt::FlipFace>(
@@ -198,7 +204,9 @@ namespace rt
                         glm::vec2{555, 555},
                         0, std::move(white)))
                 );
-        environment.Add(std::make_shared<rt::Plane<1>>(glm::vec2{0, 0}, glm::vec2{555, 555}, 555, std::move(white1)));
+        environment.Add(std::make_shared<rt::Plane<1>>(
+                glm::vec2{0, 0}, glm::vec2{555, 555},
+                555, std::move(white1)));
 
         // Background
         environment.Add(std::make_shared<rt::FlipFace>(
@@ -207,6 +215,12 @@ namespace rt
                         glm::vec2{555, 555},
                         555, std::move(white2)))
                         );
+
+        environment.Add(std::make_shared<Box>(glm::vec3(130, 0, 65), glm::vec3(295, 165, 230),
+                                              std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(.73, .73, .73)))));
+
+        environment.Add(std::make_shared<Box>(glm::vec3(265, 0, 295), glm::vec3(430, 330, 460),
+                                              std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(.73, .73, .73)))));
 
         return environment;
     }

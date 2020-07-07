@@ -39,12 +39,12 @@ namespace rt
         }
     }
 
-    template<class T>
     inline glm::vec3 RandomUnitVector()
     {
-        auto a = Random<T>(0, 2 * rt::Pi);
-        auto z = Random<T>(-1, 1);
-        auto r = std::sqrt(1 - z * z);
+        //TODO: Fix this generation which is clearly not correct.
+        double a = Random<double>(0, 2 * rt::Pi);
+        double z = Random<double>(-1, 1);
+        double r = std::sqrt(1 - z * z);
 
         return glm::vec3(r * std::cos(a), r * std::sin(a), z);
     }

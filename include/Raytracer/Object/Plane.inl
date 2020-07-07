@@ -40,17 +40,17 @@ namespace rt
             return false;
 
         // Find x and y based on computed t
-        float firstOtherAxisValue  = ray.Origin()[m_firstOtherAxis]  + t * ray.Direction()[m_firstOtherAxis];
-        float secondOtherAxisValue = ray.Origin()[m_secondOtherAxis] + t * ray.Direction()[m_secondOtherAxis];
+        float fValue = ray.Origin()[m_firstOtherAxis]  + t * ray.Direction()[m_firstOtherAxis];
+        float sValue = ray.Origin()[m_secondOtherAxis] + t * ray.Direction()[m_secondOtherAxis];
 
         // Outside of the 2D plane
-        if(firstOtherAxisValue < m_v0.x || firstOtherAxisValue > m_v1.x
-        || secondOtherAxisValue < m_v0.y || secondOtherAxisValue > m_v1.y)
+        if(fValue < m_v0.x || fValue > m_v1.x
+           || sValue < m_v0.y || sValue > m_v1.y)
             return false;
 
         record.uv = glm::vec2{
-                (firstOtherAxisValue - m_v0.x) / (m_v1.x - m_v0.x),
-                (secondOtherAxisValue - m_v0.y) / (m_v1.y - m_v0.y)
+                (fValue - m_v0.x) / (m_v1.x - m_v0.x),
+                (sValue - m_v0.y) / (m_v1.y - m_v0.y)
         };
 
         record.t = t;
@@ -76,6 +76,7 @@ namespace rt
         secondValue[weakAxis] = m_weakAxisValue + 0.0001;
         secondValue[m_firstOtherAxis] = m_v1.x;
         secondValue[m_secondOtherAxis] = m_v1.y;
+
         box = AABB(firstValue, secondValue);
         return true;
     }

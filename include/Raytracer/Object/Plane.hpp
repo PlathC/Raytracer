@@ -28,6 +28,8 @@ namespace rt
         double m_weakAxisValue;
         std::unique_ptr<Material> m_material;
     };
+
+
 }
 
 #include "Raytracer/Object/Plane.inl"

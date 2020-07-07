@@ -18,6 +18,6 @@ namespace rt
         glm::vec3 reflected = Reflect(glm::normalize(rIn.Direction()), record.normal);
         scattered = Ray(record.point, reflected + m_fuzziness * RandomInUnitSphere<float>());
         attenuation = m_albedo;
-        return (glm::dot(scattered.Direction(), record.normal) > 0);
+        return glm::dot(scattered.Direction(), record.normal) > 0;
     }
 }
