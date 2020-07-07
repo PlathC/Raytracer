@@ -17,7 +17,9 @@
 #include "Raytracer/Object/MovingSphere.hpp"
 #include "Raytracer/Object/FlipFace.hpp"
 #include "Raytracer/Object/Plane.hpp"
+#include "Raytracer/Object/Rotation.hpp"
 #include "Raytracer/Object/Sphere.hpp"
+#include "Raytracer/Object/Translation.hpp"
 
 namespace rt
 {
@@ -216,8 +218,13 @@ namespace rt
                         555, std::move(white2)))
                         );
 
-        environment.Add(std::make_shared<Box>(glm::vec3(130, 0, 65), glm::vec3(295, 165, 230),
-                                              std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(.73, .73, .73)))));
+        environment.Add(std::make_shared<Rotation<1>>(
+                std::make_unique<Translation>(
+                    std::make_unique<Box>(glm::vec3(130, 0, 65), glm::vec3(295, 165, 230),
+                                          std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(.73, .73, .73)))),
+                    glm::vec3(265,0,295)),
+                15)
+        );
 
         environment.Add(std::make_shared<Box>(glm::vec3(265, 0, 295), glm::vec3(430, 330, 460),
                                               std::make_unique<rt::Lambertian>(std::make_unique<rt::SolidColor>(glm::vec3(.73, .73, .73)))));
