@@ -9,6 +9,8 @@
 |----------------------------------|---------------------------|
 | Raytraced primitive              | Done (Spheres, Triangles) |
 | Meshes                           | Done (Obj)                |
+| PBR                              | Todo                      |
+| Subpixel rendering               | Todo                      |
 | Multi-threading                  | Todo                      |
 
 ## Results
