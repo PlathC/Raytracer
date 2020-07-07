@@ -134,7 +134,10 @@ set(RT_HEADER
         include/Raytracer/Object/Plane.hpp
         include/Raytracer/Object/Plane.inl
         include/Raytracer/Object/FlipFace.hpp
-        include/Raytracer/Object/Box.hpp)
+        include/Raytracer/Object/Box.hpp
+        include/Raytracer/Object/Translation.hpp
+        include/Raytracer/Object/Rotation.hpp
+        include/Raytracer/Object/Rotation.inl)
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -159,7 +162,8 @@ set(RT_SRC
         src/Raytracer/Material/DiffuseLight.cpp
         src/Raytracer/Material/Material.cpp
         src/Raytracer/Object/FlipFace.cpp
-        src/Raytracer/Object/Box.cpp include/Raytracer/Object/Translation.cpp include/Raytracer/Object/Translation.hpp)
+        src/Raytracer/Object/Box.cpp
+        src/Raytracer/Object/Translation.cpp)
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 
