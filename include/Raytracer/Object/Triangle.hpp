@@ -5,15 +5,15 @@
 #ifndef RAYTRACER_TRIANGLE_HPP
 #define RAYTRACER_TRIANGLE_HPP
 
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 #include "Raytracer/Object/Vertex.hpp"
 
 namespace rt
 {
-    class Triangle : public Hittable
+    class Triangle : public IHittable
     {
     public:
-        Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::shared_ptr<Material> material = {});
+        Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::shared_ptr<Material> material);
 
         void ComputeNormal();
 

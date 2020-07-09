@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    ConstantDensityMedium::ConstantDensityMedium(std::shared_ptr<rt::Hittable> boundary,
+    ConstantDensityMedium::ConstantDensityMedium(std::shared_ptr<rt::IHittable> boundary,
             std::shared_ptr<rt::Texture> texture, double density):
             m_boundary(boundary),
             m_phaseFunction(std::make_shared<rt::Isotropic>(texture)),

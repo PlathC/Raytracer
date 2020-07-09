@@ -10,30 +10,30 @@
 
 #include "Raytracer/Math/Math.hpp"
 
-#include "Raytracer/Object/Hittable.hpp"
-#include "Raytracer/Object/Environment.hpp"
+#include "Raytracer/Object/IHittable.hpp"
+#include "Raytracer/Object/ICollection.hpp"
 
 namespace rt
 {
-    class BVHNode : public Hittable
+    class BVHNode : public IHittable
     {
     public:
         BVHNode() = default;
-        BVHNode(std::vector<std::shared_ptr<Hittable>>& objects, const size_t start, const size_t end,
+        BVHNode(std::vector<std::shared_ptr<IHittable>> objects, const size_t start, const size_t end,
                 const double time0, const double time1);
-        BVHNode(rt::Environment& environment, const double time0, const double time1);
+        BVHNode(const rt::ICollection& environment, const double time0, const double time1);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
     private:
-        std::shared_ptr<Hittable> m_left;
-        std::shared_ptr<Hittable> m_right;
+        std::shared_ptr<IHittable> m_left;
+        std::shared_ptr<IHittable> m_right;
         AABB m_box;
     };
 
-    // Comparison helper functions to be able to sort Hittable list in order to build BVH
-    inline bool CompareBox(const std::shared_ptr<Hittable>& a, const std::shared_ptr<Hittable>& b, const uint8_t axis)
+    // Comparison helper functions to be able to sort IHittable list in order to build BVH
+    inline bool CompareBox(std::shared_ptr<IHittable> a, std::shared_ptr<IHittable> b, const uint8_t axis)
     {
         AABB boxA;
         AABB boxB;
@@ -44,17 +44,17 @@ namespace rt
         return boxA.Minimum()[axis] < boxB.Minimum()[axis];
     }
 
-    inline bool CompareBoxX(const std::shared_ptr<Hittable>& a, const std::shared_ptr<Hittable>& b)
+    inline bool CompareBoxX(std::shared_ptr<IHittable> a, std::shared_ptr<IHittable> b)
     {
         return CompareBox(a, b, 0);
     }
 
-    inline bool CompareBoxY(const std::shared_ptr<Hittable>& a, const std::shared_ptr<Hittable>& b)
+    inline bool CompareBoxY(std::shared_ptr<IHittable> a, std::shared_ptr<IHittable> b)
     {
         return CompareBox(a, b, 1);
     }
 
-    inline bool CompareBoxZ(const std::shared_ptr<Hittable>& a, const std::shared_ptr<Hittable>& b)
+    inline bool CompareBoxZ(std::shared_ptr<IHittable> a, std::shared_ptr<IHittable> b)
     {
         return CompareBox(a, b, 2);
     }

@@ -7,7 +7,7 @@
 namespace rt
 {
     template<uint8_t axis>
-    Rotation<axis>::Rotation(std::shared_ptr<Hittable> object, float angle):
+    Rotation<axis>::Rotation(std::shared_ptr<IHittable> object, float angle):
         m_object(object)
     {
         glm::vec3 rotationAxis = glm::vec3{0, 0, 0};

@@ -8,12 +8,12 @@
 #include <vector>
 
 #include "Raytracer/Object/FlipFace.hpp"
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 #include "Raytracer/Object/Plane.hpp"
 
 namespace rt
 {
-    class Box : public Hittable
+    class Box : public IHittable
     {
     public:
         Box() = default;
@@ -25,7 +25,7 @@ namespace rt
         glm::vec3 m_minimum;
         glm::vec3 m_maximum;
         std::shared_ptr<Material> m_material;
-        std::vector<std::shared_ptr<Hittable>> m_sides;
+        std::vector<std::shared_ptr<IHittable>> m_sides;
     };
 }
 

@@ -6,7 +6,7 @@
 ## Features 
 
 | Feature                          | Progress                  |
-|----------------------------------|---------------------------|
+|-------------------l---------------|---------------------------|
 | Raytraced primitive              | Done (Spheres, Triangles) |
 | Meshes                           | Done (Obj)                |
 | PBR                              | Todo                      |

@@ -11,7 +11,7 @@
 
 namespace rt
 {
-    TriangleMesh::TriangleMesh(MeshSettings&& settings):
+    TriangleMesh::TriangleMesh(const MeshSettings& settings):
         m_trianglesNumber(0),
         m_vertices(settings.vertices),
         m_normals(settings.normals),
@@ -44,11 +44,12 @@ namespace rt
 
                 if(m_normals.empty())
                 {
-                    auto nTriangle = Triangle{rt::Vertex(m_vertices[i1], glm::vec3(0, 0, 0)),
+                    auto nTriangle = std::make_shared<Triangle>(rt::Vertex(m_vertices[i1], glm::vec3(0, 0, 0)),
                                               rt::Vertex(m_vertices[i2], glm::vec3(0, 0, 0)),
-                                              rt::Vertex(m_vertices[i3], glm::vec3(0, 0, 0))};
-                    nTriangle.ComputeNormal();
-                    m_triangles.emplace_back(std::move(nTriangle));
+                                              rt::Vertex(m_vertices[i3], glm::vec3(0, 0, 0)),
+                                                                m_materials[settings.materialIndexes[i]]);
+                    nTriangle->ComputeNormal();
+                    m_triangles.emplace_back(nTriangle);
                 }
                 else
                 {
@@ -60,15 +61,14 @@ namespace rt
                     glm::vec3 n0 = m_normals[in1];
                     glm::vec3 n1 = m_normals[in2];
                     glm::vec3 n2 = m_normals[in3];
-                    m_triangles.emplace_back(Triangle{
+                    m_triangles.emplace_back(std::make_shared<rt::Triangle>(
                             rt::Vertex(m_vertices[i1], n0),
                             rt::Vertex(m_vertices[i2], n1),
-                            rt::Vertex(m_vertices[i3], n2)
-                    });
+                            rt::Vertex(m_vertices[i3], n2),
+                            m_materials[settings.materialIndexes[i]]
+                    ));
                 }
-
                 m_materialIndexes.push_back(settings.materialIndexes[i]);
-
                 l += 3;
             }
             k += settings.facesIndexes[i];
@@ -79,12 +79,12 @@ namespace rt
     {
         double closestT = tMax;
         bool hit = false;
-        HitRecord tempRecord;
+        HitRecord tempRecord{};
 
         uint32_t faceCounter = 0;
         for(const auto& triangle : m_triangles)
         {
-            if(triangle.Hit(ray, tMin, tMax, tempRecord) && tempRecord.t < closestT)
+            if(triangle->Hit(ray, tMin, tMax, tempRecord) && tempRecord.t < closestT)
             {
                 record = tempRecord;
                 closestT = record.t;
@@ -209,5 +209,16 @@ namespace rt
 
         return std::make_shared<TriangleMesh>(MeshSettings{polyNumber, faceIndexes, verticesIndex, points,
                                               normalsIndex, normals, materialIndexes, materials});
+    }
+
+    [[nodiscard]] std::vector<std::shared_ptr<rt::IHittable>> TriangleMesh::Objects() const
+    {
+        std::vector<std::shared_ptr<rt::IHittable>> result (m_triangles);
+        return result;
+    }
+
+    std::size_t TriangleMesh::Size() const
+    {
+        return m_trianglesNumber;
     }
 }

@@ -5,14 +5,14 @@
 #ifndef RAYTRACER_PLANE_HPP
 #define RAYTRACER_PLANE_HPP
 
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 
 #include "Raytracer/Material/Material.hpp"
 
 namespace rt
 {
     template<uint8_t weakAxis>
-    class Plane : public Hittable
+    class Plane : public IHittable
     {
         static_assert(weakAxis < 3, "Axis should be in range of [0, 2].");
     public:

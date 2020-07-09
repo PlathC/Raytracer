@@ -2,8 +2,8 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#ifndef RAYTRACER_HITTABLE_HPP
-#define RAYTRACER_HITTABLE_HPP
+#ifndef RAYTRACER_IHITTABLE_HPP
+#define RAYTRACER_IHITTABLE_HPP
 
 #include <memory>
 
@@ -32,13 +32,13 @@ namespace rt
         }
     };
 
-    class Hittable
+    class IHittable
     {
     public:
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const = 0;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const = 0;
-        virtual ~Hittable() {};
+        virtual ~IHittable() = default;
     };
 }
 
-#endif //RAYTRACER_HITTABLE_HPP
+#endif //RAYTRACER_IHITTABLE_HPP

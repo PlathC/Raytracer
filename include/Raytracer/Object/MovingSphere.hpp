@@ -5,11 +5,11 @@
 #ifndef RAYTRACER_MOVINGSPHERE_HPP
 #define RAYTRACER_MOVINGSPHERE_HPP
 
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 
 namespace rt
 {
-    class MovingSphere : public Hittable
+    class MovingSphere : public IHittable
     {
     public:
         MovingSphere() = default;

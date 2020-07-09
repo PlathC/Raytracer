@@ -7,11 +7,11 @@
 
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Math/Math.hpp"
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 
 namespace rt
 {
-    class Sphere : public Hittable
+    class Sphere : public IHittable
     {
     public:
         Sphere() = default;

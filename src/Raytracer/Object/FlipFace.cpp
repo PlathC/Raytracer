@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    FlipFace::FlipFace(std::shared_ptr<Hittable> object):
+    FlipFace::FlipFace(std::shared_ptr<IHittable> object):
             m_object(object)
     {
     }

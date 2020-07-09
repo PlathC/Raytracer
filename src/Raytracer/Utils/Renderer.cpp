@@ -53,7 +53,7 @@ namespace rt
         return img;
     }
 
-    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::Hittable& world, const int depth) const
+    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::IHittable& world, const int depth) const
     {
         rt::HitRecord record;
 

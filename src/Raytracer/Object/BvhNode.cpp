@@ -6,10 +6,9 @@
 
 namespace rt
 {
-    BVHNode::BVHNode(std::vector<std::shared_ptr<Hittable>>& objects, const size_t start, const size_t end,
+    BVHNode::BVHNode(std::vector<std::shared_ptr<IHittable>> objects, const size_t start, const size_t end,
             const double time0, const double time1)
     {
-
         const uint8_t axis = Random(0, 2);
         auto comparator = (axis == 0) ? CompareBoxX
                         : (axis == 1) ? CompareBoxY
@@ -51,8 +50,8 @@ namespace rt
         m_box = AABB(boxLeft, boxRight);
     }
 
-    BVHNode::BVHNode(rt::Environment& environment, const double time0, const double time1):
-            BVHNode(environment.Objects(), 0, environment.Size(), time0, time1)
+    BVHNode::BVHNode(const rt::ICollection& collection, const double time0, const double time1):
+            BVHNode(collection.Objects(), 0, collection.Size(), time0, time1)
     {
     }
 

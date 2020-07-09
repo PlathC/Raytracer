@@ -109,11 +109,12 @@ set(RT_HEADER
         include/Raytracer/Math/Aabb.hpp
         include/Raytracer/Math/Perlin.hpp
         include/Raytracer/Utils/Camera.hpp
-        include/Raytracer/Object/Hittable.hpp
+        include/Raytracer/Object/IHittable.hpp
         include/Raytracer/Object/Sphere.hpp
         include/Raytracer/Object/Triangle.hpp
         include/Raytracer/Object/TriangleMesh.hpp
         include/Raytracer/Object/Environment.hpp
+        include/Raytracer/Object/ICollection.hpp
         include/Raytracer/Material/Material.hpp
         include/Raytracer/Material/Lambertian.hpp
         include/Raytracer/Material/Metal.hpp

@@ -321,7 +321,7 @@ namespace rt
         m_objects.clear();
     }
 
-    void Environment::Add(std::shared_ptr<Hittable> object)
+    void Environment::Add(std::shared_ptr<IHittable> object)
     {
         m_objects.emplace_back(std::move(object));
     }
@@ -331,7 +331,7 @@ namespace rt
         return m_objects.size();
     }
 
-    std::vector<std::shared_ptr<Hittable>>& Environment::Objects()
+    std::vector<std::shared_ptr<IHittable>> Environment::Objects() const
     {
         return m_objects;
     }

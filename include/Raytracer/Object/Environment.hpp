@@ -8,11 +8,11 @@
 #include <memory>
 #include <vector>
 
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/ICollection.hpp"
 
 namespace rt
 {
-    class Environment : public Hittable
+    class Environment : public ICollection
     {
     public:
         Environment() = default;
@@ -27,16 +27,16 @@ namespace rt
         static Environment FinalScene();
 
         void Clear();
-        void Add(std::shared_ptr<Hittable> object);
+        void Add(std::shared_ptr<IHittable> object);
 
-        size_t Size() const;
-        std::vector<std::shared_ptr<Hittable>>& Objects();
+        [[nodiscard]] size_t Size() const override;
+        [[nodiscard]] std::vector<std::shared_ptr<IHittable>> Objects() const override;
 
-        virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
-        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+        bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
-    private:
-        std::vector<std::shared_ptr<Hittable>> m_objects;
+    protected:
+        std::vector<std::shared_ptr<IHittable>> m_objects;
     };
 }
 

@@ -8,7 +8,7 @@
 #include <glm/glm.hpp>
 
 #include "Raytracer/Math/Ray.hpp"
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
 
 namespace rt
 {

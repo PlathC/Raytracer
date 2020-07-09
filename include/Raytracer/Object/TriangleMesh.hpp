@@ -9,7 +9,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Raytracer/Object/Hittable.hpp"
+#include "Raytracer/Object/IHittable.hpp"
+#include "Raytracer/Object/Environment.hpp"
 #include "Raytracer/Object/Triangle.hpp"
 
 namespace rt
@@ -26,13 +27,16 @@ namespace rt
         std::vector<std::shared_ptr<Material>> materials;
     };
 
-    class TriangleMesh : public Hittable
+    class TriangleMesh : public ICollection
     {
     public:
-        TriangleMesh(MeshSettings&& settings);
+        TriangleMesh(const MeshSettings& settings);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+
+        [[nodiscard]] std::vector<std::shared_ptr<rt::IHittable>> Objects() const override;
+        std::size_t Size() const override;
 
         static std::shared_ptr<TriangleMesh> CreateSphere(float rad, uint32_t divs);
 
@@ -42,7 +46,7 @@ namespace rt
         std::vector<uint32_t> m_trianglesIndexes;
         std::vector<glm::vec3> m_vertices;
         std::vector<glm::vec3> m_normals;
-        std::vector<rt::Triangle> m_triangles;
+        std::vector<std::shared_ptr<rt::IHittable>> m_triangles;
 
         // TODO: Add support of st coordinates
         // std::vector<Vec2> m_stCoordinates

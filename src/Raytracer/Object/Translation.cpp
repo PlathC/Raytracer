@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    Translation::Translation(std::shared_ptr<Hittable> object, const glm::vec3& movement):
+    Translation::Translation(std::shared_ptr<IHittable> object, const glm::vec3& movement):
         m_object(object),
         m_movement(movement)
     {

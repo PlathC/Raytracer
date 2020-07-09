@@ -24,10 +24,10 @@ int main(int argc, char** argv)
     constexpr uint16_t width           = 500;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
     constexpr uint16_t channel         = 3;
-    constexpr uint16_t samplesPerPixel = 50;
+    constexpr uint16_t samplesPerPixel = 20;
     const uint8_t maxDepth             = 50;
 
-    glm::vec3 lookFrom = glm::vec3{3,  2,  6};
+    glm::vec3 lookFrom = glm::vec3{1,  1,  4};
     glm::vec3 lookAt   = glm::vec3{0, 0, 0};
     glm::vec3 vup      = glm::vec3{0., 1., 0.};
     float distToFocus  = 10.f;
@@ -36,22 +36,22 @@ int main(int argc, char** argv)
     rt::SceneSettings settings = rt::SceneSettings {
         rt::Camera{lookFrom, lookAt, vup, 40, aspectRatio, aperture, distToFocus},
         rt::SceneSettings::ImageSettings{width, height, channel},
-        samplesPerPixel, maxDepth, glm::vec3(0, 0, 0)};
+        samplesPerPixel, maxDepth, glm::vec3(0.7, 0.7, 0.7)};
 
     rt::Environment environment;
     auto groundMaterial = std::make_shared<rt::Lambertian>(std::make_shared<rt::SolidColor>(glm::vec3(0.2, 0.2, 0.2)));
     environment.Add(std::make_shared<rt::Plane<1>>(glm::vec2(-50, -50), glm::vec2(50, 50), -1, groundMaterial));
 
-    auto light = std::make_shared<rt::DiffuseLight>(std::make_shared<rt::SolidColor>(glm::vec3(15., 15., 15)));
+    auto light = std::make_shared<rt::DiffuseLight>(std::make_shared<rt::SolidColor>(glm::vec3(20., 20., 20)));
     environment.Add(std::make_shared<rt::Plane<0>>(glm::vec2(1, 1), glm::vec2(5, 5), -3, light));
 
     rt::ObjLoader objLoader{"samples/suzanne.obj"};
 
     auto sphere = std::make_shared<rt::Sphere>(glm::vec3(0, 0, 0), 1, nullptr);
     auto cyan = std::make_shared<rt::SolidColor>(glm::vec3(0., 1., 1.));
-    environment.Add(std::make_shared<rt::ConstantDensityMedium>(sphere, cyan, 0.1));
+    //environment.Add(std::make_shared<rt::ConstantDensityMedium>(sphere, cyan, 0.1));
 
-    environment.Add(objLoader.Parse());
+    environment.Add(std::make_shared<rt::BVHNode>(*objLoader.Parse(), 0, 1));
 
 
     rt::Renderer scene = rt::Renderer {settings, environment };
