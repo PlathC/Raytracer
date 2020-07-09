@@ -6,12 +6,16 @@
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
+#include "Raytracer/Object/Plane.hpp"
+#include "Raytracer/Object/ConstantDensityMedium.hpp"
 #include "Raytracer/Object/Triangle.hpp"
 #include "Raytracer/Object/TriangleMesh.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
+#include "Raytracer/Material/DiffuseLight.hpp"
+#include "Raytracer/Material/SolidColor.hpp"
 #include "Raytracer/Material/Metal.hpp"
 #include "Raytracer/Utils/Loader/ObjLoader.hpp"
-#include "Raytracer/Utils/Scene.hpp"
+#include "Raytracer/Utils/Renderer.hpp"
 
 int main(int argc, char** argv)
 {
@@ -20,11 +24,11 @@ int main(int argc, char** argv)
     constexpr uint16_t width           = 500;
     const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
     constexpr uint16_t channel         = 3;
-    constexpr uint16_t samplesPerPixel = 100;
+    constexpr uint16_t samplesPerPixel = 50;
     const uint8_t maxDepth             = 50;
 
-    glm::vec3 lookFrom = glm::vec3{278,  278,  -800};
-    glm::vec3 lookAt   = glm::vec3{278, 278, 0};
+    glm::vec3 lookFrom = glm::vec3{3,  2,  6};
+    glm::vec3 lookAt   = glm::vec3{0, 0, 0};
     glm::vec3 vup      = glm::vec3{0., 1., 0.};
     float distToFocus  = 10.f;
     float aperture     = 0.0f;
@@ -34,18 +38,30 @@ int main(int argc, char** argv)
         rt::SceneSettings::ImageSettings{width, height, channel},
         samplesPerPixel, maxDepth, glm::vec3(0, 0, 0)};
 
-    rt::Environment environment = rt::Environment::CornellBox();
-    //environment.Clear();
-    //environment.Add(rt::TriangleMesh::CreateSphere(2, 10));
+    rt::Environment environment;
+    auto groundMaterial = std::make_shared<rt::Lambertian>(std::make_shared<rt::SolidColor>(glm::vec3(0.2, 0.2, 0.2)));
+    environment.Add(std::make_shared<rt::Plane<1>>(glm::vec2(-50, -50), glm::vec2(50, 50), -1, groundMaterial));
 
-    rt::Scene scene = rt::Scene { settings, environment };
+    auto light = std::make_shared<rt::DiffuseLight>(std::make_shared<rt::SolidColor>(glm::vec3(15., 15., 15)));
+    environment.Add(std::make_shared<rt::Plane<0>>(glm::vec2(1, 1), glm::vec2(5, 5), -3, light));
+
+    rt::ObjLoader objLoader{"samples/suzanne.obj"};
+
+    auto sphere = std::make_shared<rt::Sphere>(glm::vec3(0, 0, 0), 1, nullptr);
+    auto cyan = std::make_shared<rt::SolidColor>(glm::vec3(0., 1., 1.));
+    environment.Add(std::make_shared<rt::ConstantDensityMedium>(sphere, cyan, 0.1));
+
+    environment.Add(objLoader.Parse());
+
+
+    rt::Renderer scene = rt::Renderer {settings, environment };
 
     auto timeStart = std::chrono::high_resolution_clock::now();
     auto img = scene.GenerateImage();
     auto timeEnd = std::chrono::high_resolution_clock::now();
     auto passedTime = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
 
-    std::cout << "Scene rendered in : " << passedTime << "ms" << std::endl;
+    std::cout << "Renderer rendered in : " << passedTime << "ms" << std::endl;
 
     stbi_write_png("output.png", width, height, channel, img.data(), width*channel);
 

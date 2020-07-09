@@ -6,10 +6,10 @@
 
 namespace rt
 {
-    Box::Box(const glm::vec3& minimum, const glm::vec3& maximum, std::unique_ptr<Material> material):
+    Box::Box(const glm::vec3& minimum, const glm::vec3& maximum, std::shared_ptr<Material> material):
         m_minimum(minimum),
         m_maximum(maximum),
-        m_material(std::move(material))
+        m_material(material)
     {
         m_sides.reserve(6);
         m_sides.emplace_back(std::make_unique<rt::Plane<2>>(

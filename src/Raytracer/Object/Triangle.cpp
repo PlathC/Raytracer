@@ -5,15 +5,15 @@
 #include "Raytracer/Object/Triangle.hpp"
 
 #include "Raytracer/Material/Material.hpp"
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 
 namespace rt
 {
-    Triangle::Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::unique_ptr<Material> material):
+    Triangle::Triangle(const rt::Vertex& v0, const rt::Vertex& v1, const rt::Vertex& v2, std::shared_ptr<Material> material):
         m_v0(v0),
         m_v1(v1),
         m_v2(v2),
-        m_material(std::move(material))
+        m_material(material)
     {
     }
 
@@ -48,7 +48,7 @@ namespace rt
         if (det < rt::Epsilon) return false;
     #else
         // ray and triangle are parallel if det is close to 0
-        if (std::abs(det) < rt::Epsilon) return false;
+        if (std::abs(det) < rt::Epsilon<double>) return false;
     #endif
 
         const double invDet = 1. / det;

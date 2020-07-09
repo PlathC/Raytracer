@@ -4,7 +4,7 @@
 
 #include "Raytracer/Object/TriangleMesh.hpp"
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
@@ -16,7 +16,7 @@ namespace rt
         m_vertices(settings.vertices),
         m_normals(settings.normals),
         m_materialIndexes(),
-        m_materials(std::move(settings.materials))
+        m_materials(settings.materials)
     {
         // Compute triangles number
         for(uint32_t i = 0; i < settings.facesNumber; ++i)
@@ -157,13 +157,13 @@ namespace rt
         auto faceIndexes   = std::vector<uint32_t>(polyNumber);
         auto verticesIndex = std::vector<uint32_t>((6 + (divs - 1) * 4) * divs);
         auto normalsIndex  = std::vector<uint32_t>((6 + (divs - 1) * 4) * divs);
-        std::vector<std::unique_ptr<Material>> materials { polyNumber};
+        std::vector<std::shared_ptr<Material>> materials { polyNumber};
         auto materialIndexes = std::vector<uint32_t>(polyNumber, 0);
 
         for(size_t i = 0; i < materials.size(); i++)
         {
-            materials[i] = std::make_unique<rt::Lambertian>(
-                    std::make_unique<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() }));
+            materials[i] = std::make_shared<rt::Lambertian>(
+                    std::make_shared<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() }));
             materialIndexes[i] = i;
         }
 
@@ -208,6 +208,6 @@ namespace rt
         }
 
         return std::make_shared<TriangleMesh>(MeshSettings{polyNumber, faceIndexes, verticesIndex, points,
-                                              normalsIndex, normals, materialIndexes, std::move(materials)});
+                                              normalsIndex, normals, materialIndexes, materials});
     }
 }

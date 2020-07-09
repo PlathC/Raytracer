@@ -16,7 +16,7 @@ namespace rt
     bool Metal::Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &attenuation, Ray &scattered) const
     {
         glm::vec3 reflected = Reflect(glm::normalize(rIn.Direction()), record.normal);
-        scattered = Ray(record.point, reflected + m_fuzziness * RandomInUnitSphere<float>());
+        scattered = Ray(record.point, reflected + m_fuzziness * RandomInUnitSphere());
         attenuation = m_albedo;
         return glm::dot(scattered.Direction(), record.normal) > 0;
     }

@@ -6,9 +6,9 @@
 
 namespace rt
 {
-    CheckerTexture::CheckerTexture(std::unique_ptr<Texture> t0, std::unique_ptr<Texture> t1, const uint32_t size):
-        m_oddTexture(std::move(t0)),
-        m_evenTexture(std::move(t1)),
+    CheckerTexture::CheckerTexture(std::shared_ptr<Texture> t0, std::shared_ptr<Texture> t1, const uint32_t size):
+        m_oddTexture(t0),
+        m_evenTexture(t1),
         m_size(size)
     {
     }

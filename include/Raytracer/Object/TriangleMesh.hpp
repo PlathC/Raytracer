@@ -23,7 +23,7 @@ namespace rt
         std::vector<uint32_t> normalsIndexes;
         std::vector<glm::vec3> normals;
         std::vector<uint32_t> materialIndexes;
-        std::vector<std::unique_ptr<Material>> materials;
+        std::vector<std::shared_ptr<Material>> materials;
     };
 
     class TriangleMesh : public Hittable
@@ -48,7 +48,7 @@ namespace rt
         // std::vector<Vec2> m_stCoordinates
 
         std::vector<uint32_t> m_materialIndexes;
-        std::vector<std::unique_ptr<Material>> m_materials;
+        std::vector<std::shared_ptr<Material>> m_materials;
     };
 }
 

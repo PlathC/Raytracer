@@ -5,7 +5,7 @@
 #ifndef RAYTRACER_DIELECTRIC_HPP
 #define RAYTRACER_DIELECTRIC_HPP
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 #include "Raytracer/Material/Material.hpp"
 
 namespace rt

@@ -15,7 +15,7 @@
 
 namespace rt
 {
-    std::unique_ptr<rt::TriangleMesh> ObjLoader::Parse() const
+    std::shared_ptr<rt::TriangleMesh> ObjLoader::Parse() const
     {
         tinyobj::attrib_t meshAttributes;
         std::vector<tinyobj::shape_t> meshShapes;
@@ -80,10 +80,10 @@ namespace rt
 
         // Create Materials
         std::vector<uint32_t> materialIndexes = std::vector<uint32_t>(numFaces, 0);
-        auto materials = std::vector<std::unique_ptr<Material>>(1);
-        materials[0] = std::make_unique<rt::Lambertian>(std::make_unique<PerlinTexture>(4));
+        auto materials = std::vector<std::shared_ptr<Material>>(1);
+        materials[0] = std::make_shared<rt::Lambertian>(std::make_unique<PerlinTexture>(4));
 
-        return std::make_unique<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
-                materialIndexes, std::move(materials)});
+        return std::make_shared<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
+                materialIndexes, materials});
     }
 }

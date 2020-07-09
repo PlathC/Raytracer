@@ -13,14 +13,14 @@ namespace rt
     class DiffuseLight : public Material
     {
     public:
-        DiffuseLight(std::unique_ptr<rt::Texture> texture);
+        DiffuseLight(std::shared_ptr<rt::Texture> texture);
 
         virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
 
         virtual glm::vec3 Emitted(const glm::vec2& uv, const glm::vec3& point) const override;
     private:
         // TODO : Make a difference between texture color and light intensity.
-        std::unique_ptr<rt::Texture> m_texture;
+        std::shared_ptr<rt::Texture> m_texture;
     };
 }
 

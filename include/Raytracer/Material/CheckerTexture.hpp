@@ -13,15 +13,15 @@ namespace rt
     {
     public:
         CheckerTexture() = default;
-        CheckerTexture(std::unique_ptr<Texture> t0, std::unique_ptr<Texture> t1, const uint32_t size = 10);
+        CheckerTexture(std::shared_ptr<Texture> t0, std::shared_ptr<Texture> t1, const uint32_t size = 10);
 
         virtual glm::vec3 Value(const glm::vec2& uv, const glm::vec3& point) const override;
 
         virtual ~CheckerTexture() = default;
 
     private:
-        std::unique_ptr<Texture> m_oddTexture;
-        std::unique_ptr<Texture> m_evenTexture;
+        std::shared_ptr<Texture> m_oddTexture;
+        std::shared_ptr<Texture> m_evenTexture;
         uint32_t m_size;
     };
 }

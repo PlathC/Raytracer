@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <stdexcept>
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 
 #include "Raytracer/Object/Hittable.hpp"
 #include "Raytracer/Object/Environment.hpp"

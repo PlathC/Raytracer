@@ -11,7 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtx/norm.hpp>
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 
 namespace rt
 {
@@ -28,12 +28,11 @@ namespace rt
         return glm::vec3(Random<T>(min, max), Random<T>(min, max), Random<T>(min, max));
     }
 
-    template<class T>
     inline glm::vec3 RandomInUnitSphere()
     {
         while(true)
         {
-            glm::vec3 point = VRandom<T>(-1, 1);
+            glm::vec3 point = VRandom<float>(-1, 1);
             if(glm::length2(point) >= 1) continue;
             return point;
         }

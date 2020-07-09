@@ -19,7 +19,7 @@ namespace rt
     public:
         MeshLoader(const std::string& file) : m_file(file) {}
 
-        virtual std::unique_ptr<rt::TriangleMesh> Parse() const = 0;
+        virtual std::shared_ptr<rt::TriangleMesh> Parse() const = 0;
 
         virtual ~MeshLoader() {}
 

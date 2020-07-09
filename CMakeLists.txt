@@ -103,10 +103,11 @@ elseif (MSVC)
 endif ()
 
 set(RT_HEADER
-        include/Raytracer/Math/Core.hpp
+        include/Raytracer/Math/Math.hpp
         include/Raytracer/Math/Vec.hpp
         include/Raytracer/Math/Ray.hpp
-        include/Raytracer/Math/Math.hpp
+        include/Raytracer/Math/Aabb.hpp
+        include/Raytracer/Math/Perlin.hpp
         include/Raytracer/Utils/Camera.hpp
         include/Raytracer/Object/Hittable.hpp
         include/Raytracer/Object/Sphere.hpp
@@ -117,17 +118,15 @@ set(RT_HEADER
         include/Raytracer/Material/Lambertian.hpp
         include/Raytracer/Material/Metal.hpp
         include/Raytracer/Material/Dielectric.hpp
-        include/Raytracer/Utils/Scene.hpp
+        include/Raytracer/Utils/Renderer.hpp
         include/Raytracer/Utils/MeshLoader.hpp
         include/Raytracer/Utils/Loader/ObjLoader.hpp
         include/Raytracer/Object/Vertex.hpp
         include/Raytracer/Object/MovingSphere.hpp
-        include/Raytracer/Math/Aabb.hpp
         include/Raytracer/Object/BvhNode.hpp
         include/Raytracer/Material/Texture.hpp
         include/Raytracer/Material/SolidColor.hpp
         include/Raytracer/Material/CheckerTexture.hpp
-        include/Raytracer/Math/Perlin.hpp
         include/Raytracer/Material/PerlinTexture.hpp
         include/Raytracer/Material/ImageTexture.hpp
         include/Raytracer/Material/DiffuseLight.hpp
@@ -137,7 +136,9 @@ set(RT_HEADER
         include/Raytracer/Object/Box.hpp
         include/Raytracer/Object/Translation.hpp
         include/Raytracer/Object/Rotation.hpp
-        include/Raytracer/Object/Rotation.inl)
+        include/Raytracer/Object/Rotation.inl
+        include/Raytracer/Object/ConstantDensityMedium.hpp
+        include/Raytracer/Material/Isotropic.hpp)
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -147,7 +148,7 @@ set(RT_SRC
         src/Raytracer/Material/Lambertian.cpp
         src/Raytracer/Material/Metal.cpp
         src/Raytracer/Material/Dielectric.cpp
-        src/Raytracer/Utils/Scene.cpp
+        src/Raytracer/Utils/Renderer.cpp
         src/Raytracer/Object/Triangle.cpp
         src/Raytracer/Object/TriangleMesh.cpp
         src/Raytracer/Utils/Loader/ObjLoader.cpp
@@ -163,7 +164,9 @@ set(RT_SRC
         src/Raytracer/Material/Material.cpp
         src/Raytracer/Object/FlipFace.cpp
         src/Raytracer/Object/Box.cpp
-        src/Raytracer/Object/Translation.cpp)
+        src/Raytracer/Object/Translation.cpp
+        src/Raytracer/Object/ConstantDensityMedium.cpp
+        src/Raytracer/Material/Isotropic.cpp)
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 

@@ -9,7 +9,7 @@
 
 #include <glm/vec3.hpp>
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 #include "Raytracer/Math/Vec.hpp"
 
 namespace rt

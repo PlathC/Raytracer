@@ -11,13 +11,13 @@
 namespace rt
 {
     MovingSphere::MovingSphere(const glm::vec3& center0, const glm::vec3& center1, const float t0, const float t1,
-            const float radius, std::unique_ptr<Material> material):
+            const float radius, std::shared_ptr<Material> material):
             m_center0(center0),
             m_center1(center1),
             m_time0(t0),
             m_time1(t1),
             m_radius(radius),
-            m_material(std::move(material))
+            m_material(material)
     {
     }
 

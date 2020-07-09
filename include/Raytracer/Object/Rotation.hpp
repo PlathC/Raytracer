@@ -16,12 +16,12 @@ namespace rt
     {
         static_assert(axis < 3, "Axis should be in range of [0, 2]");
     public:
-        Rotation(std::unique_ptr<Hittable> object, float angle);
+        Rotation(std::shared_ptr<Hittable> object, float angle);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
     private:
-        std::unique_ptr<Hittable> m_object;
+        std::shared_ptr<Hittable> m_object;
         glm::mat4x4 m_rotationMatrix;
         AABB m_boundingBox;
         bool m_haveBoundingBox;

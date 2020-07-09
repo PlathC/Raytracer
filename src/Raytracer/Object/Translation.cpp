@@ -6,8 +6,8 @@
 
 namespace rt
 {
-    Translation::Translation(std::unique_ptr<Hittable> object, const glm::vec3& movement):
-        m_object(std::move(object)),
+    Translation::Translation(std::shared_ptr<Hittable> object, const glm::vec3& movement):
+        m_object(object),
         m_movement(movement)
     {
     }
@@ -15,7 +15,7 @@ namespace rt
     bool Translation::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
     {
         Ray movedRay = Ray{
-            ray.Origin() + m_movement,
+            ray.Origin() - m_movement,
             ray.Direction(),
             ray.Time()
         };
@@ -33,7 +33,9 @@ namespace rt
         if(!m_object->BoundingBox(t0, t1, box))
             return false;
 
-        box = AABB(box.Minimum() + m_movement, box.Maximum() + m_movement);
+        box = AABB(
+                box.Minimum() + m_movement,
+                box.Maximum() + m_movement);
 
         return true;
     }

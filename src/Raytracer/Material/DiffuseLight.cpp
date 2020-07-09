@@ -6,8 +6,8 @@
 
 namespace rt
 {
-    DiffuseLight::DiffuseLight(std::unique_ptr<rt::Texture> texture):
-        m_texture(std::move(texture))
+    DiffuseLight::DiffuseLight(std::shared_ptr<rt::Texture> texture):
+        m_texture(texture)
     {
     }
 

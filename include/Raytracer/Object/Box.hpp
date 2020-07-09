@@ -17,15 +17,15 @@ namespace rt
     {
     public:
         Box() = default;
-        Box(const glm::vec3& minimum, const glm::vec3& maximum, std::unique_ptr<Material> material);
+        Box(const glm::vec3& minimum, const glm::vec3& maximum, std::shared_ptr<Material> material);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
     private:
         glm::vec3 m_minimum;
         glm::vec3 m_maximum;
-        std::unique_ptr<Material> m_material;
-        std::vector<std::unique_ptr<Hittable>> m_sides;
+        std::shared_ptr<Material> m_material;
+        std::vector<std::shared_ptr<Hittable>> m_sides;
     };
 }
 

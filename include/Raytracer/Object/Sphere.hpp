@@ -15,7 +15,7 @@ namespace rt
     {
     public:
         Sphere() = default;
-        Sphere(const glm::vec3& center, const float radius, std::unique_ptr<Material> material);
+        Sphere(const glm::vec3& center, const float radius, std::shared_ptr<Material> material);
 
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
@@ -23,7 +23,7 @@ namespace rt
         glm::vec3 m_center;
         float m_radius;
 
-        std::unique_ptr<Material> m_material;
+        std::shared_ptr<Material> m_material;
     };
 }
 

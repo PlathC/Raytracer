@@ -2,8 +2,8 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#ifndef RAYTRACER_SCENE_HPP
-#define RAYTRACER_SCENE_HPP
+#ifndef RAYTRACER_RENDERER_HPP
+#define RAYTRACER_RENDERER_HPP
 
 #include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/Environment.hpp"
@@ -30,10 +30,10 @@ namespace rt
         glm::vec3 backgroundColor;
     };
 
-    class Scene
+    class Renderer
     {
     public:
-        Scene(const SceneSettings& settings, Environment environment);
+        Renderer(const SceneSettings& settings, Environment environment);
 
         std::vector<uint8_t> GenerateImage();
 
@@ -47,4 +47,4 @@ namespace rt
     };
 }
 
-#endif //RAYTRACER_SCENE_HPP
+#endif //RAYTRACER_RENDERER_HPP

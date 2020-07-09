@@ -14,7 +14,7 @@ namespace rt
     public:
         ObjLoader(const std::string& file) : MeshLoader(file) {}
 
-        std::unique_ptr<rt::TriangleMesh> Parse() const override;
+        std::shared_ptr<rt::TriangleMesh> Parse() const override;
 
         virtual ~ObjLoader() {}
     };

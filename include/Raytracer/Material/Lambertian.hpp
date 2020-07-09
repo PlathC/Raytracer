@@ -14,12 +14,12 @@ namespace rt
     class Lambertian : public Material
     {
     public:
-        Lambertian(std::unique_ptr<Texture> albedo);
+        Lambertian(std::shared_ptr<Texture> albedo);
 
         virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
 
     private:
-        std::unique_ptr<Texture> m_albedo;
+        std::shared_ptr<Texture> m_albedo;
     };
 }
 

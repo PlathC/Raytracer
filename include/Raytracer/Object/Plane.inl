@@ -2,16 +2,16 @@
 // Created by Platholl on 06/07/2020.
 //
 
-#include "Raytracer/Math/Core.hpp"
+#include "Raytracer/Math/Math.hpp"
 
 namespace rt
 {
     template<uint8_t weakAxis>
-    Plane<weakAxis>::Plane(const glm::vec2& v0, const glm::vec2& v1, const double weakAxisValue, std::unique_ptr<Material> material):
+    Plane<weakAxis>::Plane(const glm::vec2& v0, const glm::vec2& v1, const double weakAxisValue, std::shared_ptr<Material> material):
         m_v0(v0),
         m_v1(v1),
         m_weakAxisValue(weakAxisValue),
-        m_material(std::move(material))
+        m_material(material)
     {
         if constexpr (weakAxis == 0)
         {

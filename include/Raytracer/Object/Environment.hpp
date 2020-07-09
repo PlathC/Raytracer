@@ -24,6 +24,7 @@ namespace rt
         static Environment Earth();
         static Environment SimpleLight();
         static Environment CornellBox();
+        static Environment FinalScene();
 
         void Clear();
         void Add(std::shared_ptr<Hittable> object);
