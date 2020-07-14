@@ -8,10 +8,9 @@
 
 namespace rt
 {
-    Renderer::Renderer(const SceneSettings &settings, Environment environment):
+    Renderer::Renderer(const Scene &settings):
             m_settings(settings),
-            m_environment(std::move(environment)),
-            m_bvh(m_environment, m_settings.camera.Time0(), m_settings.camera.Time1())
+            m_bvh(settings.environment, m_settings.camera.Time0(), m_settings.camera.Time1())
     {
     }
 
@@ -28,7 +27,7 @@ namespace rt
             uint8_t z;
         };
 
-        auto pixelGeneration = [&](uint32_t j, uint32_t i, const SceneSettings& settings) -> PixelValue
+        auto pixelGeneration = [&](uint32_t j, uint32_t i, const Scene& settings) -> PixelValue
         {
             glm::vec3 pixel = glm::vec3 {};
 
