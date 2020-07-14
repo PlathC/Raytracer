@@ -17,39 +17,75 @@ namespace rt
 
     std::vector<uint8_t> Renderer::GenerateImage()
     {
-        const int32_t width  = m_settings.imageSettings.width;
-        const int32_t height = m_settings.imageSettings.height;
-        const uint8_t channel = m_settings.imageSettings.channels;
+        auto img = std::vector<uint8_t>(m_settings.imageSettings.width *
+                m_settings.imageSettings.height * m_settings.imageSettings.channels);
+        ThreadPool pool;
 
-        auto img = std::vector<uint8_t>(width * height * channel);
-        size_t imageIterator = 0;
-
-        for (int32_t j = height-1; j >= 0; --j)
+        struct PixelValue
         {
-            for (int32_t i = 0; i < width; ++i)
+            uint8_t x;
+            uint8_t y;
+            uint8_t z;
+        };
+
+        auto pixelGeneration = [&](uint32_t j, uint32_t i, const SceneSettings& settings) -> PixelValue
+        {
+            glm::vec3 pixel = glm::vec3 {};
+
+            for(int16_t s = 0; s < settings.samplesPerPixel; ++s)
             {
-                glm::vec3 pixel = glm::vec3 {};
+                const int32_t width  = settings.imageSettings.width;
+                const int32_t height = settings.imageSettings.height;
+                const uint8_t channel = settings.imageSettings.channels;
 
-                for(int16_t s = 0; s < m_settings.samplesPerPixel; ++s)
-                {
-                    auto u = (i + rt::Random<double>()) / (width - 1);
-                    auto v = (j + rt::Random<double>()) / (height - 1);
+                auto u = (i + rt::Random<double>()) / (width - 1);
+                auto v = (j + rt::Random<double>()) / (height - 1);
 
-                    rt::Ray ray = m_settings.camera.GetRay(u, v);
-                    pixel += RayColor(ray, m_bvh, m_settings.maxDepth);
-                }
+                rt::Ray ray = settings.camera.GetRay(u, v);
+                pixel += RayColor(ray, m_bvh, settings.maxDepth);
+            }
 
-                // Divide the color total by the number of samples and gamma-correct for gamma=2.0.
-                auto scale = 1.0 / m_settings.samplesPerPixel;
-                float r = std::sqrt(scale * pixel.x);
-                float g = std::sqrt(scale * pixel.y);
-                float b = std::sqrt(scale * pixel.z);
+            // Divide the color total by the number of samples and gamma-correct for gamma=2.0.
+            auto scale = 1.0 / m_settings.samplesPerPixel;
+            float r = std::sqrt(scale * pixel.x);
+            float g = std::sqrt(scale * pixel.y);
+            float b = std::sqrt(scale * pixel.z);
 
-                img[imageIterator++] = static_cast<uint8_t>(256 * rt::Clamp(r, 0.0, 0.999));
-                img[imageIterator++] = static_cast<uint8_t>(256 * rt::Clamp(g, 0.0, 0.999));
-                img[imageIterator++] = static_cast<uint8_t>(256 * rt::Clamp(b, 0.0, 0.999));
+            return {
+                    static_cast<uint8_t>(256 * rt::Clamp(r, 0.0, 0.999)),
+                    static_cast<uint8_t>(256 * rt::Clamp(g, 0.0, 0.999)),
+                    static_cast<uint8_t>(256 * rt::Clamp(b, 0.0, 0.999))
+            };
+        };
+
+        std::vector<std::future<PixelValue>> results {img.size()};
+        size_t imageIterator = 0, pixelIterator = 0;
+
+        for (int32_t j = m_settings.imageSettings.height-1; j >= 0; --j)
+        {
+            for (int32_t i = 0; i < m_settings.imageSettings.width; ++i)
+            {
+                results[pixelIterator++] = pool.AddTask(pixelGeneration, j, i, m_settings);
             }
         }
+        pixelIterator = 0;
+
+        for (int32_t j = m_settings.imageSettings.height-1; j >= 0; --j)
+        {
+            for (int32_t i = 0; i < m_settings.imageSettings.width; ++i)
+            {
+                try {
+                    auto p =  results[pixelIterator++].get();
+                    img[imageIterator++] = p.x;
+                    img[imageIterator++] = p.y;
+                    img[imageIterator++] = p.z;
+                }catch(const std::exception& e)
+                {
+                    std::cerr << e.what() << std::endl;
+                }
+            }
+        }
+
         return img;
     }
 

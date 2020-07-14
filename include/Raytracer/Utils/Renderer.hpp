@@ -5,6 +5,8 @@
 #ifndef RAYTRACER_RENDERER_HPP
 #define RAYTRACER_RENDERER_HPP
 
+#include "Raytracer/Core/ThreadPool.hpp"
+
 #include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/Environment.hpp"
 #include "Raytracer/Object/Sphere.hpp"
