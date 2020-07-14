@@ -18,12 +18,6 @@ After the first book, the result looked like this :
 
 ![](outputs/w-e1stResult.png)
 
-
-Rendered triangles :
-
-![](outputs/triangles.png)
-
-
 Rendered meshes (OBJ) :
 
 ![](outputs/meshLoader.png)
@@ -31,3 +25,7 @@ Rendered meshes (OBJ) :
 BVH result (9s) :
 
 ![](outputs/BVHResult.png)
+
+Final scene (Raytracing : The next week) :
+
+![](outputs/FinalScene.png)
