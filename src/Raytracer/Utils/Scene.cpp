@@ -184,7 +184,7 @@ namespace rt
                 {width, height, channel},
                 samplesPerPixel,
                 maxDepth,
-                {1, 1, 1},
+                {0, 0, 0},
                 Environment::FinalScene()
         };
     }
