@@ -81,7 +81,7 @@ namespace rt
         // Create Materials
         std::vector<uint32_t> materialIndexes = std::vector<uint32_t>(numFaces, 0);
         auto materials = std::vector<std::shared_ptr<Material>>(1);
-        materials[0] = std::make_shared<rt::Lambertian>(std::make_unique<SolidColor>(glm::vec3(0.7, 0.7, 0.7)));
+        materials[0] = std::make_shared<rt::Lambertian>(std::make_unique<SolidColor>(glm::vec3(0.9, 0.9, 0.9)));
 
         return std::make_shared<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
                 materialIndexes, materials});
