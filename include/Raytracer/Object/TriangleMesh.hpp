@@ -46,7 +46,7 @@ namespace rt
         std::vector<uint32_t> m_trianglesIndexes;
         std::vector<glm::vec3> m_vertices;
         std::vector<glm::vec3> m_normals;
-        std::vector<std::shared_ptr<rt::IHittable>> m_triangles;
+        std::vector<std::shared_ptr<rt::Triangle>> m_triangles;
 
         // TODO: Add support of st coordinates
         // std::vector<Vec2> m_stCoordinates

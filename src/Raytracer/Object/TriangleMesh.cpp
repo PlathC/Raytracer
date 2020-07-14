@@ -213,7 +213,13 @@ namespace rt
 
     [[nodiscard]] std::vector<std::shared_ptr<rt::IHittable>> TriangleMesh::Objects() const
     {
-        std::vector<std::shared_ptr<rt::IHittable>> result (m_triangles);
+        std::vector<std::shared_ptr<rt::IHittable>> result;
+        result.reserve(m_triangles.size());
+        for(const auto& triangle : m_triangles)
+        {
+            result.push_back(triangle);
+        }
+
         return result;
     }
 
