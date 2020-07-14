@@ -6,12 +6,11 @@
 ## Features 
 
 | Feature                          | Progress                  |
-|-------------------l---------------|---------------------------|
+|----------------------------------|---------------------------|
 | Raytraced primitive              | Done (Spheres, Triangles) |
 | Meshes                           | Done (Obj)                |
+| Multi-threading                  | Done (CPU)                |
 | PBR                              | Todo                      |
-| Subpixel rendering               | Todo                      |
-| Multi-threading                  | Todo                      |
 
 ## Results
 
