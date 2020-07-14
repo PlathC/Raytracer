@@ -13,6 +13,6 @@ namespace rt
 
     glm::vec3 PerlinTexture::Value(const glm::vec2& uv, const glm::vec3& point) const
     {
-        return glm::vec3(1, 1, 1) * 0.5f * static_cast<float>(1.f + sin(m_scale * point.z + 10 * m_perlin.Turbulence(point)));
+        return glm::vec3(1, 1, 1) * 0.5f * static_cast<float>(1.f + std::sin(m_scale * point.z + 10 * m_perlin.Turbulence(point)));
     }
 }
