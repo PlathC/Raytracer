@@ -36,7 +36,7 @@ namespace rt
         }
         else if (std::is_floating_point_v<T>)
         {
-            static std::uniform_real_distribution<T> distribution(min, max);
+            std::uniform_real_distribution<T> distribution(min, max);
             return distribution(generator);
         }
     }
