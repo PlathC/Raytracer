@@ -24,10 +24,7 @@ namespace rt
         glm::vec3 normal = glm::cross(A, B);
 
         // Prefer normalized normals
-        if(glm::length(normal) > 0.0)
-        {
-            normal = glm::normalize(normal);
-        }
+        normal = glm::normalize(normal);
         m_v0.normal = normal;
         m_v1.normal = normal;
         m_v2.normal = normal;
@@ -63,12 +60,12 @@ namespace rt
 
         const double t = glm::dot(v0v2, qVec) * invDet;
 
-        if (t <= 0.0) // Si distance négative (le triangle se trouve "derrière" le rayon), pas d'intersection
+        if (t <= 0.0)
             return false;
 
-        const float w = 1 - (u - v);
+        const float w = 1 - u - v;
 
-        //if(t < 0) return false;
+        if(t < 0) return false;
 
         glm::vec3 normal = glm::normalize(w * m_v0.normal
                                         + u * m_v1.normal

@@ -53,7 +53,6 @@ namespace rt
                 }
                 else
                 {
-                    // TODO: replace triangle ctor
                     uint32_t in1 = settings.normalsIndexes[k];
                     uint32_t in2 = settings.normalsIndexes[k + j + 1];
                     uint32_t in3 = settings.normalsIndexes[k + j + 2];
