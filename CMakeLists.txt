@@ -141,7 +141,8 @@ set(RT_HEADER
         include/Raytracer/Object/ConstantDensityMedium.hpp
         include/Raytracer/Material/Isotropic.hpp
         include/Raytracer/Core/ThreadPool.hpp
-        include/Raytracer/Utils/Scene.hpp)
+        include/Raytracer/Utils/Scene.hpp
+        )
 
 set(RT_SRC
         src/Raytracer/main.cpp
@@ -171,7 +172,8 @@ set(RT_SRC
         src/Raytracer/Object/ConstantDensityMedium.cpp
         src/Raytracer/Material/Isotropic.cpp
         src/Raytracer/Core/ThreadPool.cpp
-        src/Raytracer/Utils/Scene.cpp)
+        src/Raytracer/Utils/Scene.cpp
+        )
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 

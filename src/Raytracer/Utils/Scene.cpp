@@ -5,6 +5,7 @@
 #include "Raytracer/Utils/Scene.hpp"
 
 #include "Raytracer/Material/DiffuseLight.hpp"
+#include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
 #include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/Sphere.hpp"
