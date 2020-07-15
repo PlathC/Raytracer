@@ -28,9 +28,14 @@ namespace rt
         const std::string materialFolder = path.parent_path().string() + "/";
         bool ret = tinyobj::LoadObj(&meshAttributes, &meshShapes, &meshMaterials, &err, m_file.c_str(), materialFolder.c_str());
 
+
         if (!ret)
         {
             throw std::runtime_error("Error while parsing obj file : " + err);
+        }
+        else if(!err.empty())
+        {
+            std::cerr << err << "\n";
         }
 
         uint32_t numFaces = 0;
