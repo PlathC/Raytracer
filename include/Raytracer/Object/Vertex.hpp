@@ -12,7 +12,7 @@ namespace rt
     struct Vertex
     {
         Vertex() : position(), normal() {}
-        Vertex(const glm::vec3& pos = {0, 0, 0},
+        Vertex(const glm::vec3& pos,
                const glm::vec3& norm = {0, 0, 0},
                const glm::vec3& col = {0, 0, 0}) :
            position(pos),

@@ -32,6 +32,8 @@ namespace rt
     public:
         TriangleMesh(const MeshSettings& settings);
 
+        void ComputeNormals(const MeshSettings& settings);
+
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
@@ -44,7 +46,7 @@ namespace rt
         uint32_t m_trianglesNumber;
 
         std::vector<uint32_t> m_trianglesIndexes;
-        std::vector<glm::vec3> m_vertices;
+        std::vector<rt::Vertex> m_vertices;
         std::vector<glm::vec3> m_normals;
         std::vector<std::shared_ptr<rt::Triangle>> m_triangles;
 

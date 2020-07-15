@@ -13,11 +13,17 @@ namespace rt
 {
     TriangleMesh::TriangleMesh(const MeshSettings& settings):
         m_trianglesNumber(0),
-        m_vertices(settings.vertices),
+        m_vertices(settings.vertices.size()),
         m_normals(settings.normals),
         m_materialIndexes(),
         m_materials(settings.materials)
     {
+        for(size_t i = 0; i < settings.vertices.size(); i++)
+        {
+            // TODO: Handle vertex color
+            m_vertices[i] = Vertex(settings.vertices[i], glm::vec3(0, 0, 0), glm::vec3(0, 0, 0));
+        }
+
         // Compute triangles number
         for(uint32_t i = 0; i < settings.facesNumber; ++i)
         {
@@ -27,6 +33,9 @@ namespace rt
 
         m_trianglesIndexes.resize(m_trianglesNumber * 3);
         m_triangles.reserve(m_trianglesNumber);
+
+        if(m_normals.empty())
+            ComputeNormals(settings);
 
         uint32_t l = 0;
         m_materialIndexes.reserve(m_trianglesNumber);
@@ -44,11 +53,10 @@ namespace rt
 
                 if(m_normals.empty())
                 {
-                    auto nTriangle = std::make_shared<Triangle>(rt::Vertex(m_vertices[i1], glm::vec3(0, 0, 0)),
-                                              rt::Vertex(m_vertices[i2], glm::vec3(0, 0, 0)),
-                                              rt::Vertex(m_vertices[i3], glm::vec3(0, 0, 0)),
+                    auto nTriangle = std::make_shared<Triangle>(m_vertices[i1],
+                                                                m_vertices[i2],
+                                                                m_vertices[i3],
                                                                 m_materials[settings.materialIndexes[i]]);
-                    nTriangle->ComputeNormal();
                     m_triangles.emplace_back(nTriangle);
                 }
                 else
@@ -57,13 +65,13 @@ namespace rt
                     uint32_t in2 = settings.normalsIndexes[k + j + 1];
                     uint32_t in3 = settings.normalsIndexes[k + j + 2];
 
-                    glm::vec3 n0 = m_normals[in1];
-                    glm::vec3 n1 = m_normals[in2];
-                    glm::vec3 n2 = m_normals[in3];
+                    m_vertices[i1].normal = m_normals[in1];
+                    m_vertices[i2].normal = m_normals[in2];
+                    m_vertices[i2].normal = m_normals[in3];
                     m_triangles.emplace_back(std::make_shared<rt::Triangle>(
-                            rt::Vertex(m_vertices[i1], n0),
-                            rt::Vertex(m_vertices[i2], n1),
-                            rt::Vertex(m_vertices[i3], n2),
+                            m_vertices[i1],
+                            m_vertices[i2],
+                            m_vertices[i3],
                             m_materials[settings.materialIndexes[i]]
                     ));
                 }
@@ -71,6 +79,36 @@ namespace rt
                 l += 3;
             }
             k += settings.facesIndexes[i];
+        }
+    }
+
+    void TriangleMesh::ComputeNormals(const MeshSettings& settings)
+    {
+        uint32_t l = 0;
+        for(uint32_t i = 0, k = 0; i < settings.facesNumber; ++i)
+        {
+            for(uint32_t j = 0; j < settings.facesIndexes[i] - 2; ++j)
+            {
+                uint32_t i1 = settings.verticesIndexes[k];
+                uint32_t i2 = settings.verticesIndexes[k + j + 1];
+                uint32_t i3 = settings.verticesIndexes[k + j + 2];
+
+                m_trianglesIndexes[l]     = i1;
+                m_trianglesIndexes[l + 1] = i2;
+                m_trianglesIndexes[l + 2] = i3;
+
+                Triangle::ComputeNormal(
+                        m_vertices[i1],
+                        m_vertices[i2],
+                        m_vertices[i3]);
+                l += 3;
+            }
+            k += settings.facesIndexes[i];
+        }
+
+        for(auto& vertex : m_vertices)
+        {
+            vertex.normal = glm::normalize(vertex.normal);
         }
     }
 
@@ -108,8 +146,8 @@ namespace rt
         {
             for(uint8_t c = 0; c < 3; c++)
             {
-                min[c] = std::fmin(min[c], vertex[c]);
-                max[c] = std::fmax(max[c], vertex[c]);
+                min[c] = std::fmin(min[c], vertex.position[c]);
+                max[c] = std::fmax(max[c], vertex.position[c]);
             }
         }
         box = AABB(min, max);

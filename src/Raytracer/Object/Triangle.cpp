@@ -17,17 +17,16 @@ namespace rt
     {
     }
 
-    void Triangle::ComputeNormal()
+    void Triangle::ComputeNormal(rt::Vertex& v0, rt::Vertex& v1, rt::Vertex& v2)
     {
-        glm::vec3 A = m_v1.position - m_v0.position;
-        glm::vec3 B = m_v2.position - m_v0.position;
+        glm::vec3 A = v1.position - v0.position;
+        glm::vec3 B = v2.position - v0.position;
         glm::vec3 normal = glm::cross(A, B);
 
         // Prefer normalized normals
-        normal = glm::normalize(normal);
-        m_v0.normal = normal;
-        m_v1.normal = normal;
-        m_v2.normal = normal;
+        v0.normal += normal;
+        v1.normal += normal;
+        v2.normal += normal;
     }
 
     bool Triangle::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
@@ -37,15 +36,15 @@ namespace rt
         const glm::vec3 v0v1 = m_v1.position - m_v0.position;
         const glm::vec3 v0v2 = m_v2.position - m_v0.position;
         const glm::vec3 pVec = glm::cross(ray.Direction(), v0v2);
-        const double det = glm::dot(v0v1, pVec);
+        const float det = glm::dot(v0v1, pVec);
 
-    #ifdef CULLING
+    #ifndef CULLING
         // if the determinant is negative the triangle is backfacing
         // if the determinant is close to 0, the ray misses the triangle
-        if (det < rt::Epsilon) return false;
+        if (det < rt::Epsilon<float>) return false;
     #else
         // ray and triangle are parallel if det is close to 0
-        if (std::abs(det) < rt::Epsilon<double>) return false;
+        if (std::fabs(det) < rt::Epsilon<float>) return false;
     #endif
 
         const double invDet = 1. / det;
