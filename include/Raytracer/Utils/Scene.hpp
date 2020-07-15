@@ -35,6 +35,8 @@ namespace rt
         static Scene SimpleLight();
         static Scene CornellBox();
         static Scene FinalScene();
+        static Scene Suzanne();
+        static Scene Denis();
     };
 }
 
