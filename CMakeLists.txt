@@ -175,7 +175,7 @@ set(RT_SRC
 
 add_executable(Raytracer ${RT_HEADER} ${RT_SRC} )
 
-target_compile_options(${PROJECT_NAME} PUBLIC ${RAYTRACER_COMPILATION_FLAGS})
+target_compile_options(${PROJECT_NAME} PRIVATE ${RAYTRACER_COMPILATION_FLAGS})
 
 if (CMAKE_COMPILER_IS_GNUCC)
     target_link_libraries(${PROJECT_NAME} PRIVATE stdc++fs)
