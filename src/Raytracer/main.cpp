@@ -19,7 +19,33 @@
 
 int main(int argc, char** argv)
 {
-    auto scene = rt::Scene::TwoSpheres();
+    constexpr double aspectRatio = 16. / 16.;
+
+    constexpr uint16_t width           = 500;
+    const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
+    constexpr uint16_t channel         = 3;
+    constexpr uint16_t samplesPerPixel = 10;
+    const uint8_t maxDepth             = 50;
+
+    glm::vec3 lookFrom = glm::vec3{0, 0, 4};
+    glm::vec3 lookAt   = glm::vec3{0, 0, 0};
+    glm::vec3 vup      = glm::vec3{0., 1., 0.};
+    float distToFocus  = 10.f;
+    float aperture     = 0.0f;
+
+    rt::Environment environment;
+
+    rt::ObjLoader loader{"./samples/suzanne.obj"};
+    environment.Add(std::make_shared<rt::BVHNode>(*loader.Parse(), 0, 1));
+
+    auto scene = rt::Scene{
+            rt::Camera(lookFrom, lookAt, vup, 40, aspectRatio, aperture, distToFocus),
+            {width, height, channel},
+            samplesPerPixel,
+            maxDepth,
+            {0.7, 0.7, 0.7},
+            environment
+    };
 
     rt::Renderer renderer = rt::Renderer { scene };
 
