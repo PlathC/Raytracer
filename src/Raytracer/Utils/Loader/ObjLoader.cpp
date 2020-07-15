@@ -5,6 +5,7 @@
 #include "Raytracer/Utils/Loader/ObjLoader.hpp"
 
 #include <array>
+#include <filesystem>
 
 #define TINYOBJLOADER_IMPLEMENTATION
 #include <tiny_obj_loader.h>
@@ -12,6 +13,8 @@
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
 #include "Raytracer/Material/PerlinTexture.hpp"
+
+namespace fs = std::filesystem;
 
 namespace rt
 {
@@ -21,8 +24,9 @@ namespace rt
         std::vector<tinyobj::shape_t> meshShapes;
         std::vector<tinyobj::material_t> meshMaterials;
         std::string err;
-
-        bool ret = tinyobj::LoadObj(&meshAttributes, &meshShapes, &meshMaterials, &err,m_file.c_str());
+        auto path = fs::path(m_file);
+        const std::string materialFolder = path.parent_path().string() + "/";
+        bool ret = tinyobj::LoadObj(&meshAttributes, &meshShapes, &meshMaterials, &err, m_file.c_str(), materialFolder.c_str());
 
         if (!ret)
         {
@@ -51,6 +55,9 @@ namespace rt
                                    meshAttributes.normals[3 * i + 2]);
         }
 
+        // Create Materials
+        std::vector<uint32_t> materialIndexes;
+
         size_t vertexCounter = 0;
         for (size_t s = 0; s < meshShapes.size(); s++)
         {
@@ -72,16 +79,32 @@ namespace rt
                     // TODO : Handle text coordinates + materials
                 }
                 index_offset += verticesNumber;
+                if(meshShapes[s].mesh.material_ids[f] < 0)
+                    materialIndexes.push_back(0);
+                else
+                    materialIndexes.push_back(meshShapes[s].mesh.material_ids[f]);
 
                 // TODO : Same
                 numFaces++;
             }
         }
 
-        // Create Materials
-        std::vector<uint32_t> materialIndexes = std::vector<uint32_t>(numFaces, 0);
-        auto materials = std::vector<std::shared_ptr<Material>>(1);
-        materials[0] = std::make_shared<rt::Lambertian>(std::make_unique<SolidColor>(glm::vec3(0.9, 0.9, 0.9)));
+        auto materials = std::vector<std::shared_ptr<Material>>(meshMaterials.size());
+        size_t materialIterator = 0;
+        for(auto& material : meshMaterials)
+        {
+            glm::vec3 color = {
+                    material.diffuse[0],
+                    material.diffuse[1],
+                    material.diffuse[2],
+            };
+            materials[materialIterator++] = std::make_shared<rt::Lambertian>(std::make_unique<SolidColor>(color));
+        }
+
+        if(materials.empty())
+        {
+            materials.push_back(std::make_shared<rt::Lambertian>(std::make_unique<SolidColor>(glm::vec3(0.5, 0.5, 0.5))));
+        }
 
         return std::make_shared<rt::TriangleMesh>(MeshSettings{numFaces, faceIndex, vertexIndex, vertices, normalIndex, normals,
                 materialIndexes, materials});
