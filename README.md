@@ -11,7 +11,6 @@
 | Meshes                           | Done (Obj)                |
 | Multi-threading                  | Done (CPU)                |
 | IsoSurface                       | Todo                      |
-| Gpu                              | Todo                      |
 | PBR                              | Todo                      |
 
 ## Results
