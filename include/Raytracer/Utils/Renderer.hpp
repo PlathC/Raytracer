@@ -20,7 +20,7 @@ namespace rt
     public:
         Renderer(const Scene& settings);
 
-        std::vector<uint8_t> GenerateImage();
+        std::vector<float> GenerateImage();
 
     private:
         glm::vec3 RayColor(const rt::Ray& ray, const rt::IHittable& world, const int depth) const;

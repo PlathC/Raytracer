@@ -14,17 +14,17 @@ namespace rt
     {
     }
 
-    std::vector<uint8_t> Renderer::GenerateImage()
+    std::vector<float> Renderer::GenerateImage()
     {
-        auto img = std::vector<uint8_t>(m_settings.imageSettings.width *
+        auto img = std::vector<float>(m_settings.imageSettings.width *
                 m_settings.imageSettings.height * m_settings.imageSettings.channels);
         ThreadPool pool;
 
         struct PixelValue
         {
-            uint8_t x;
-            uint8_t y;
-            uint8_t z;
+            float x;
+            float y;
+            float z;
         };
 
         auto pixelGeneration = [&](uint32_t j, uint32_t i, const Scene& settings) -> PixelValue
@@ -51,9 +51,9 @@ namespace rt
             float b = std::sqrt(scale * pixel.z);
 
             return {
-                    static_cast<uint8_t>(256 * rt::Clamp(r, 0.0, 0.999)),
-                    static_cast<uint8_t>(256 * rt::Clamp(g, 0.0, 0.999)),
-                    static_cast<uint8_t>(256 * rt::Clamp(b, 0.0, 0.999))
+                    static_cast<float>(rt::Clamp(r, 0.0, 0.999)),
+                    static_cast<float>(rt::Clamp(g, 0.0, 0.999)),
+                    static_cast<float>(rt::Clamp(b, 0.0, 0.999))
             };
         };
 

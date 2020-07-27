@@ -13,9 +13,9 @@ namespace rt
         m_time0(t0),
         m_time1(t1)
     {
-        const float theta = DegreesToRadians(vFov);
-        const float h = std::tan(theta / 2.);
-        const float viewportHeight = 2.0 * h;
+        const auto theta = static_cast<float>(DegreesToRadians(vFov));
+        const float h = std::tan(theta / 2.f);
+        const float viewportHeight = 2.f * h;
         const float viewportWidth = aspectRatio * viewportHeight;
 
         w = glm::normalize(lookFrom - lookAt);

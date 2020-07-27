@@ -77,7 +77,7 @@ namespace rt
 
     inline glm::vec3 Refract(const glm::vec3& uv, const glm::vec3& n, const float etaiOverEtat)
     {
-        float cosTheta = std::fmin(glm::dot(-uv, n), 1.);
+        float cosTheta = std::fmin(glm::dot(-uv, n), 1.f);
         glm::vec3 rOutParallel =  etaiOverEtat * (uv + cosTheta * n);
         glm::vec3 rOutPerp = -std::sqrt(1.f - glm::length2(rOutParallel)) * n;
         return rOutParallel + rOutPerp;
