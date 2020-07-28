@@ -2,10 +2,10 @@
 // Created by Platholl on 06/07/2020.
 //
 
-#include "Raytracer/Material/ImageTexture.hpp"
-
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
+
+#include "Raytracer/Material/ImageTexture.hpp"
 
 namespace rt
 {

@@ -2,7 +2,7 @@
 // Created by Platholl on 28/06/2020.
 //
 #ifdef RAYTRACER_WITH_OID
-#include <OpenImageDenoise/oidn.hpp>
+    #include <OpenImageDenoise/oidn.hpp>
 #endif // RAYTRACER_WITH_OID
 
 #include "Raytracer/Utils/Renderer.hpp"

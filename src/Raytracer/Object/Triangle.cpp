@@ -2,10 +2,10 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#include "Raytracer/Object/Triangle.hpp"
-
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Math/Math.hpp"
+
+#include "Raytracer/Object/Triangle.hpp"
 
 namespace rt
 {

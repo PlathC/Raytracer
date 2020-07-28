@@ -2,9 +2,9 @@
 // Created by Platholl on 06/07/2020.
 //
 
-#include "Raytracer/Material/DiffuseLight.hpp"
-
 #include <utility>
+
+#include "Raytracer/Material/DiffuseLight.hpp"
 
 namespace rt
 {

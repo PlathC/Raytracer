@@ -3,7 +3,6 @@
 //
 
 #include "Raytracer/Material/Metal.hpp"
-
 #include "Raytracer/Math/Math.hpp"
 
 namespace rt

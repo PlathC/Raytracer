@@ -2,12 +2,11 @@
 // Created by Platholl on 03/07/2020.
 //
 
-#include "Raytracer/Object/TriangleMesh.hpp"
-
-#include "Raytracer/Math/Math.hpp"
 #include "Raytracer/Material/Material.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
+#include "Raytracer/Math/Math.hpp"
+#include "Raytracer/Object/TriangleMesh.hpp"
 
 namespace rt
 {

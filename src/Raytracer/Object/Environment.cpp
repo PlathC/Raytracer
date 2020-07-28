@@ -2,8 +2,6 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#include "Raytracer/Object/Environment.hpp"
-
 #include "Raytracer/Material/Dielectric.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
@@ -16,6 +14,7 @@
 #include "Raytracer/Object/Box.hpp"
 #include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/ConstantDensityMedium.hpp"
+#include "Raytracer/Object/Environment.hpp"
 #include "Raytracer/Object/FlipFace.hpp"
 #include "Raytracer/Object/MovingSphere.hpp"
 #include "Raytracer/Object/Plane.hpp"

@@ -2,9 +2,9 @@
 // Created by Platholl on 28/06/2020.
 //
 
-#include "Raytracer/Object/Sphere.hpp"
-
 #include <glm/gtx/norm.hpp>
+
+#include "Raytracer/Object/Sphere.hpp"
 
 namespace rt
 {

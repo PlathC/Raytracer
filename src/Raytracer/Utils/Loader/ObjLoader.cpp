@@ -2,8 +2,6 @@
 // Created by Platholl on 05/07/2020.
 //
 
-#include "Raytracer/Utils/Loader/ObjLoader.hpp"
-
 #include <array>
 #include <filesystem>
 
@@ -13,6 +11,8 @@
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
 #include "Raytracer/Material/PerlinTexture.hpp"
+
+#include "Raytracer/Utils/Loader/ObjLoader.hpp"
 
 namespace fs = std::filesystem;
 

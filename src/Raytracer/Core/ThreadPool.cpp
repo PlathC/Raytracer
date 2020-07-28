@@ -2,8 +2,10 @@
 // Created by Platholl on 14/07/2020.
 //
 
-#include "Raytracer/Core/ThreadPool.hpp"
 #include <iostream>
+
+#include "Raytracer/Core/ThreadPool.hpp"
+
 namespace rt
 {
     ThreadPool::ThreadPool(const uint32_t threadNumber)

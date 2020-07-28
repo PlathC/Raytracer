@@ -2,7 +2,6 @@
 // Created by Platholl on 14/07/2020.
 //
 
-#include "Raytracer/Utils/Scene.hpp"
 
 #include "Raytracer/Material/DiffuseLight.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
@@ -10,6 +9,7 @@
 #include "Raytracer/Object/BvhNode.hpp"
 #include "Raytracer/Object/Sphere.hpp"
 #include "Raytracer/Utils/Loader/ObjLoader.hpp"
+#include "Raytracer/Utils/Scene.hpp"
 
 namespace rt
 {

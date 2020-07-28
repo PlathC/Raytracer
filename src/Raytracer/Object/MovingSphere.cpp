@@ -2,11 +2,10 @@
 // Created by Platholl on 05/07/2020.
 //
 
-#include "Raytracer/Object/MovingSphere.hpp"
-
 #include <glm/gtx/norm.hpp>
 
 #include "Raytracer/Material/Material.hpp"
+#include "Raytracer/Object/MovingSphere.hpp"
 
 namespace rt
 {

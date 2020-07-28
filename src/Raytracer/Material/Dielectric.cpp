@@ -4,8 +4,6 @@
 
 #include "Raytracer/Material/Dielectric.hpp"
 
-#include "Raytracer/Math/Math.hpp"
-
 namespace rt
 {
     Dielectric::Dielectric(const double refraction):
