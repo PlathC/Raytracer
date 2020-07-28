@@ -30,3 +30,7 @@ BVH result (9s) :
 Final scene (Raytracing : The next week) :
 
 ![](outputs/FinalScene.png)
+
+Denoise with OpenImageDenoise :
+
+![](outputs/noise2.png)![](outputs/noise1.png) 
