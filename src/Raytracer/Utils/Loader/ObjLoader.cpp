@@ -63,31 +63,31 @@ namespace rt
         // Create Materials
         std::vector<uint32_t> materialIndexes;
 
-        size_t vertexCounter = 0;
-        for (size_t s = 0; s < meshShapes.size(); s++)
+        //size_t vertexCounter = 0;
+        for (auto & meshShape : meshShapes)
         {
             // Loop over faces(polygon)
             size_t index_offset = 0;
-            for (size_t f = 0; f < meshShapes[s].mesh.num_face_vertices.size(); f++)
+            for (size_t f = 0; f < meshShape.mesh.num_face_vertices.size(); f++)
             {
-                uint8_t verticesNumber = meshShapes[s].mesh.num_face_vertices[f];
+                uint8_t verticesNumber = meshShape.mesh.num_face_vertices[f];
                 faceIndex.push_back(verticesNumber);
 
                 // Loop over vertices in the face.
                 for (size_t v = 0; v < verticesNumber; v++)
                 {
                     // access to vertex
-                    tinyobj::index_t idx = meshShapes[s].mesh.indices[index_offset + v];
+                    tinyobj::index_t idx = meshShape.mesh.indices[index_offset + v];
                     vertexIndex.push_back(idx.vertex_index);
                     normalIndex.push_back(idx.normal_index);
 
                     // TODO : Handle text coordinates + materials
                 }
                 index_offset += verticesNumber;
-                if(meshShapes[s].mesh.material_ids[f] < 0)
+                if(meshShape.mesh.material_ids[f] < 0)
                     materialIndexes.push_back(0);
                 else
-                    materialIndexes.push_back(meshShapes[s].mesh.material_ids[f]);
+                    materialIndexes.push_back(meshShape.mesh.material_ids[f]);
 
                 // TODO : Same
                 numFaces++;

@@ -9,7 +9,7 @@ namespace rt
     BVHNode::BVHNode(std::vector<std::shared_ptr<IHittable>> objects, const size_t start, const size_t end,
             const double time0, const double time1)
     {
-        const uint8_t axis = Random(0, 2);
+        const auto axis = static_cast<uint8_t>(Random<int>(0, 2));
         auto comparator = (axis == 0) ? CompareBoxX
                         : (axis == 1) ? CompareBoxY
                         : CompareBoxZ;
@@ -65,7 +65,7 @@ namespace rt
         return hitLeft || hitRight;
     }
 
-    bool BVHNode::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool BVHNode::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         box = m_box;
         return true;

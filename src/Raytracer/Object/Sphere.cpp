@@ -63,7 +63,7 @@ namespace rt
         return false;
     }
 
-    bool Sphere::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool Sphere::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         box = AABB{m_center - glm::vec3(m_radius, m_radius, m_radius),
                    m_center + glm::vec3(m_radius, m_radius, m_radius)};

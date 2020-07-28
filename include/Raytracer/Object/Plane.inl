@@ -34,7 +34,7 @@ namespace rt
     bool Plane<weakAxis>::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
     {
         // Finding t based on z value
-        float t = (m_weakAxisValue - ray.Origin()[weakAxis]) / ray.Direction()[weakAxis];
+        float t = static_cast<float>((m_weakAxisValue) - ray.Origin()[weakAxis] / ray.Direction()[weakAxis]);
         if(t < tMin || t > tMax)
             return false;
 
@@ -64,15 +64,15 @@ namespace rt
     }
 
     template<uint8_t weakAxis>
-    bool Plane<weakAxis>::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool Plane<weakAxis>::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         auto firstValue = glm::vec3();
-        firstValue[weakAxis] = m_weakAxisValue - 0.0001;
+        firstValue[weakAxis] = static_cast<float>(m_weakAxisValue - 0.0001f);
         firstValue[m_firstOtherAxis] = m_v0.x;
         firstValue[m_secondOtherAxis] = m_v0.y;
 
         auto secondValue = glm::vec3();
-        secondValue[weakAxis] = m_weakAxisValue + 0.0001;
+        secondValue[weakAxis] = static_cast<float>(m_weakAxisValue + 0.0001f);
         secondValue[m_firstOtherAxis] = m_v1.x;
         secondValue[m_secondOtherAxis] = m_v1.y;
 

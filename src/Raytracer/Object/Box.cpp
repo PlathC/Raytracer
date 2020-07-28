@@ -18,6 +18,7 @@ namespace rt
                 m_maximum.z,
                 nullptr
         ));
+
         m_sides.emplace_back(std::make_unique<rt::FlipFace>(std::make_unique<rt::Plane<2>>(
                 glm::vec2(m_minimum.x, m_minimum.y),
                 glm::vec2(m_maximum.x, m_maximum.y),
@@ -74,7 +75,7 @@ namespace rt
         return hitAnything;
     }
 
-    bool Box::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool Box::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         box = AABB(m_minimum, m_maximum);
         return true;

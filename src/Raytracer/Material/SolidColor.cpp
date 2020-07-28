@@ -10,7 +10,7 @@ namespace rt
         m_color(color)
     {}
 
-    glm::vec3 SolidColor::Value(const glm::vec2& uv, const glm::vec3& point) const
+    glm::vec3 SolidColor::Value(const glm::vec2& /*uv*/, const glm::vec3& /*point*/) const
     {
         return m_color;
     }

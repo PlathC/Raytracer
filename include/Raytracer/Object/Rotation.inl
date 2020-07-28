@@ -73,7 +73,7 @@ namespace rt
     }
 
     template<uint8_t axis>
-    bool Rotation<axis>::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool Rotation<axis>::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         box = m_boundingBox;
         return m_haveBoundingBox;

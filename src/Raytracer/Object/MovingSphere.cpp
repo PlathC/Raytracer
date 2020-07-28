@@ -23,7 +23,7 @@ namespace rt
 
     bool MovingSphere::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
     {
-        glm::vec3 oc = ray.Origin() - Center(ray.Time());
+        glm::vec3 oc = ray.Origin() - Center(static_cast<float>(ray.Time()));
         auto a = glm::length2(ray.Direction());
         auto halfB = glm::dot(oc, ray.Direction());
         auto c = glm::length2(oc) - m_radius * m_radius;
@@ -37,7 +37,7 @@ namespace rt
             {
                 record.t = temp;
                 record.point = ray.At(record.t);
-                glm::vec3 outwardNormal = (record.point - Center(ray.Time())) / m_radius;
+                glm::vec3 outwardNormal = (record.point - Center(static_cast<float>(ray.Time()))) / m_radius;
                 record.SetFaceNormal(ray, outwardNormal);
                 record.material = m_material.get();
                 return true;
@@ -48,7 +48,7 @@ namespace rt
             {
                 record.t = temp;
                 record.point = ray.At(record.t);
-                glm::vec3 outwardNormal = (record.point - Center(ray.Time())) / m_radius;
+                glm::vec3 outwardNormal = (record.point - Center(static_cast<float>(ray.Time()))) / m_radius;
                 record.SetFaceNormal(ray, outwardNormal);
                 record.material = m_material.get();
                 return true;
@@ -57,7 +57,7 @@ namespace rt
         return false;
     }
 
-    bool MovingSphere::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool MovingSphere::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         AABB box0 = AABB{m_center0 - glm::vec3(m_radius, m_radius, m_radius),
                          m_center0 + glm::vec3(m_radius, m_radius, m_radius)};

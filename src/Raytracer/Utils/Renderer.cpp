@@ -44,8 +44,8 @@ namespace rt
                 const int32_t width  = settings.imageSettings.width;
                 const int32_t height = settings.imageSettings.height;
 
-                auto u = (i + rt::Random<double>()) / (width - 1);
-                auto v = (j + rt::Random<double>()) / (height - 1);
+                auto u = static_cast<float>((i + rt::Random<float>()) / (width - 1.f));
+                auto v = static_cast<float>((j + rt::Random<float>()) / (height - 1.f));
 
                 rt::Ray ray = settings.camera.GetRay(u, v);
                 result += RayColor(ray, m_bvh, settings.maxDepth);
@@ -74,19 +74,21 @@ namespace rt
 
         std::vector<std::future<PixelValues>> results {m_generatedImage.size()};
         size_t imageIterator = 0, albedoIterator = 0, pixelIterator = 0;
+        int32_t height = m_settings.imageSettings.height;
+        int32_t width = m_settings.imageSettings.width;
 
-        for (int32_t j = m_settings.imageSettings.height-1; j >= 0; --j)
+        for (int32_t j = height-1; j >= 0; --j)
         {
-            for (int32_t i = 0; i < m_settings.imageSettings.width; ++i)
+            for (int32_t i = 0; i < width; ++i)
             {
                 results[pixelIterator++] = pool.AddTask(pixelGeneration, j, i, m_settings);
             }
         }
         pixelIterator = 0;
 
-        for (int32_t j = m_settings.imageSettings.height-1; j >= 0; --j)
+        for (int32_t j = height-1; j >= 0; --j)
         {
-            for (int32_t i = 0; i < m_settings.imageSettings.width; ++i)
+            for (int32_t i = 0; i < width; ++i)
             {
                 try
                 {
@@ -118,7 +120,7 @@ namespace rt
             throw std::runtime_error(errorMessage);
         }
 
-        device.setErrorFunction( [] (void* userPtr, oidn::Error error, const char* message) {
+        device.setErrorFunction( [] (void* /*userPtr*/, oidn::Error /*error*/, const char* message) {
             throw std::runtime_error(message);
         });
 

@@ -30,7 +30,7 @@ namespace rt
         auto j = static_cast<int>(std::floor(point.y));
         auto k = static_cast<int>(std::floor(point.z));
 
-        std::array<std::array<std::array<glm::vec3, 2>, 2>, 2> values;
+        std::array<std::array<std::array<glm::vec3, 2>, 2>, 2> values{};
         for(uint8_t di = 0; di < 2; di++)
         {
             for(uint8_t dj = 0; dj < 2; dj++)
@@ -68,7 +68,7 @@ namespace rt
         p = std::vector<int>(pointCount);
         for(size_t i = 0; i < p.size(); i++)
         {
-            p[i] = i;
+            p[i] = static_cast<int>(i);
         }
 
         Permute(p, pointCount);
@@ -78,7 +78,7 @@ namespace rt
     {
         for(size_t i = n - 1; i > 0; i--)
         {
-            int target = rt::Random<int>(0, i);
+            int target = rt::Random<int>(0, static_cast<int>(i));
             std::swap(p[i], p[target]);
         }
     }

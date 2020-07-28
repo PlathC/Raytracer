@@ -15,7 +15,7 @@ namespace rt
 {
     Scene Scene::RandomEnvironment()
     {
-        constexpr double aspectRatio = 16. / 9.;
+        constexpr float aspectRatio = 16.f / 9.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -31,7 +31,7 @@ namespace rt
 
         return Scene{
             Camera(lookFrom, lookAt, vup, 20, aspectRatio, aperture, distToFocus),
-            {width, height, channel},
+            { width, height, channel },
             samplesPerPixel,
             maxDepth,
             {1, 1, 1},
@@ -41,7 +41,7 @@ namespace rt
 
     Scene Scene::TwoSpheres()
     {
-        constexpr double aspectRatio = 16. / 9.;
+        constexpr float aspectRatio = 16.f / 9.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -67,7 +67,7 @@ namespace rt
 
     Scene Scene::TwoPerlinSpheres()
     {
-        constexpr double aspectRatio = 16. / 9.;
+        constexpr float aspectRatio = 16.f / 9.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -93,7 +93,7 @@ namespace rt
 
     Scene Scene::Earth()
     {
-        constexpr double aspectRatio = 16. / 16.;
+        constexpr float aspectRatio = 16.f / 16.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -119,7 +119,7 @@ namespace rt
 
     Scene Scene::SimpleLight()
     {
-        constexpr double aspectRatio = 16. / 9.;
+        constexpr float aspectRatio = 16.f / 9.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -145,7 +145,7 @@ namespace rt
 
     Scene Scene::CornellBox()
     {
-        constexpr double aspectRatio = 16. / 16.;
+        constexpr float aspectRatio = 16.f / 16.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -171,7 +171,7 @@ namespace rt
 
     Scene Scene::FinalScene()
     {
-        constexpr double aspectRatio = 16. / 16.;
+        constexpr float aspectRatio = 16.f / 16.f;
 
         constexpr uint16_t width           = 720;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -197,7 +197,7 @@ namespace rt
 
     Scene Scene::Suzanne()
     {
-        constexpr double aspectRatio = 16. / 16.;
+        constexpr float aspectRatio = 16.f / 16.f;
 
         constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -215,7 +215,7 @@ namespace rt
 
         rt::ObjLoader loader{"./samples/suzanne.obj"};
         environment.Add(std::make_shared<rt::BVHNode>(*loader.Parse(), 0, 1));
-        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 6, 6), 4,
+        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 6, 6), 4.f,
                                                      std::make_shared<rt::DiffuseLight>(
                                                              std::make_shared<rt::SolidColor>(glm::vec3(2, 2, 2))
                                                      )));
@@ -232,7 +232,7 @@ namespace rt
 
     Scene Scene::Denis()
     {
-        constexpr double aspectRatio = 16. / 16.;
+        constexpr float aspectRatio = 16.f / 16.f;
 
         constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
@@ -250,7 +250,7 @@ namespace rt
 
         rt::ObjLoader loader{"./samples/rp_dennis_posed_004_30k.obj"};
         environment.Add(std::make_shared<rt::BVHNode>(*loader.Parse(), 0, 1));
-        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 600, 280), 400,
+        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 600, 280), 400.f,
                                                      std::make_shared<rt::DiffuseLight>(
                                                              std::make_shared<rt::SolidColor>(glm::vec3(2, 2, 2))
                                                      )));

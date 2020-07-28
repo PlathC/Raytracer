@@ -21,7 +21,7 @@ namespace rt
         constexpr bool enableDebug = false;
         const bool outputDebug = enableDebug && rt::Random<double>() < 0.00001;
 
-        HitRecord fRecord, sRecord;
+        HitRecord fRecord{}, sRecord{};
 
         // Compute the inside of the boundary
         if(!m_boundary->Hit(ray, -rt::Infinity<double>, rt::Infinity<double>, fRecord))
@@ -32,8 +32,8 @@ namespace rt
 
         if(outputDebug) std::cerr << "\nt0=" << fRecord.t << ", t1=" << sRecord.t << "\n";
 
-        if(fRecord.t < tMin) fRecord.t = tMin;
-        if(sRecord.t > tMax) sRecord.t = tMax;
+        if(fRecord.t < tMin) fRecord.t = static_cast<float>(tMin);
+        if(sRecord.t > tMax) sRecord.t = static_cast<float>(tMax);
 
         if(fRecord.t >= sRecord.t) return false;
 
@@ -42,7 +42,7 @@ namespace rt
         const float rayLength = glm::length(ray.Direction());
         const float distanceInsideBoundary = (sRecord.t - fRecord.t) * rayLength;
 
-        const float hitDistance = m_negativeInverseDensity * std::log(Random<double>());
+        const float hitDistance = static_cast<float>(m_negativeInverseDensity) * std::log(Random<float>());
 
         if(hitDistance > distanceInsideBoundary)
             return false;

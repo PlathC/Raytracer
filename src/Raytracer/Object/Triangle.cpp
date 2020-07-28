@@ -29,7 +29,7 @@ namespace rt
         v2.normal += normal;
     }
 
-    bool Triangle::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
+    bool Triangle::Hit(const Ray& ray, double /*tMin*/, double /*tMax*/, HitRecord& record) const
     {
         // Based on https://www.scratchapixel.com/lessons/3d-basic-rendering/ray-tracing-rendering-a-triangle/ray-triangle-intersection-geometric-solution
 
@@ -47,22 +47,22 @@ namespace rt
         if (std::fabs(det) < rt::Epsilon<float>) return false;
     #endif
 
-        const double invDet = 1. / det;
+        const float invDet = 1.f / det;
 
         const glm::vec3 tVec = ray.Origin() - m_v0.position;
-        const float u = glm::dot(tVec, pVec) * invDet;
+        const auto u = static_cast<float>(glm::dot(tVec, pVec)) * invDet;
         if (u < 0. || u > 1.) return false;
 
         const glm::vec3 qVec = glm::cross(tVec, v0v1);
-        const float v = glm::dot(ray.Direction(), qVec) * invDet;
+        const auto v = static_cast<float>(glm::dot(ray.Direction(), qVec)) * invDet;
         if (v < 0. || u + v > 1.) return false;
 
-        const double t = glm::dot(v0v2, qVec) * invDet;
+        const auto t = static_cast<float>(glm::dot(v0v2, qVec)) * invDet;
 
-        if (t <= 0.0)
+        if (t <= 0.f)
             return false;
 
-        const float w = 1 - u - v;
+        const float w = 1.f - u - v;
 
         if(t < 0) return false;
 
@@ -79,7 +79,7 @@ namespace rt
         return true;
     }
 
-    bool Triangle::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool Triangle::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         glm::vec3 min = {
                 std::min(m_v0.position.x, m_v1.position.x),

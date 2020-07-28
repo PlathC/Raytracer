@@ -135,7 +135,7 @@ namespace rt
         return hit;
     }
 
-    bool TriangleMesh::BoundingBox(const double t0, const double t1, AABB& box) const
+    bool TriangleMesh::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
         glm::vec3 min{std::numeric_limits<float>::infinity(),
                       std::numeric_limits<float>::infinity(),
@@ -163,17 +163,17 @@ namespace rt
         auto normals = std::vector<glm::vec3>(verticesNumber);
         //auto st    = std::vector<Vec2>(verticesNumber);
 
-        float u = -rt::Pi / 2.f;
-        float v = -rt::Pi;
-        const float du = rt::Pi / divs;
-        const float dv = 2 * rt::Pi / divs;
+        float u = static_cast<float>(-rt::Pi) / 2.f;
+        auto v = static_cast<float>(-rt::Pi);
+        const float du = static_cast<float>(rt::Pi) / divs;
+        const float dv = 2.f * static_cast<float>(rt::Pi) / divs;
 
         points[0] = normals[0] = glm::vec3(0, -rad, 0);
         uint32_t k = 1;
         for(uint32_t i = 0; i < divs - 1; ++i)
         {
             u += du;
-            v = -rt::Pi;
+            v = static_cast<float>(-rt::Pi);
             for(uint32_t j = 0;j < divs; ++j)
             {
                 float x = rad * std::cos(u) * std::cos(v);
@@ -201,7 +201,7 @@ namespace rt
         {
             materials[i] = std::make_shared<rt::Lambertian>(
                     std::make_shared<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() }));
-            materialIndexes[i] = i;
+            materialIndexes[i] = static_cast<uint32_t>(i);
         }
 
         uint32_t vid = 1, numV = 0, l = 0;

@@ -4,14 +4,16 @@
 
 #include "Raytracer/Material/DiffuseLight.hpp"
 
+#include <utility>
+
 namespace rt
 {
     DiffuseLight::DiffuseLight(std::shared_ptr<rt::Texture> texture):
-        m_texture(texture)
+        m_texture(std::move(texture))
     {
     }
 
-    bool DiffuseLight::Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const
+    bool DiffuseLight::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, glm::vec3& /*attenuation*/, Ray& /*scattered*/) const
     {
         return false;
     }

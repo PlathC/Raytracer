@@ -40,7 +40,7 @@ namespace rt
                         )
                 );
 
-        world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, -1000, 0), 1000, groundMaterial));
+        world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, -1000, 0), 1000.f, groundMaterial));
 
         for (int a = -11; a < 11; a++)
         {
@@ -59,33 +59,33 @@ namespace rt
                         glm::vec3 albedo = rt::VRandom<float>() * rt::VRandom<float>();
                         sphereMaterial = std::make_shared<rt::Lambertian>(std::make_shared<SolidColor>(albedo));
                         glm::vec3 center2 = center + glm::vec3(0, rt::Random<double>(0., .5), 0.f);
-                        world.Add(std::make_shared<rt::MovingSphere>(center, center2, 0., 1., 0.2, sphereMaterial));
+                        world.Add(std::make_shared<rt::MovingSphere>(center, center2, 0.f, 1.f, 0.2f, sphereMaterial));
                     }
                     else if (chooseMat < 0.95)
                     {
                         // metal
                         glm::vec3 albedo = rt::VRandom<float>(0.5, 1);
-                        auto fuzz = rt::Random<double>(0, 0.5);
+                        auto fuzz = rt::Random<float>(0.f, 0.5f);
                         sphereMaterial = std::make_shared<rt::Metal>(albedo, fuzz);
-                        world.Add(std::make_shared<rt::Sphere>(center, 0.2, sphereMaterial));
+                        world.Add(std::make_shared<rt::Sphere>(center, 0.2f, sphereMaterial));
                     }
                     else
                     {
                         // glass
                         sphereMaterial = std::make_shared<rt::Dielectric>(1.5);
-                        world.Add(std::make_shared<rt::Sphere>(center, 0.2, sphereMaterial));
+                        world.Add(std::make_shared<rt::Sphere>(center, 0.2f, sphereMaterial));
                     }
                 }
             }
         }
         auto material1 = std::make_shared<rt::Dielectric>(1.5);
-        world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 1, 0), 1.0, material1));
+        world.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 1, 0), 1.f, material1));
 
         auto material2 = std::make_shared<rt::Lambertian>(std::make_shared<rt::SolidColor>(glm::vec3(0.4, 0.2, 0.1)));
-        world.Add(std::make_shared<rt::Sphere>(glm::vec3(-4, 1, 0), 1.0, material2));
+        world.Add(std::make_shared<rt::Sphere>(glm::vec3(-4, 1, 0), 1.f, material2));
 
-        auto material3 = std::make_shared<rt::Metal>(glm::vec3(0.7, 0.6, 0.5), 0.0);
-        world.Add(std::make_shared<rt::Sphere>(glm::vec3(4, 1, 0), 1.0, material3));
+        auto material3 = std::make_shared<rt::Metal>(glm::vec3(0.7, 0.6, 0.5), 0.f);
+        world.Add(std::make_shared<rt::Sphere>(glm::vec3(4, 1, 0), 1.f, material3));
 
         return world;
     }
@@ -101,10 +101,10 @@ namespace rt
         );
 
         result.Add(std::make_shared<Sphere>(glm::vec3(0, -10, 0),
-                                            10, checker));
+                                            10.f, checker));
 
         result.Add(std::make_shared<Sphere>(glm::vec3(0, 10, 0),
-                                            10, checker));
+                                            10.f, checker));
 
         return result;
     }
@@ -112,10 +112,10 @@ namespace rt
     Environment Environment::TwoPerlinSpheres()
     {
         Environment result;
-        auto perlinTexture = std::make_shared<rt::Lambertian>(std::make_shared<rt::PerlinTexture>(4.));
+        auto perlinTexture = std::make_shared<rt::Lambertian>(std::make_shared<rt::PerlinTexture>(4.f));
 
-        result.Add(std::make_shared<Sphere>(glm::vec3(0, -1000, 0), 1000, perlinTexture));
-        result.Add(std::make_shared<Sphere>(glm::vec3(0, 2, 0),2, perlinTexture));
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, -1000, 0), 1000.f, perlinTexture));
+        result.Add(std::make_shared<Sphere>(glm::vec3(0, 2, 0),2.f, perlinTexture));
 
         return result;
     }
@@ -124,7 +124,7 @@ namespace rt
     {
         auto earthTexture = std::make_shared<rt::ImageTexture>("./samples/earthmap.jpg");
         auto earthSurface = std::make_shared<rt::Lambertian>(earthTexture);
-        auto globe = std::make_shared<rt::Sphere>(glm::vec3(0, 0, 0), 2, earthSurface);
+        auto globe = std::make_shared<rt::Sphere>(glm::vec3(0, 0, 0), 2.f, earthSurface);
 
         Environment result;
         result.Add(globe);
@@ -135,14 +135,14 @@ namespace rt
     Environment Environment::SimpleLight()
     {
         Environment environment;
-        auto perlinTexture = std::make_shared<rt::Lambertian>(std::make_shared<PerlinTexture>(4));
+        auto perlinTexture = std::make_shared<rt::Lambertian>(std::make_shared<PerlinTexture>(4.f));
         auto lightTexture = std::make_shared<rt::DiffuseLight>(std::make_shared<rt::SolidColor>(glm::vec3(4., 4., 4.)));
 
-        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, -1000, 0), 1000, perlinTexture));
-        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 2, 0), 2, perlinTexture));
+        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, -1000, 0), 1000.f, perlinTexture));
+        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 2, 0), 2.f, perlinTexture));
 
-        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 7, 0), 2, lightTexture));
-        environment.Add(std::make_shared<rt::Plane<2>>(glm::vec2(3, 1), glm::vec2(5, 3), -2,lightTexture));
+        environment.Add(std::make_shared<rt::Sphere>(glm::vec3(0, 7, 0), 2.f, lightTexture));
+        environment.Add(std::make_shared<rt::Plane<2>>(glm::vec2(3, 1), glm::vec2(5, 3), -2., lightTexture));
         return environment;
     }
 
@@ -194,14 +194,14 @@ namespace rt
         auto thinBox = std::make_shared<Translation>(
                 std::make_shared<rt::Rotation<1>>(
                     std::make_shared<Box>(glm::vec3(0, 0, 0), glm::vec3(165, 330, 165), white),
-                    15),
+                    15.f),
                 glm::vec3(265,0,295)
         );
 
         auto cube = std::make_shared<Translation>(
                 std::make_shared<rt::Rotation<1>>(
                     std::make_shared<Box>(glm::vec3(0, 0, 0), glm::vec3(165, 165, 165), white),
-                    -18),
+                    -18.f),
                 glm::vec3(130,0,65)
         );
 
@@ -246,38 +246,38 @@ namespace rt
         constexpr glm::vec3 sCenter = fCenter + glm::vec3(30, 0, 0);
 
         auto movingSphereMaterial = std::make_shared<Lambertian>(std::make_shared<SolidColor>(glm::vec3(0.7, 0.3, 0.1)));
-        objects.Add(std::make_shared<MovingSphere>(fCenter, sCenter, 0, 1, 50, movingSphereMaterial));
+        objects.Add(std::make_shared<MovingSphere>(fCenter, sCenter, 0.f, 1.f, 50.f, movingSphereMaterial));
 
-        objects.Add(std::make_shared<Sphere>(glm::vec3(260, 150, 45), 50, std::make_shared<Dielectric>(1.5)));
+        objects.Add(std::make_shared<Sphere>(glm::vec3(260, 150, 45), 50.f, std::make_shared<Dielectric>(1.5)));
         objects.Add(std::make_shared<Sphere>(
-                glm::vec3(0, 150, 145), 50,
-                std::make_shared<Metal>(glm::vec3(0.8, 0.8, 0.9), 10.0)
+                glm::vec3(0, 150, 145), 50.f,
+                std::make_shared<Metal>(glm::vec3(0.8, 0.8, 0.9), 10.f)
                 ));
 
-        auto boundary = std::make_shared<Sphere>(glm::vec3(360, 150, 145), 70, std::make_shared<Dielectric>(1.5));
+        auto boundary = std::make_shared<Sphere>(glm::vec3(360, 150, 145), 70.f, std::make_shared<Dielectric>(1.5));
         objects.Add(boundary);
         objects.Add(std::make_shared<ConstantDensityMedium>(boundary, std::make_shared<SolidColor>(glm::vec3(0.2, 0.4, 0.9)), 0.2));
 
-        boundary = std::make_shared<Sphere>(glm::vec3(0., 0., 0.), 5000, std::make_shared<Dielectric>(1.5));
+        boundary = std::make_shared<Sphere>(glm::vec3(0., 0., 0.), 5000.f, std::make_shared<Dielectric>(1.5));
         objects.Add(std::make_shared<ConstantDensityMedium>(
                 boundary, std::make_shared<SolidColor>(glm::vec3(1, 1, 1)), .0001));
 
         auto earthMap = std::make_shared<Lambertian>(std::make_shared<ImageTexture>("samples/earthmap.jpg"));
-        objects.Add(std::make_shared<Sphere>(glm::vec3(400, 200, 400), 100, earthMap));
+        objects.Add(std::make_shared<Sphere>(glm::vec3(400, 200, 400), 100.f, earthMap));
 
-        auto perlinTexture = std::make_shared<Lambertian>(std::make_shared<PerlinTexture>(0.1));
-        objects.Add(std::make_shared<Sphere>(glm::vec3(220, 280, 300), 80, perlinTexture));
+        auto perlinTexture = std::make_shared<Lambertian>(std::make_shared<PerlinTexture>(0.1f));
+        objects.Add(std::make_shared<Sphere>(glm::vec3(220, 280, 300), 80.f, perlinTexture));
 
         Environment boxes2;
         auto white = std::make_shared<Lambertian>(std::make_shared<SolidColor>(glm::vec3(.73, .73, .73)));
         constexpr uint16_t ns = 1000;
         for(uint16_t j = 0; j < ns; j++)
         {
-            boxes2.Add(std::make_shared<Sphere>(rt::VRandom<float>(0, 165), 10, white));
+            boxes2.Add(std::make_shared<Sphere>(rt::VRandom<float>(0, 165), 10.f, white));
         }
 
         objects.Add(std::make_shared<rt::Translation>(std::make_shared<rt::Rotation<1>>(
-                std::make_shared<rt::BVHNode>(boxes2, 0, 1), 15),
+                std::make_shared<rt::BVHNode>(boxes2, 0., 1.), 15.f),
                         glm::vec3(-100, 270, 395)));
 
         return objects;

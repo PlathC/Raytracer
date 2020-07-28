@@ -84,7 +84,9 @@ elseif (MSVC)
                 /w14619
                 /w14640
                 /w14826
-                /w14928)
+                /w14928
+                /wd4201
+                )
     else()
         set(RAYTRACER_COMPILATION_FLAGS
                 /permissive-
@@ -106,7 +108,8 @@ elseif (MSVC)
                 /w14619
                 /w14640
                 /w14826
-                /w14928)
+                /w14928
+                /wd4201)
     endif()
 endif ()
 

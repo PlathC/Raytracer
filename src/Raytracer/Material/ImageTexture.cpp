@@ -27,7 +27,7 @@ namespace rt
         m_data = std::vector(imgData, imgData + (width * height * channels));
     }
 
-    glm::vec3 ImageTexture::Value(const glm::vec2& uv, const glm::vec3& points) const
+    glm::vec3 ImageTexture::Value(const glm::vec2& uv, const glm::vec3& /*points*/) const
     {
         if(m_data.empty())
         {

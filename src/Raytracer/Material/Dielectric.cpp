@@ -37,7 +37,7 @@ namespace rt
             return true;
         }
 
-        const glm::vec3 refracted = Refract(unitDirection, record.normal, etaiOverEtat);
+        const glm::vec3 refracted = Refract(unitDirection, record.normal, static_cast<float>(etaiOverEtat));
         scattered = Ray(record.point, refracted);
         return true;
     }
