@@ -5,13 +5,13 @@
 
 ## Features 
 
-| Feature                          | Progress                  |
-|----------------------------------|---------------------------|
-| Raytraced primitive              | Done (Spheres, Triangles) |
-| Meshes                           | Done (Obj)                |
-| Multi-threading                  | Done (CPU)                |
-| IsoSurface                       | Todo                      |
-| PBR                              | Todo                      |
+| Feature                          | Progress                                  |
+|----------------------------------|-------------------------------------------|
+| Raytraced primitive              | Done (Spheres, Triangles, Squares, Cubes) |
+| Meshes                           | Done (Obj)                                |
+| Multi-threading                  | Done (CPU)                                |
+| Denoiser                         | Done                                      |
+| PBR                              | Todo                                      |
 
 ## Results
 
