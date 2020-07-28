@@ -1,64 +1,79 @@
 //
 // Created by Platholl on 28/06/2020.
 //
+#ifdef RAYTRACER_WITH_OID
+#include <OpenImageDenoise/oidn.hpp>
+#endif // RAYTRACER_WITH_OID
 
 #include "Raytracer/Utils/Renderer.hpp"
-
-#include <omp.h>
 
 namespace rt
 {
     Renderer::Renderer(const Scene &settings):
             m_settings(settings),
-            m_bvh(settings.environment, m_settings.camera.Time0(), m_settings.camera.Time1())
+            m_bvh(settings.environment, m_settings.camera.Time0(), m_settings.camera.Time1()),
+            m_generatedImage(m_settings.imageSettings.width * m_settings.imageSettings.height * m_settings.imageSettings.channels),
+            m_albedoImage(m_settings.imageSettings.width * m_settings.imageSettings.height * m_settings.imageSettings.channels)
     {
     }
 
-    std::vector<float> Renderer::GenerateImage()
+    void Renderer::GenerateImage()
     {
-        auto img = std::vector<float>(m_settings.imageSettings.width *
-                m_settings.imageSettings.height * m_settings.imageSettings.channels);
         ThreadPool pool;
 
-        struct PixelValue
+        struct Pixel
         {
             float x;
             float y;
             float z;
         };
 
-        auto pixelGeneration = [&](uint32_t j, uint32_t i, const Scene& settings) -> PixelValue
+        struct PixelValues
         {
-            glm::vec3 pixel = glm::vec3 {};
+            Pixel resultPixel;
+            Pixel albedoPixel;
+        };
+
+        auto pixelGeneration = [&](uint32_t j, uint32_t i, const Scene& settings) -> PixelValues
+        {
+            glm::vec3 result = glm::vec3 {};
+            glm::vec3 albedo = glm::vec3 {};
 
             for(int16_t s = 0; s < settings.samplesPerPixel; ++s)
             {
                 const int32_t width  = settings.imageSettings.width;
                 const int32_t height = settings.imageSettings.height;
-                const uint8_t channel = settings.imageSettings.channels;
 
                 auto u = (i + rt::Random<double>()) / (width - 1);
                 auto v = (j + rt::Random<double>()) / (height - 1);
 
                 rt::Ray ray = settings.camera.GetRay(u, v);
-                pixel += RayColor(ray, m_bvh, settings.maxDepth);
+                result += RayColor(ray, m_bvh, settings.maxDepth);
+                if(s == 0)
+                {
+                    albedo = result;
+                }
             }
 
             // Divide the color total by the number of samples and gamma-correct for gamma=2.0.
             auto scale = 1.0 / m_settings.samplesPerPixel;
-            float r = std::sqrt(scale * pixel.x);
-            float g = std::sqrt(scale * pixel.y);
-            float b = std::sqrt(scale * pixel.z);
+            auto r = static_cast<float>(std::sqrt(scale * result.x));
+            auto g = static_cast<float>(std::sqrt(scale * result.y));
+            auto b = static_cast<float>(std::sqrt(scale * result.z));
 
-            return {
-                    static_cast<float>(rt::Clamp(r, 0.0, 0.999)),
-                    static_cast<float>(rt::Clamp(g, 0.0, 0.999)),
-                    static_cast<float>(rt::Clamp(b, 0.0, 0.999))
+            return { {
+                             static_cast<float>(rt::Clamp(r, 0.0, 0.999)),
+                             static_cast<float>(rt::Clamp(g, 0.0, 0.999)),
+                             static_cast<float>(rt::Clamp(b, 0.0, 0.999)) },
+                     {
+                             static_cast<float>(rt::Clamp(albedo.x, 0.0, 0.999)),
+                             static_cast<float>(rt::Clamp(albedo.y, 0.0, 0.999)),
+                             static_cast<float>(rt::Clamp(albedo.z, 0.0, 0.999)) }
             };
         };
 
-        std::vector<std::future<PixelValue>> results {img.size()};
-        size_t imageIterator = 0, pixelIterator = 0;
+        std::vector<std::future<PixelValues>> results {m_generatedImage.size()};
+        size_t imageIterator = 0, albedoIterator = 0, pixelIterator = 0;
 
         for (int32_t j = m_settings.imageSettings.height-1; j >= 0; --j)
         {
@@ -73,24 +88,78 @@ namespace rt
         {
             for (int32_t i = 0; i < m_settings.imageSettings.width; ++i)
             {
-                try {
+                try
+                {
                     auto p =  results[pixelIterator++].get();
-                    img[imageIterator++] = p.x;
-                    img[imageIterator++] = p.y;
-                    img[imageIterator++] = p.z;
-                }catch(const std::exception& e)
+                    m_generatedImage[imageIterator++] = p.resultPixel.x;
+                    m_generatedImage[imageIterator++] = p.resultPixel.y;
+                    m_generatedImage[imageIterator++] = p.resultPixel.z;
+
+                    m_albedoImage[albedoIterator++] = p.albedoPixel.x;
+                    m_albedoImage[albedoIterator++] = p.albedoPixel.y;
+                    m_albedoImage[albedoIterator++] = p.albedoPixel.z;
+                }
+                catch(const std::exception& e)
                 {
                     std::cerr << e.what() << std::endl;
                 }
             }
         }
-
-        return img;
     }
 
-    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::IHittable& world, const int depth) const
+#ifdef RAYTRACER_WITH_OID
+    void Renderer::Denoise()
     {
-        rt::HitRecord record;
+        oidn::DeviceRef device = oidn::newDevice();
+
+        const char* errorMessage;
+        if (device.getError(errorMessage) != oidn::Error::None)
+        {
+            throw std::runtime_error(errorMessage);
+        }
+
+        device.setErrorFunction( [] (void* userPtr, oidn::Error error, const char* message) {
+            throw std::runtime_error(message);
+        });
+
+        device.commit();
+
+        // Create a denoising filter
+        oidn::FilterRef filter = device.newFilter("RT"); // generic ray tracing filter
+        m_denoisedImage = std::vector<float>(m_generatedImage.size());
+
+        filter.setImage("color",  m_generatedImage.data(),  oidn::Format::Float3,
+                        m_settings.imageSettings.width, m_settings.imageSettings.height);
+
+        filter.setImage("output", m_denoisedImage.data(), oidn::Format::Float3,
+                        m_settings.imageSettings.width, m_settings.imageSettings.height);
+
+        filter.set("hdr", false);
+        filter.commit();
+        filter.execute();
+    }
+#endif // RAYTRACER_WITH_OID
+
+    std::vector<float> Renderer::GeneratedImage() const
+    {
+        return m_generatedImage;
+    }
+
+    std::vector<float> Renderer::AlbedoImage() const
+    {
+        return m_albedoImage;
+    }
+
+#ifdef RAYTRACER_WITH_OID
+    std::vector<float> Renderer::DenoisedImage() const
+    {
+        return m_denoisedImage;
+    }
+#endif // RAYTRACER_WITH_OID
+
+    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::IHittable& world, int depth) const
+    {
+        rt::HitRecord record{};
 
         // If we've exceeded the ray bounce limit, no more light is gathered.
         if (depth <= 0)

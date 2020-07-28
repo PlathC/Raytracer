@@ -177,7 +177,7 @@ namespace rt
         constexpr uint16_t width           = 720;
         const uint16_t height              = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
-        constexpr uint16_t samplesPerPixel = 50;
+        constexpr uint16_t samplesPerPixel = 32;
         const uint8_t maxDepth             = 50;
 
         glm::vec3 lookFrom = glm::vec3{478, 278, -600};

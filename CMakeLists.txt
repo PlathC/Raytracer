@@ -6,7 +6,13 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 
-find_package(OpenImageDenoise REQUIRED)
+find_package(OpenImageDenoise)
+
+if(OpenImageDenoise_FOUND)
+    set(RAYTRACER_BUILD_DEFINITIONS
+            ${RAYTRACER_BUILD_DEFINITIONS}
+            RAYTRACER_WITH_OID)
+endif()
 
 # Based on https://github.com/lefticus/cppbestpractices/blob/master/02-Use_the_Tools_Available.md
 if (CMAKE_COMPILER_IS_GNUCC)
@@ -189,6 +195,8 @@ target_include_directories(Raytracer SYSTEM PRIVATE include)
 target_include_directories(Raytracer SYSTEM PRIVATE external)
 
 target_include_directories(Raytracer SYSTEM PRIVATE OpenImageDenoise::OpenImageDenoise)
+
+target_compile_definitions(Raytracer PUBLIC ${RAYTRACER_BUILD_DEFINITIONS})
 
 target_link_libraries(Raytracer PRIVATE OpenImageDenoise)
 
