@@ -15,6 +15,30 @@ namespace rt
         m_v2(v2),
         m_material(material)
     {
+        m_min = {
+                std::min(m_v0.position.x, m_v1.position.x),
+                std::min(m_v0.position.y, m_v1.position.y),
+                std::min(m_v0.position.z, m_v1.position.z)
+        };
+
+        m_min = glm::vec3{
+                std::min(m_min.x, m_v2.position.x),
+                std::min(m_min.y, m_v2.position.y),
+                std::min(m_min.z, m_v2.position.z)
+        };
+
+
+        m_max = {
+                std::max(m_v0.position.x, m_v1.position.x),
+                std::max(m_v0.position.y, m_v1.position.y),
+                std::max(m_v0.position.z, m_v1.position.z)
+        };
+
+        m_max = glm::vec3{
+                std::max(m_max.x, m_v2.position.x),
+                std::max(m_max.y, m_v2.position.y),
+                std::max(m_max.z, m_v2.position.z)
+        };
     }
 
     void Triangle::ComputeNormal(rt::Vertex& v0, rt::Vertex& v1, rt::Vertex& v2)
@@ -81,31 +105,8 @@ namespace rt
 
     bool Triangle::BoundingBox(const double /*t0*/, const double /*t1*/, AABB& box) const
     {
-        glm::vec3 min = {
-                std::min(m_v0.position.x, m_v1.position.x),
-                std::min(m_v0.position.y, m_v1.position.y),
-                std::min(m_v0.position.z, m_v1.position.z)
-        };
-
-        min = glm::vec3{
-                std::min(min.x, m_v2.position.x),
-                std::min(min.y, m_v2.position.y),
-                std::min(min.z, m_v2.position.z)
-        };
-
-
-        glm::vec3 max = {
-                std::max(m_v0.position.x, m_v1.position.x),
-                std::max(m_v0.position.y, m_v1.position.y),
-                std::max(m_v0.position.z, m_v1.position.z)
-        };
-
-        max = glm::vec3{
-                std::max(max.x, m_v2.position.x),
-                std::max(max.y, m_v2.position.y),
-                std::max(max.z, m_v2.position.z)
-        };
-        box = AABB(min, max);
+        
+        box = AABB(m_min, m_max);
         return true;
     }
 }

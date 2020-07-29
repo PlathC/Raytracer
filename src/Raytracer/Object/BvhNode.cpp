@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    BVHNode::BVHNode(std::vector<std::shared_ptr<IHittable>> objects, const size_t start, const size_t end,
+    BVHNode::BVHNode(const std::vector<std::shared_ptr<IHittable>>& objects, const size_t start, const size_t end,
             const double time0, const double time1)
     {
         const auto axis = static_cast<uint8_t>(Random<int>(0, 2));
@@ -34,11 +34,12 @@ namespace rt
         }
         else
         {
-            std::sort(objects.begin() + start, objects.begin() + end, comparator);
+            auto workingVector = std::vector(objects);
+            std::sort(workingVector.begin() + start, workingVector.begin() + end, comparator);
 
             size_t mid = start + static_cast<size_t>(std::floor(objectSpan / 2));
-            m_left  = std::make_shared<BVHNode>(objects, start, mid, time0, time1);
-            m_right = std::make_shared<BVHNode>(objects, mid, end, time0, time1);
+            m_left  = std::make_shared<BVHNode>(workingVector, start, mid, time0, time1);
+            m_right = std::make_shared<BVHNode>(workingVector, mid, end, time0, time1);
         }
 
         AABB boxLeft, boxRight;

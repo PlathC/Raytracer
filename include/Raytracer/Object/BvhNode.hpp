@@ -19,7 +19,7 @@ namespace rt
     {
     public:
         BVHNode() = default;
-        BVHNode(std::vector<std::shared_ptr<IHittable>> objects, const size_t start, const size_t end,
+        BVHNode(const std::vector<std::shared_ptr<IHittable>>& objects, const size_t start, const size_t end,
                 const double time0, const double time1);
         BVHNode(const rt::ICollection& environment, const double time0, const double time1);
 

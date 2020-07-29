@@ -30,12 +30,12 @@ namespace rt
     class TriangleMesh : public ICollection
     {
     public:
-        TriangleMesh(const MeshSettings& settings);
+        explicit TriangleMesh(const MeshSettings& settings);
 
         void ComputeNormals(const MeshSettings& settings);
 
-        virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
-        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+        bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
         [[nodiscard]] std::vector<std::shared_ptr<rt::IHittable>> Objects() const override;
         std::size_t Size() const override;

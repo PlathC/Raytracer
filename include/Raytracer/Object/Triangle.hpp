@@ -25,6 +25,9 @@ namespace rt
         rt::Vertex m_v1;
         rt::Vertex m_v2;
 
+        glm::vec3 m_min;
+        glm::vec3 m_max;
+
         std::shared_ptr<Material> m_material;
     };
 }
