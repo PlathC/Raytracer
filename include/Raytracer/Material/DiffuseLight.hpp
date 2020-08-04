@@ -15,7 +15,7 @@ namespace rt
     public:
         DiffuseLight(std::shared_ptr<rt::Texture> texture);
 
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
+        bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const override;
 
         virtual glm::vec3 Emitted(const glm::vec2& uv, const glm::vec3& point) const override;
     private:

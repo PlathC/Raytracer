@@ -48,7 +48,6 @@ namespace rt
         return glm::vec3(r * std::cos(a), r * std::sin(a), z);
     }
 
-    template<class T>
     inline glm::vec3 RandomInHemisphere(const glm::vec3& normal)
     {
         glm::vec3 inUnitSphere = RandomInUnitSphere();

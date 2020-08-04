@@ -147,7 +147,7 @@ namespace rt
     {
         constexpr float aspectRatio = 16.f / 16.f;
 
-        constexpr uint16_t width           = 720;
+        constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
         constexpr uint16_t samplesPerPixel = 32;
@@ -164,7 +164,7 @@ namespace rt
                 {width, height, channel},
                 samplesPerPixel,
                 maxDepth,
-                {1, 1, 1},
+                {0, 0, 0},
                 Environment::CornellBox()
         };
     }

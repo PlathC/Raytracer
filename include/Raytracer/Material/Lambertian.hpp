@@ -16,7 +16,8 @@ namespace rt
     public:
         Lambertian(std::shared_ptr<Texture> albedo);
 
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
+        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const override;
+        virtual double ScatteringPdf(const Ray& rIn, const HitRecord& record, Ray& scattered) const override;
 
     private:
         std::shared_ptr<Texture> m_albedo;

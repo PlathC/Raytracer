@@ -203,12 +203,13 @@ namespace rt
                     -18.f),
                 glm::vec3(130,0,65)
         );
-
-        environment.Add(std::make_shared<ConstantDensityMedium>(thinBox,
-                    std::make_shared<SolidColor>(glm::vec3(0.,0.,0.)), 0.01));
-
-        environment.Add(std::make_shared<ConstantDensityMedium>(cube,
-                    std::make_shared<SolidColor>(glm::vec3(1.,1.,1.)), 0.01));
+        environment.Add(thinBox);
+        environment.Add(cube);
+        //environment.Add(std::make_shared<ConstantDensityMedium>(thinBox,
+        //            std::make_shared<SolidColor>(glm::vec3(0.,0.,0.)), 0.01));
+//
+        //environment.Add(std::make_shared<ConstantDensityMedium>(cube,
+        //            std::make_shared<SolidColor>(glm::vec3(1.,1.,1.)), 0.01));
 
         return environment;
     }

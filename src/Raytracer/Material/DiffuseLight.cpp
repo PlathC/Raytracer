@@ -13,7 +13,7 @@ namespace rt
     {
     }
 
-    bool DiffuseLight::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, glm::vec3& /*attenuation*/, Ray& /*scattered*/) const
+    bool DiffuseLight::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, glm::vec3& /*albedo*/, Ray& /*scattered*/, double& /*pdf*/) const
     {
         return false;
     }

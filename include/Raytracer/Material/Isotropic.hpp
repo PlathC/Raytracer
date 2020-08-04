@@ -15,7 +15,7 @@ namespace rt
     public:
         Isotropic(std::shared_ptr<rt::Texture> albedo);
 
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& attenuation, Ray& scattered) const override;
+        bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const override;
     private:
         std::shared_ptr<rt::Texture> m_albedo;
     };

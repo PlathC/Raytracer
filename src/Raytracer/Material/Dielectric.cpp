@@ -11,9 +11,9 @@ namespace rt
     {
     }
 
-    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &attenuation, Ray &scattered) const
+    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &albedo, Ray &scattered, double& /*pdf*/) const
     {
-        attenuation = glm::vec3(1.0, 1.0, 1.0);
+        albedo = glm::vec3(1.0, 1.0, 1.0);
         const double etaiOverEtat = record.frontFace ? (1.0 / m_refraction) : m_refraction;
 
         const glm::vec3 unitDirection = glm::normalize(rIn.Direction());

@@ -170,9 +170,6 @@ namespace rt
         if(!world.Hit(ray, 0.001, rt::Infinity<double>, record))
             return m_settings.backgroundColor;
 
-        rt::Ray scattered;
-        glm::vec3 attenuation;
-
         if(!record.material)
         {
             // TODO: Store default color
@@ -180,12 +177,16 @@ namespace rt
         }
         else
         {
+            glm::vec3 albedo{};
+            rt::Ray scattered{};
             glm::vec3 emitted = record.material->Emitted(record.uv, record.point);
+            double pdf = 0.;
 
-            if (!record.material->Scatter(ray, record, attenuation, scattered))
+            if (!record.material->Scatter(ray, record, albedo, scattered, pdf))
                 return emitted;
 
-            return emitted + attenuation * RayColor(scattered, world, depth-1);
+            return emitted + albedo * static_cast<float>(record.material->ScatteringPdf(ray, record, scattered))
+                * RayColor(scattered, world, depth-1) / static_cast<float>(pdf);
         }
     }
 
