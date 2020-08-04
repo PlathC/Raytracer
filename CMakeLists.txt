@@ -9,6 +9,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR_IN_INTERFACE ON)
 find_package(OpenImageDenoise)
 
 if(OpenImageDenoise_FOUND)
+    message("Found OpenImageDenoise library, enable denoise feature.")
     set(RAYTRACER_BUILD_DEFINITIONS
             ${RAYTRACER_BUILD_DEFINITIONS}
             RAYTRACER_WITH_OID)
