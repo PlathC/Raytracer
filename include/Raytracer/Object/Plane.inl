@@ -34,7 +34,7 @@ namespace rt
     bool Plane<weakAxis>::Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const
     {
         // Finding t based on z value
-        float t = static_cast<float>((m_weakAxisValue) - ray.Origin()[weakAxis] / ray.Direction()[weakAxis]);
+        float t = (m_weakAxisValue - ray.Origin()[weakAxis]) / ray.Direction()[weakAxis];
         if(t < tMin || t > tMax)
             return false;
 
