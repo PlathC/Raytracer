@@ -12,6 +12,18 @@
 | Multi-threading                  | Done (CPU)                                |
 | Denoiser                         | Done                                      |
 
+## Build
+
+To enable the denoiser support you need to specify the OpenImageDenoise_DIR variable which
+needs to point on a folder in your OpenImageDenoise installation that contains `OpenImageDenoiseConfig.cmake`.
+
+```sh
+    git clone https://github.com/PlathC/Raytracer.git
+    mkdir build && build
+    cmake ..
+    cmake build .
+```
+
 ## Results
 
 Mesh Loader and denoiser :
