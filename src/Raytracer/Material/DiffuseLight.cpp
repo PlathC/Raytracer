@@ -18,8 +18,11 @@ namespace rt
         return false;
     }
 
-    glm::vec3 DiffuseLight::Emitted(const glm::vec2& uv, const glm::vec3& point) const
+    glm::vec3 DiffuseLight::Emitted(const Ray& rIn, const HitRecord& record) const
     {
-        return m_texture->Value(uv, point);
+        if(record.frontFace)
+            return m_texture->Value(record.uv, record.point);
+        else
+            return glm::vec3{0, 0, 0};
     }
 }

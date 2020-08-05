@@ -179,11 +179,27 @@ namespace rt
         {
             glm::vec3 albedo{};
             rt::Ray scattered{};
-            glm::vec3 emitted = record.material->Emitted(record.uv, record.point);
+            glm::vec3 emitted = record.material->Emitted(ray, record);
             double pdf = 0.;
 
             if (!record.material->Scatter(ray, record, albedo, scattered, pdf))
                 return emitted;
+
+            auto onLight = glm::vec3(rt::Random<float>(213, 343), 554, rt::Random<float>(227, 332));
+            auto toLight = onLight - record.point;
+            auto distanceSquared = glm::length2(toLight);
+            toLight = glm::normalize(toLight);
+
+            if(glm::dot(toLight, record.normal) < 0)
+                return emitted;
+
+            auto lightCosine = std::fabs(toLight.y);
+            if(lightCosine < rt::Epsilon<float>)
+                return emitted;
+
+            double lightArea = (343 - 213) * (332 - 227);
+            pdf = distanceSquared / (lightCosine * lightArea);
+            scattered = Ray(record.point, toLight, ray.Time());
 
             return emitted + albedo * static_cast<float>(record.material->ScatteringPdf(ray, record, scattered))
                 * RayColor(scattered, world, depth-1) / static_cast<float>(pdf);

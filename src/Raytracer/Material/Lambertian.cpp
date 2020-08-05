@@ -4,8 +4,8 @@
 
 #include <utility>
 
-
 #include "Raytracer/Material/Lambertian.hpp"
+#include "Raytracer/Math/OrthonormalBase.hpp"
 
 namespace rt
 {
@@ -15,10 +15,12 @@ namespace rt
 
     bool Lambertian::Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const
     {
-        auto scatterDirection = RandomInHemisphere(record.normal);
+        OrthonormalBase tempBase{};
+        tempBase.BuildFromW(record.normal);
+        auto scatterDirection = tempBase.Local(RandomCosineDirection<float>());
         scattered = Ray(record.point, glm::normalize(scatterDirection), rIn.Time());
         albedo = m_albedo->Value(record.uv, record.point);
-        pdf = 0.5 / rt::Pi;
+        pdf = glm::dot(tempBase.W(), scatterDirection) / Pi;
         return true;
     }
 

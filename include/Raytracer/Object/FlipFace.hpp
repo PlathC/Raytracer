@@ -14,10 +14,10 @@ namespace rt
     class FlipFace : public IHittable
     {
     public:
-        FlipFace(std::shared_ptr<IHittable> object);
+        explicit FlipFace(std::shared_ptr<IHittable> object);
 
-        virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
-        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const override;
+        bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        bool BoundingBox(double t0, double t1, AABB& box) const override;
 
     private:
         std::shared_ptr<IHittable> m_object;

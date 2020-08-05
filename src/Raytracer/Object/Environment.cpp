@@ -167,9 +167,9 @@ namespace rt
                 0, red));
 
         // Light
-        environment.Add(std::make_shared<rt::Plane<1>>(
+        environment.Add(std::make_shared<FlipFace>(std::make_shared<rt::Plane<1>>(
                 glm::vec2{213, 227}, glm::vec2{343, 332},
-                554, light));
+                554, light)));
 
         // Bottom + Up
         environment.Add(std::make_shared<rt::FlipFace>(

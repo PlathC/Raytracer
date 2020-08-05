@@ -2,12 +2,14 @@
 // Created by Platholl on 06/07/2020.
 //
 
+#include <utility>
+
 #include "Raytracer/Object/FlipFace.hpp"
 
 namespace rt
 {
     FlipFace::FlipFace(std::shared_ptr<IHittable> object):
-            m_object(object)
+            m_object(std::move(object))
     {
     }
 

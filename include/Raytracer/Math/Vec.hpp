@@ -69,6 +69,20 @@ namespace rt
         }
     }
 
+    template<class T>
+    inline glm::vec3 RandomCosineDirection()
+    {
+        auto randNumb1 = Random<T>();
+        auto randNumb2 = Random<T>();
+        double z = std::sqrt(1 - randNumb2);
+
+        double phi = 2. * rt::Pi * randNumb1;
+        double x = std::cos(phi) * std::sqrt(randNumb2);
+        double y = std::sin(phi) * std::sqrt(randNumb2);
+
+        return {x, y, z};
+    }
+
     inline glm::vec3 Reflect(const glm::vec3& v, const glm::vec3& n)
     {
         return v - 2.f * glm::dot(v, n) * n;
