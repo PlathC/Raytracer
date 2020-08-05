@@ -28,8 +28,8 @@ needs to point on a folder in your OpenImageDenoise installation that contains `
 
 Mesh Loader and denoiser :
 
-![Suzanne noisy](outputs/suzanneNoise.png)
-![Suzanne denoisy](outputs/suzanneDenoised.png)
+![Suzanne noisy](outputs/SuzanneNoise.png)
+![Suzanne denoisy](outputs/SuzanneDenoised.png)
 
 ![Denis noisy](outputs/DenisNoise.png)
 ![Denis denoisy](outputs/DenisDenoised.png)
