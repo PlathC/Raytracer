@@ -153,7 +153,7 @@ namespace rt
     {
         constexpr float aspectRatio = 16.f / 16.f;
 
-        constexpr uint16_t width           = 400;
+        constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
         constexpr uint16_t samplesPerPixel = 1024;
@@ -214,7 +214,7 @@ namespace rt
         constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
-        constexpr uint16_t samplesPerPixel = 16;
+        constexpr uint16_t samplesPerPixel = 64;
         const uint8_t maxDepth             = 50;
 
         glm::vec3 lookFrom = glm::vec3{0, 0, 5};
@@ -250,7 +250,7 @@ namespace rt
         constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
-        constexpr uint16_t samplesPerPixel = 8;
+        constexpr uint16_t samplesPerPixel = 64;
         const uint8_t maxDepth             = 50;
 
         glm::vec3 lookFrom = glm::vec3{0, 90, 280};
