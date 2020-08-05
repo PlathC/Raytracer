@@ -11,9 +11,11 @@ namespace rt
     {
     }
 
-    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, glm::vec3 &albedo, Ray &scattered, double& /*pdf*/) const
+    bool Dielectric::Scatter(const Ray &rIn, const HitRecord &record, ScatterRecord& scatterRecord) const
     {
-        albedo = glm::vec3(1.0, 1.0, 1.0);
+        scatterRecord.isSpecular = true;
+        scatterRecord.pdf = nullptr;
+        scatterRecord.albedo = glm::vec3(1.0, 1.0, 1.0);
         const double etaiOverEtat = record.frontFace ? (1.0 / m_refraction) : m_refraction;
 
         const glm::vec3 unitDirection = glm::normalize(rIn.Direction());
@@ -23,7 +25,7 @@ namespace rt
         if (etaiOverEtat * sinTheta > 1.0 )
         {
             glm::vec3 reflected = Reflect(unitDirection, record.normal);
-            scattered = Ray(record.point, reflected);
+            scatterRecord.specularRay = Ray(record.point, reflected);
             return true;
         }
 
@@ -31,12 +33,12 @@ namespace rt
         if (Random<double>() < reflectProb)
         {
             glm::vec3 reflected = Reflect(unitDirection, record.normal);
-            scattered = Ray(record.point, reflected);
+            scatterRecord.specularRay = Ray(record.point, reflected);
             return true;
         }
 
         const glm::vec3 refracted = Refract(unitDirection, record.normal, static_cast<float>(etaiOverEtat));
-        scattered = Ray(record.point, refracted);
+        scatterRecord.specularRay = Ray(record.point, refracted);
         return true;
     }
 }

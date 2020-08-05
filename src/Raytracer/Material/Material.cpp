@@ -6,7 +6,7 @@
 
 namespace rt
 {
-    bool Material::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, glm::vec3& /*albedo*/, Ray& /*scattered*/, double& /*pdf*/) const
+    bool Material::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, ScatterRecord& /*sRecord*/) const
     {
         return false;
     }

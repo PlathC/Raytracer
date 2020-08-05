@@ -13,11 +13,6 @@ namespace rt
     {
     }
 
-    bool DiffuseLight::Scatter(const Ray& /*rIn*/, const HitRecord& /*record*/, glm::vec3& /*albedo*/, Ray& /*scattered*/, double& /*pdf*/) const
-    {
-        return false;
-    }
-
     glm::vec3 DiffuseLight::Emitted(const Ray& /*rIn*/, const HitRecord& record) const
     {
         if(record.frontFace)

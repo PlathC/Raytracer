@@ -7,15 +7,24 @@
 
 #include <glm/glm.hpp>
 
+#include "Raytracer/Math/ProbabilityDensityFunction.hpp"
 #include "Raytracer/Math/Ray.hpp"
 #include "Raytracer/Object/IHittable.hpp"
 
 namespace rt
 {
+    struct ScatterRecord
+    {
+        Ray specularRay;
+        bool isSpecular;
+        glm::vec3 albedo;
+        std::shared_ptr<ProbabilityDensityFunction> pdf;
+    };
+
     class Material
     {
     public:
-        virtual bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const;
+        virtual bool Scatter(const Ray& rIn, const HitRecord& record, ScatterRecord& sRecord) const;
         virtual double ScatteringPdf(const Ray& rIn, const HitRecord& record, Ray& scattered) const;
         virtual glm::vec3 Emitted(const Ray& rIn, const HitRecord& record) const;
         virtual ~Material() { };

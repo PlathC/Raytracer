@@ -180,23 +180,25 @@ namespace rt
         }
         else
         {
-            glm::vec3 albedo{};
-            rt::Ray scattered{};
             glm::vec3 emitted = record.material->Emitted(ray, record);
-            double pdfValue = 0.;
+            ScatterRecord scatterRecord;
 
-            if (!record.material->Scatter(ray, record, albedo, scattered, pdfValue))
+            if (!record.material->Scatter(ray, record, scatterRecord))
                 return emitted;
+
+            if(scatterRecord.isSpecular)
+            {
+                return scatterRecord.albedo * RayColor(scatterRecord.specularRay, world, depth-1);
+            }
 
             auto lightShape = std::make_shared<rt::Plane<1>>(glm::vec2{213, 227}, glm::vec2{343, 332}, 554, std::shared_ptr<rt::Material>());
             auto hittableDensity = std::make_shared<HittableProbabilityDensityFunction>(lightShape, record.point);
-            auto cosineDensity   = std::make_shared<CosineProbabilityDensityFunction>(record.normal);
-            MixtureProbabilityDensityFunction densityFunction{hittableDensity, cosineDensity};
+            MixtureProbabilityDensityFunction densityFunction{hittableDensity, scatterRecord.pdf};
 
-            scattered = Ray(record.point, densityFunction.Generate(), ray.Time());
-            pdfValue = densityFunction.Value(scattered.Direction());
+            Ray scattered = Ray(record.point, densityFunction.Generate(), ray.Time());
+            float pdfValue = static_cast<float>(densityFunction.Value(scattered.Direction()));
 
-            return emitted + albedo * static_cast<float>(record.material->ScatteringPdf(ray, record, scattered))
+            return emitted + scatterRecord.albedo * static_cast<float>(record.material->ScatteringPdf(ray, record, scattered))
                 * RayColor(scattered, world, depth-1) / static_cast<float>(pdfValue);
         }
     }

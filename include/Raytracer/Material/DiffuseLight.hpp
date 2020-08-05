@@ -15,7 +15,6 @@ namespace rt
     public:
         explicit DiffuseLight(std::shared_ptr<rt::Texture> texture);
 
-        bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const override;
         [[nodiscard]] glm::vec3 Emitted(const Ray& rIn, const HitRecord& record) const override;
     private:
         // TODO : Make a difference between texture color and light intensity.

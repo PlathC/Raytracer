@@ -14,7 +14,7 @@ namespace rt
     public:
         Metal(const glm::vec3& albedo, const float fuzziness);
 
-        bool Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const override;
+        bool Scatter(const Ray& rIn, const HitRecord& record, ScatterRecord& scatterRecord) const override;
 
     private:
         glm::vec3 m_albedo;

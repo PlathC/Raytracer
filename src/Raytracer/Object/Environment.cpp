@@ -190,9 +190,10 @@ namespace rt
                         555, white))
                         );
 
+        auto aluminium = std::make_shared<rt::Metal>(glm::vec3(0.8, 0.85, 0.88), 0.0);
         auto thinBox = std::make_shared<Translation>(
                 std::make_shared<rt::Rotation<1>>(
-                    std::make_shared<Box>(glm::vec3(0, 0, 0), glm::vec3(165, 330, 165), white),
+                    std::make_shared<Box>(glm::vec3(0, 0, 0), glm::vec3(165, 330, 165), aluminium),
                     15.f),
                 glm::vec3(265,0,295)
         );

@@ -11,11 +11,12 @@ namespace rt
     {
     }
 
-    bool Isotropic::Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& /*pdf*/) const
+    bool Isotropic::Scatter(const Ray& rIn, const HitRecord& record, ScatterRecord& scatterRecord) const
     {
-        scattered = Ray(record.point, rt::RandomInUnitSphere(), rIn.Time());
-        albedo = m_albedo->Value(record.uv, record.point);
-
+        scatterRecord.specularRay = Ray(record.point, rt::RandomInUnitSphere(), rIn.Time());
+        scatterRecord.albedo = m_albedo->Value(record.uv, record.point);
+        scatterRecord.isSpecular = true;
+        scatterRecord.pdf = nullptr;
         return true;
     }
 

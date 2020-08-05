@@ -13,14 +13,12 @@ namespace rt
         m_albedo(std::move(albedo))
     {}
 
-    bool Lambertian::Scatter(const Ray& rIn, const HitRecord& record, glm::vec3& albedo, Ray& scattered, double& pdf) const
+    bool Lambertian::Scatter(const Ray& /*rIn*/, const HitRecord& record, ScatterRecord& sRecord) const
     {
-        OrthonormalBase tempBase{};
-        tempBase.BuildFromW(record.normal);
-        auto scatterDirection = tempBase.Local(RandomCosineDirection<float>());
-        scattered = Ray(record.point, glm::normalize(scatterDirection), rIn.Time());
-        albedo = m_albedo->Value(record.uv, record.point);
-        pdf = glm::dot(tempBase.W(), scatterDirection) / Pi;
+        sRecord.isSpecular = false;
+        sRecord.albedo = m_albedo->Value(record.uv, record.point);
+        sRecord.pdf = std::make_shared<CosineProbabilityDensityFunction>(record.normal);
+
         return true;
     }
 
