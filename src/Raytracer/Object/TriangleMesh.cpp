@@ -199,7 +199,7 @@ namespace rt
         for(size_t i = 0; i < materials.size(); i++)
         {
             materials[i] = std::make_shared<rt::Lambertian>(
-                    std::make_shared<rt::SolidColor>(glm::vec3{rt::Random<float>(), Random<float>(), Random<float>() }));
+                    std::make_shared<rt::SolidColor>(glm::vec3{rt::Random<float>(), rt::Random<float>(), rt::Random<float>() }));
             materialIndexes[i] = static_cast<uint32_t>(i);
         }
 

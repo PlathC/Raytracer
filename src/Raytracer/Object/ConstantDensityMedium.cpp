@@ -2,13 +2,16 @@
 // Created by Platholl on 08/07/2020.
 //
 
+#include <utility>
+
+
 #include "Raytracer/Object/ConstantDensityMedium.hpp"
 
 namespace rt
 {
     ConstantDensityMedium::ConstantDensityMedium(std::shared_ptr<rt::IHittable> boundary,
             std::shared_ptr<rt::Texture> texture, double density):
-            m_boundary(boundary),
+            m_boundary(std::move(boundary)),
             m_phaseFunction(std::make_shared<rt::Isotropic>(texture)),
             m_negativeInverseDensity(-1 / density)
     {
@@ -42,7 +45,7 @@ namespace rt
         const float rayLength = glm::length(ray.Direction());
         const float distanceInsideBoundary = (sRecord.t - fRecord.t) * rayLength;
 
-        const float hitDistance = static_cast<float>(m_negativeInverseDensity) * std::log(Random<float>());
+        const float hitDistance = static_cast<float>(m_negativeInverseDensity) * std::log(rt::Random<float>());
 
         if(hitDistance > distanceInsideBoundary)
             return false;

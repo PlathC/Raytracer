@@ -79,4 +79,16 @@ namespace rt
         box = AABB(firstValue, secondValue);
         return true;
     }
+
+    template<uint8_t weakAxis>
+    double Plane<weakAxis>::PdfValue(const glm::vec3& origin, const glm::vec3& direction) const
+    {
+        return IHittable::PdfValue(origin, direction);
+    }
+
+    template<uint8_t weakAxis>
+    glm::vec3 Plane<weakAxis>::Random(const glm::vec3& origin) const
+    {
+        return IHittable::Random(origin);
+    }
 }

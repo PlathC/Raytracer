@@ -36,7 +36,11 @@ namespace rt
     {
     public:
         virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const = 0;
-        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const = 0;
+        virtual bool BoundingBox(double t0, double t1, AABB& box) const = 0;
+
+        virtual double PdfValue(const glm::vec3& /*origin*/, const glm::vec3& /*direction*/) const { return 0.0; }
+        virtual glm::vec3 Random(const glm::vec3& /*origin*/) const { return {1, 0, 0}; }
+
         virtual ~IHittable() = default;
     };
 }

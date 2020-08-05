@@ -17,10 +17,13 @@ namespace rt
         static_assert(weakAxis < 3, "Axis should be in range of [0, 2].");
     public:
         Plane() = default;
-        Plane(const glm::vec2& v0, const glm::vec2& v1, const double weakAxisValue, std::shared_ptr<Material> material);
+        Plane(const glm::vec2& v0, const glm::vec2& v1, double weakAxisValue, std::shared_ptr<Material> material);
 
-        virtual bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const;
-        virtual bool BoundingBox(const double t0, const double t1, AABB& box) const;
+        bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
+        bool BoundingBox(double t0, double t1, AABB& box) const override;
+
+        double PdfValue(const glm::vec3& /*origin*/, const glm::vec3& /*direction*/) const override;
+        glm::vec3 Random(const glm::vec3& /*origin*/) const override;
 
     private:
         uint8_t m_firstOtherAxis, m_secondOtherAxis;
@@ -28,6 +31,13 @@ namespace rt
         double m_weakAxisValue;
         std::shared_ptr<Material> m_material;
     };
+
+    template<>
+    double Plane<1>::PdfValue(const glm::vec3& origin, const glm::vec3& direction) const;
+
+    template<>
+    glm::vec3 Plane<1>::Random(const glm::vec3& origin) const;
+
 }
 
 #include "Raytracer/Object/Plane.inl"

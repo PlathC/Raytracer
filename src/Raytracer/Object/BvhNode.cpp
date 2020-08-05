@@ -9,7 +9,7 @@ namespace rt
     BVHNode::BVHNode(const std::vector<std::shared_ptr<IHittable>>& objects, const size_t start, const size_t end,
             const double time0, const double time1)
     {
-        const auto axis = static_cast<uint8_t>(Random<int>(0, 2));
+        const auto axis = static_cast<uint8_t>(rt::Random<int>(0, 2));
         auto comparator = (axis == 0) ? CompareBoxX
                         : (axis == 1) ? CompareBoxY
                         : CompareBoxZ;

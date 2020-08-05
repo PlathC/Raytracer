@@ -18,7 +18,7 @@ namespace rt
         return false;
     }
 
-    glm::vec3 DiffuseLight::Emitted(const Ray& rIn, const HitRecord& record) const
+    glm::vec3 DiffuseLight::Emitted(const Ray& /*rIn*/, const HitRecord& record) const
     {
         if(record.frontFace)
             return m_texture->Value(record.uv, record.point);
