@@ -205,7 +205,10 @@ namespace rt
                 glm::vec3(130,0,65)
         );
         environment.Add(thinBox);
-        environment.Add(cube);
+
+        auto glassSphere = std::make_shared<rt::Sphere>(glm::vec3(190, 90, 190), 90, std::make_shared<rt::Dielectric>(1.5));
+        environment.Add(glassSphere);
+        //environment.Add(cube);
         //environment.Add(std::make_shared<ConstantDensityMedium>(thinBox,
         //            std::make_shared<SolidColor>(glm::vec3(0.,0.,0.)), 0.01));
 //
@@ -339,5 +342,22 @@ namespace rt
         }
 
         return true;
+    }
+
+    double Environment::PdfValue(const glm::vec3& origin, const glm::vec3& direction) const
+    {
+        double result = 0;
+        double weight = 1.0 / m_objects.size();
+
+        for(const auto& obj : m_objects)
+            result += obj->PdfValue(origin, direction) * weight;
+
+        return result;
+    }
+
+    glm::vec3 Environment::Random(const glm::vec3& origin) const
+    {
+        int intSize = static_cast<int>(m_objects.size());
+        return m_objects[rt::Random<int>(0, intSize - 1)]->Random(origin);
     }
 }

@@ -83,6 +83,19 @@ namespace rt
         return {x, y, z};
     }
 
+    inline glm::vec3 RandomToSphere(double radius, double distanceSquared)
+    {
+        auto randomNum1 = rt::Random<float>();
+        auto randomNum2 = rt::Random<float>();
+        float z = 1 + randomNum2 * (std::sqrt(1 - radius * radius / distanceSquared) - 1);
+
+        float phi = 2.f * static_cast<float>(rt::Pi) * randomNum1;
+        float x = std::cos(phi) * std::sqrt(1 - z * z);
+        float y = std::sin(phi) * std::sqrt(1 - z * z);
+
+        return {x, y, z};
+    }
+
     inline glm::vec3 Reflect(const glm::vec3& v, const glm::vec3& n)
     {
         return v - 2.f * glm::dot(v, n) * n;

@@ -51,7 +51,7 @@ namespace rt
                 auto v = static_cast<float>((j + rt::Random<float>()) / (height - 1.f));
 
                 rt::Ray ray = settings.camera.GetRay(u, v);
-                result += RayColor(ray, m_bvh, settings.maxDepth);
+                result += RayColor(ray, m_bvh, settings.lights, settings.maxDepth);
                 if(s == 0)
                 {
                     albedo = result;
@@ -96,6 +96,10 @@ namespace rt
                 try
                 {
                     auto p =  results[pixelIterator++].get();
+                    if (p.resultPixel.x != p.resultPixel.x) p.resultPixel.x = 0.0;
+                    if (p.resultPixel.y != p.resultPixel.y) p.resultPixel.y = 0.0;
+                    if (p.resultPixel.z != p.resultPixel.z) p.resultPixel.z = 0.0;
+
                     m_generatedImage[imageIterator++] = p.resultPixel.x;
                     m_generatedImage[imageIterator++] = p.resultPixel.y;
                     m_generatedImage[imageIterator++] = p.resultPixel.z;
@@ -162,7 +166,7 @@ namespace rt
     }
 #endif // RAYTRACER_WITH_OID
 
-    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::IHittable& world, int depth) const
+    glm::vec3 Renderer::RayColor(const rt::Ray& ray, const rt::IHittable& world, std::shared_ptr<rt::Environment> lights, int depth) const
     {
         rt::HitRecord record{};
 
@@ -188,18 +192,20 @@ namespace rt
 
             if(scatterRecord.isSpecular)
             {
-                return scatterRecord.albedo * RayColor(scatterRecord.specularRay, world, depth-1);
+                return scatterRecord.albedo * RayColor(scatterRecord.specularRay, world, lights, depth-1);
             }
 
             auto lightShape = std::make_shared<rt::Plane<1>>(glm::vec2{213, 227}, glm::vec2{343, 332}, 554, std::shared_ptr<rt::Material>());
-            auto hittableDensity = std::make_shared<HittableProbabilityDensityFunction>(lightShape, record.point);
+            auto glassSphere = std::make_shared<rt::Sphere>(glm::vec3(190, 90, 190), 90, nullptr);
+
+            auto hittableDensity = std::make_shared<HittableProbabilityDensityFunction>(glassSphere, record.point);
             MixtureProbabilityDensityFunction densityFunction{hittableDensity, scatterRecord.pdf};
 
             Ray scattered = Ray(record.point, densityFunction.Generate(), ray.Time());
             float pdfValue = static_cast<float>(densityFunction.Value(scattered.Direction()));
 
             return emitted + scatterRecord.albedo * static_cast<float>(record.material->ScatteringPdf(ray, record, scattered))
-                * RayColor(scattered, world, depth-1) / static_cast<float>(pdfValue);
+                * RayColor(scattered, world, lights, depth-1) / static_cast<float>(pdfValue);
         }
     }
 

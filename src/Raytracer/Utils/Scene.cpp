@@ -3,6 +3,7 @@
 //
 
 
+#include <include/Raytracer/Object/Plane.hpp>
 #include "Raytracer/Material/DiffuseLight.hpp"
 #include "Raytracer/Material/Lambertian.hpp"
 #include "Raytracer/Material/SolidColor.hpp"
@@ -35,7 +36,8 @@ namespace rt
             samplesPerPixel,
             maxDepth,
             {1, 1, 1},
-            Environment::RandomEnvironment()
+            Environment::RandomEnvironment(),
+            nullptr
         };
     }
 
@@ -61,7 +63,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {1, 1, 1},
-                Environment::TwoSpheres()
+                Environment::TwoSpheres(),
+                nullptr
         };
     }
 
@@ -87,7 +90,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {1, 1, 1},
-                Environment::TwoPerlinSpheres()
+                Environment::TwoPerlinSpheres(),
+                nullptr
         };
     }
 
@@ -113,7 +117,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {1, 1, 1},
-                Environment::Earth()
+                Environment::Earth(),
+                nullptr
         };
     }
 
@@ -139,7 +144,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {0, 0, 0},
-                Environment::SimpleLight()
+                Environment::SimpleLight(),
+                nullptr
         };
     }
 
@@ -150,7 +156,7 @@ namespace rt
         constexpr uint16_t width           = 400;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
-        constexpr uint16_t samplesPerPixel = 64;
+        constexpr uint16_t samplesPerPixel = 1024;
         const uint8_t maxDepth             = 50;
 
         glm::vec3 lookFrom = glm::vec3{278, 278, -800};
@@ -159,13 +165,18 @@ namespace rt
         float distToFocus  = 10.f;
         float aperture     = 0.0f;
 
+        auto lights = std::make_shared<Environment>();
+        lights->Add(std::make_shared<rt::Plane<1>>(glm::vec2{213, 227}, glm::vec2{343, 332}, 554, nullptr));
+        lights->Add(std::make_shared<rt::Sphere>(glm::vec3(190, 90, 190), 90, nullptr));
+
         return Scene{
                 Camera(lookFrom, lookAt, vup, 40, aspectRatio, aperture, distToFocus),
                 {width, height, channel},
                 samplesPerPixel,
                 maxDepth,
                 {0, 0, 0},
-                Environment::CornellBox()
+                Environment::CornellBox(),
+                lights
         };
     }
 
@@ -191,7 +202,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {0, 0, 0},
-                Environment::FinalScene()
+                Environment::FinalScene(),
+                nullptr
         };
     }
 
@@ -202,7 +214,7 @@ namespace rt
         constexpr uint16_t width           = 500;
         const auto height                  = static_cast<uint16_t>(std::floor(width / aspectRatio));
         constexpr uint16_t channel         = 3;
-        constexpr uint16_t samplesPerPixel = 8;
+        constexpr uint16_t samplesPerPixel = 16;
         const uint8_t maxDepth             = 50;
 
         glm::vec3 lookFrom = glm::vec3{0, 0, 5};
@@ -226,7 +238,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {.4, .4, .4},
-                environment
+                environment,
+                nullptr
         };
     }
 
@@ -261,7 +274,8 @@ namespace rt
                 samplesPerPixel,
                 maxDepth,
                 {.4, .4, .4},
-                environment
+                environment,
+                nullptr
         };
     }
 }

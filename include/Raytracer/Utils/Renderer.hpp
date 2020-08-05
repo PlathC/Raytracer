@@ -33,7 +33,7 @@ namespace rt
 #endif //RAYTRACER_WITH_OID
 
     private:
-        [[nodiscard]] glm::vec3 RayColor(const rt::Ray& ray, const rt::IHittable& world, const int depth) const;
+        [[nodiscard]] glm::vec3 RayColor(const rt::Ray& ray, const rt::IHittable& world, std::shared_ptr<rt::Environment> lights, const int depth) const;
 
     private:
         Scene m_settings;

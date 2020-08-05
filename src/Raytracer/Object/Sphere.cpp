@@ -69,4 +69,25 @@ namespace rt
                    m_center + glm::vec3(m_radius, m_radius, m_radius)};
         return true;
     }
+
+    double Sphere::PdfValue(const glm::vec3& origin, const glm::vec3& direction) const
+    {
+        HitRecord record{};
+        if(!Hit(Ray(origin, direction), 0.001, rt::Infinity<double>, record))
+            return 0;
+
+        float cosThetaMax = std::sqrt(1 - m_radius * m_radius / glm::length2(m_center - origin));
+        float solidAngle  = 2 * rt::Pi * (1 - cosThetaMax);
+
+        return 1 / solidAngle;
+    }
+
+    glm::vec3 Sphere::Random(const glm::vec3& origin) const
+    {
+        glm::vec3 direction = m_center - origin;
+        float distanceSQuared = glm::length2(direction);
+        OrthonormalBase base;
+        base.BuildFromW(direction);
+        return base.Local(rt::RandomToSphere(m_radius, distanceSQuared));
+    }
 }

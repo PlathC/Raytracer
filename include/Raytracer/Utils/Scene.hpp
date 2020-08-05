@@ -27,6 +27,7 @@ namespace rt
 
         glm::vec3 backgroundColor;
         rt::Environment environment;
+        std::shared_ptr<rt::Environment> lights;
 
         static Scene RandomEnvironment();
         static Scene TwoSpheres();

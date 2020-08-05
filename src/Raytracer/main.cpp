@@ -22,7 +22,7 @@ int main(int /*argc*/, char** /*argv*/)
     std::cout << "Setup render..." << std::endl;
 
     auto timeStart = std::chrono::high_resolution_clock::now();
-    auto scene = rt::Scene::CornellBox();
+    auto scene = rt::Scene::Suzanne();
     auto timeEnd = std::chrono::high_resolution_clock::now();
     auto passedTime = std::chrono::duration<double, std::milli>(timeEnd - timeStart).count();
 

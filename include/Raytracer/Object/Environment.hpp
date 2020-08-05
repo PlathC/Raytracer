@@ -35,6 +35,9 @@ namespace rt
         bool Hit(const Ray& ray, double tMin, double tMax, HitRecord& record) const override;
         bool BoundingBox(const double t0, const double t1, AABB& box) const override;
 
+        double PdfValue(const glm::vec3& origin, const glm::vec3& direction) const override;
+        glm::vec3 Random(const glm::vec3& origin) const override;
+
     protected:
         std::vector<std::shared_ptr<IHittable>> m_objects;
     };
