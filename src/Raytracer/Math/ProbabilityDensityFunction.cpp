@@ -40,4 +40,23 @@ namespace rt
         return m_object->Random(m_origin);
     }
 
+    MixtureProbabilityDensityFunction::MixtureProbabilityDensityFunction(
+            std::shared_ptr<ProbabilityDensityFunction> firstFunction,
+            std::shared_ptr<ProbabilityDensityFunction> secondFunction):
+        m_functions({std::move(firstFunction), std::move(secondFunction)})
+    {
+    }
+
+    double MixtureProbabilityDensityFunction::Value(const glm::vec3& direction) const
+    {
+        return 0.5 * m_functions[0]->Value(direction) + 0.5 * m_functions[1]->Value(direction);
+    }
+
+    glm::vec3 MixtureProbabilityDensityFunction::Generate() const
+    {
+        if(rt::Random<double>() < 0.5)
+            return m_functions[0]->Generate();
+        else
+            return m_functions[1]->Generate();
+    }
 }

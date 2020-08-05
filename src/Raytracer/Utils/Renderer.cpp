@@ -189,7 +189,10 @@ namespace rt
                 return emitted;
 
             auto lightShape = std::make_shared<rt::Plane<1>>(glm::vec2{213, 227}, glm::vec2{343, 332}, 554, std::shared_ptr<rt::Material>());
-            HittableProbabilityDensityFunction densityFunction{lightShape, record.point};
+            auto hittableDensity = std::make_shared<HittableProbabilityDensityFunction>(lightShape, record.point);
+            auto cosineDensity   = std::make_shared<CosineProbabilityDensityFunction>(record.normal);
+            MixtureProbabilityDensityFunction densityFunction{hittableDensity, cosineDensity};
+
             scattered = Ray(record.point, densityFunction.Generate(), ray.Time());
             pdfValue = densityFunction.Value(scattered.Direction());
 

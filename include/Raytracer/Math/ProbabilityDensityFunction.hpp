@@ -5,6 +5,8 @@
 #ifndef RAYTRACER_PROBABILITYDENSITYFUNCTION_HPP
 #define RAYTRACER_PROBABILITYDENSITYFUNCTION_HPP
 
+#include <array>
+
 #include <glm/glm.hpp>
 
 #include "Raytracer/Math/Math.hpp"
@@ -44,6 +46,19 @@ namespace rt
     private:
         std::shared_ptr<rt::IHittable> m_object;
         glm::vec3 m_origin;
+    };
+
+    class MixtureProbabilityDensityFunction : ProbabilityDensityFunction
+    {
+    public:
+        MixtureProbabilityDensityFunction(std::shared_ptr<ProbabilityDensityFunction> firstFunction,
+                                          std::shared_ptr<ProbabilityDensityFunction> secondFunction);
+
+        [[nodiscard]] double Value(const glm::vec3& direction) const override;
+        [[nodiscard]] glm::vec3 Generate() const override;
+
+    private:
+        std::array<std::shared_ptr<ProbabilityDensityFunction>, 2> m_functions;
     };
 }
 
