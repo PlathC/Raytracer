@@ -11,29 +11,21 @@
 | Meshes                           | Done (Obj)                                |
 | Multi-threading                  | Done (CPU)                                |
 | Denoiser                         | Done                                      |
-| PBR                              | Todo                                      |
 
 ## Results
 
-After the first book, the result looked like this :
+Mesh Loader and denoiser :
 
-![](outputs/w-e1stResult.png)
+![Suzanne noisy](outputs/suzanneNoise.png)
+![Suzanne denoisy](outputs/suzanneDenoised.png)
 
-Rendered meshes (OBJ) :
+![Denis noisy](outputs/DenisNoise.png)
+![Denis denoisy](outputs/DenisDenoised.png)
 
-![](outputs/meshLoader.png)
+Last scene of _Ray Tracing: The Rest of Your Life_ :
 
-BVH result (9s) :
-
-![](outputs/BVHResult.png)
-
-Final scene (Raytracing : The next week) :
-
-![](outputs/FinalScene.png)
-
-Denoise with OpenImageDenoise :
-
-![](outputs/noise2.png)![](outputs/noise1.png) 
+![Denis noisy](outputs/importanceSamplingNoise.png)
+![Denis denoisy](outputs/importanceSamplingDenoised.png)
 
 ## Based on
 
